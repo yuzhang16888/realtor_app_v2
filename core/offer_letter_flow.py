@@ -129,7 +129,6 @@ Sincerely,
 
 ---
 
-*This draft was generated for convenience. Please review the formal Residential Purchase Agreement for binding terms.*
 """
 
 
