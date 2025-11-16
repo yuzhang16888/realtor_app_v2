@@ -2,7 +2,8 @@
 
 import streamlit as st
 from datetime import date, timedelta
-from .state import init_purchase_agreement_state  # relative import
+from purchase_agreement.state import init_purchase_agreement_state  # absolute import
+
 
 def render_section_1_offer():
     """Main entry for Section 1 – Offer."""
@@ -142,7 +143,7 @@ def _render_section_1_walkthrough(s1: dict):
             "Number of days after offer acceptance",
             min_value=5,
             max_value=90,
-            step=1,
+           step=1,
             value=s1.get("close_days_after", 30),
         )
         s1["close_type"] = "days_after_acceptance"
