@@ -1,5 +1,6 @@
 import streamlit as st
 from core.offer_letter_flow import show_offer_letter_flow
+from purchase_agreement.section1_offer import render_section_1_offer
 
 
 # ==========================================================
@@ -35,11 +36,12 @@ if "offer_data" not in st.session_state:
 
 if "offer_messages" not in st.session_state:
     st.session_state.offer_messages = []
-# # ==========================================================
-# # ⚠️ GLOBAL DISCLAIMER TEXT
-# # ==========================================================
+
+# ==========================================================
+# ⚠️ GLOBAL DISCLAIMER TEXT
+# ==========================================================
 DISCLAIMER_SHORT = """
-> **Note (not part of the offer letter):** This tool does not provide legal advice or brokerage services. \
+> **Note (not part of the offer letter or agreement):** This tool does not provide legal advice or brokerage services. \
 > Please review all terms carefully and consult a licensed real estate professional before using this in a real transaction.
 """
 
@@ -92,11 +94,13 @@ st.markdown("### What do you want help with today?")
 col1, col2, col3 = st.columns(3)
 col4, col5, _ = st.columns(3)
 
+
 def reset_offer_state():
     st.session_state.offer_step = 0
     st.session_state.offer_last_prompted_step = -1
     st.session_state.offer_data = {}
     st.session_state.offer_messages = []
+
 
 with col1:
     if st.button("Draft an Offer Letter", use_container_width=True):
@@ -124,20 +128,25 @@ with col5:
         st.session_state.messages = []
 
 st.markdown("---")
+
+
 # ==========================================================
 # 💬 GENERIC CHAT (for non-offer flows)
 # ==========================================================
 def show_generic_chat():
+    # show history
     for msg in st.session_state.messages:
         with st.chat_message(msg["role"]):
             st.write(msg["content"])
 
+    # new message
     user_input = st.chat_input("Type your message…")
     if user_input:
         st.session_state.messages.append({"role": "user", "content": user_input})
         with st.chat_message("user"):
             st.write(user_input)
 
+        # placeholder AI response for now
         ai_response = "Thanks! I’ll help you shortly. (AI logic coming later)"
         st.session_state.messages.append({"role": "assistant", "content": ai_response})
         with st.chat_message("assistant"):
@@ -156,8 +165,6 @@ elif mode == "offer_letter":
     st.subheader("Draft an Offer Letter")
     show_offer_letter_flow()
 
-
-
     # Disclaimer + paid review CTA
     st.markdown(DISCLAIMER_SHORT)
     if st.button("Request Professional Review – $75", key="offer_review_btn"):
@@ -165,3 +172,33 @@ elif mode == "offer_letter":
             "Review service and payment integration are coming soon. "
             "For now, please contact us directly if you’d like a licensed realtor to review your draft."
         )
+
+elif mode == "purchase_agreement":
+    st.subheader("Purchase Agreement – CA RPA Walkthrough (Beta)")
+    st.markdown(
+        "We’ll start with **Section 1 – Offer**: who is buying, what property, purchase price, "
+        "and when you want to close escrow."
+    )
+
+    # 🔹 Section 1 UI from your new module
+    render_section_1_offer()
+
+    # Global disclaimer
+    st.markdown(DISCLAIMER_SHORT)
+
+elif mode == "eval_property":
+    st.subheader("Should I Buy This Property?")
+    st.write("Property evaluation chat coming soon. For now, you can chat below.")
+    show_generic_chat()
+
+elif mode == "education":
+    st.subheader("I’m New — Teach Me")
+    st.write("Ask anything about homebuying, offers, or California forms. Chat below:")
+    show_generic_chat()
+
+elif mode == "free_chat":
+    st.subheader("Ask Something Else")
+    show_generic_chat()
+
+else:
+    st.warning("Unknown mode. Please pick an option above.")
