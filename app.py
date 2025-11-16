@@ -155,7 +155,7 @@ if mode is None:
 elif mode == "offer_letter":
     st.subheader("Draft an Offer Letter")
     show_offer_letter_flow()
-    st.markdown(DISCLAIMER_SHORT)
+
 
 
     # Disclaimer + paid review CTA
