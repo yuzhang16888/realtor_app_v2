@@ -1,4 +1,6 @@
 import streamlit as st
+from core.offer_letter_flow import show_offer_letter_flow
+
 
 # ==========================================================
 # 🚀 STREAMLIT APP CONFIG
@@ -33,6 +35,16 @@ if "offer_data" not in st.session_state:
 
 if "offer_messages" not in st.session_state:
     st.session_state.offer_messages = []
+# ==========================================================
+# ⚠️ GLOBAL DISCLAIMER TEXT
+# ==========================================================
+DISCLAIMER_SHORT = """
+> **Disclaimer:** This is an AI-generated draft.  
+> Review all terms carefully before sharing with a seller or relying on it in a real transaction,  
+> as an accepted offer or agreement may become legally binding.  
+> Need a professional review? Request a **licensed-realtor review within 24 hours for $75.**
+"""
+
 # ==========================================================
 # 🎛️ SIDEBAR
 # ==========================================================
@@ -134,186 +146,6 @@ def show_generic_chat():
 
 
 # ==========================================================
-# ✉️ OFFER LETTER — GUIDED QUESTION PROMPTS
-# ==========================================================
-def get_offer_prompt_for_step(step: int) -> str:
-    prompts = {
-        0: (
-            "Great, let’s draft your offer letter together.\n\n"
-            "First, what is the **property address or listing link**?"
-        ),
-        1: (
-            "Got it. What is the **buyer’s full legal name**, exactly as it should appear on the offer?\n\n"
-            "If there are multiple buyers, list all full legal names."
-        ),
-        2: (
-            "Thanks. What is your **offer price** (in dollars)?\n\n"
-            "You can type a number like `1,250,000`."
-        ),
-        3: (
-            "Great. How much **earnest money** would you like to offer?\n\n"
-            "Earnest money is usually around **1%–3% of the purchase price**."
-        ),
-        4: (
-            "Noted. What is your **preferred closing timeline**?\n\n"
-            "For example: “30 days after offer acceptance.” Typical closings are around **21–30 days** after acceptance."
-        ),
-        5: (
-            "Until **when** should this offer remain valid? (Offer expiration)\n\n"
-            "For example: “This offer expires on Monday at 5:00 PM Pacific.”"
-        ),
-        6: (
-            "Let’s choose your **contingencies**.\n\n"
-            "A contingency is a protection for the buyer. Common ones:\n"
-            "• **Inspection** – inspect the property and request repairs.\n"
-            "• **Financing** – your loan must be approved.\n"
-            "• **Appraisal** – the property must appraise at or above the purchase price.\n\n"
-            "Which contingencies would you like to include?"
-        ),
-        7: (
-            "Any **special terms** you want to include? (Optional)\n\n"
-            "Examples:\n"
-            "• Do you need to sell your current home first?\n"
-            "• Buying on behalf of someone (child/parent/LLC)?\n"
-            "• Want a rent-back period for the seller or to include certain items (appliances, furniture)?\n\n"
-            "If nothing special, type “none”."
-        ),
-    }
-    return prompts.get(step, "")
-
-    
-
-
-# ==========================================================
-# 📄 OFFER LETTER GENERATOR
-# ==========================================================
-def generate_offer_letter_text(data: dict) -> str:
-    property_address = data.get("property_address", "[Property Address]")
-    buyer_name = data.get("buyer_name", "[Buyer Name]")
-    offer_price = data.get("offer_price", "[Offer Price]")
-    earnest_money = data.get("earnest_money", "[Earnest Money]")
-    closing_timeline = data.get("closing_timeline", "[Closing Timeline]")
-    offer_expiration = data.get("offer_expiration", "[Offer Expiration]")
-    contingencies = data.get("contingencies", "Standard inspection, appraisal, and financing contingencies.")
-    special_terms = data.get("special_terms", "None specified.")
-
-    return f"""
-**Offer Letter — {property_address}**
-
-Dear Listing Agent / Seller,
-
-On behalf of **{buyer_name}**, I am pleased to submit this offer to purchase the property located at **{property_address}**. We appreciate your consideration and have outlined the proposed terms below for your review.
-
----
-
-### **📌 Key Offer Terms**
-
-**1. Purchase Price:**  
-${offer_price}
-
-**2. Earnest Money Deposit:**  
-${earnest_money}  
-This deposit will be placed into escrow upon acceptance of the offer.
-
-**3. Closing Timeline:**  
-{closing_timeline}
-
-**4. Offer Expiration:**  
-This offer remains valid until **{offer_expiration}**, unless formally withdrawn or extended in writing.
-
-**5. Contingencies:**  
-{contingencies}
-
-**6. Special Terms (if any):**  
-{special_terms}
-
----
-
-### **📄 Acknowledgment**
-
-This letter serves as a summary of the buyer’s intentions and proposed terms. The full contractual obligations will be detailed in the formal Residential Purchase Agreement and related disclosures.
-
-{buyer_name} is prepared to cooperate promptly and professionally throughout the process and looks forward to working together toward a successful transaction.
-
-Thank you for your time and consideration.
-
-Sincerely,  
-**{buyer_name}**
-
----
-
-*This draft was generated for convenience. Please review the formal Residential Purchase Agreement for binding terms.*
-"""
-
-# ==========================================================
-# 🤖 OFFER LETTER FLOW (guided wizard)
-# ==========================================================
-def show_offer_letter_flow():
-    """Guided chat for drafting an offer letter."""
-
-    # 1) Show previous messages (Q&A history)
-    for msg in st.session_state.offer_messages:
-        with st.chat_message(msg["role"]):
-            st.write(msg["content"])
-
-    step = st.session_state.offer_step
-
-    # 2) If we still have questions to ask, show the current one
-    if step <= 6:
-        prompt = get_offer_prompt_for_step(step)
-        # Only add the prompt once per step
-        if not st.session_state.offer_messages or st.session_state.offer_messages[-1]["content"] != prompt:
-            st.session_state.offer_messages.append({"role": "assistant", "content": prompt})
-            with st.chat_message("assistant"):
-                st.write(prompt)
-
-    # 3) Wait for user's answer
-    user_input = st.chat_input("Answer here…")
-    if not user_input:
-        # Nothing typed yet → just show current prompt & history
-        return
-
-    # 4) Record and show user's answer
-    st.session_state.offer_messages.append({"role": "user", "content": user_input})
-    with st.chat_message("user"):
-        st.write(user_input)
-
-    # 5) Save data depending on step
-    if step == 0:
-        st.session_state.offer_data["property_address"] = user_input.strip()
-    elif step == 1:
-        st.session_state.offer_data["buyer_name"] = user_input.strip()
-    elif step == 2:
-        st.session_state.offer_data["offer_price"] = user_input.strip()
-    elif step == 3:
-        st.session_state.offer_data["earnest_money"] = user_input.strip()
-    elif step == 4:
-        st.session_state.offer_data["closing_timeline"] = user_input.strip()
-    elif step == 5:
-        st.session_state.offer_data["offer_expiration"] = user_input.strip()
-    elif step == 6:
-        st.session_state.offer_data["contingencies"] = user_input.strip()
-    elif step == 7:
-        st.session_state.offer_data["special_terms"] = user_input.strip()
-
-      
-    # 6) Move to the next step
-    st.session_state.offer_step += 1
-    step = st.session_state.offer_step
-
-    # 7) If we just finished the last step, generate the draft
-    if step > 6:
-        draft = generate_offer_letter_text(st.session_state.offer_data)
-        st.session_state.offer_messages.append({"role": "assistant", "content": draft})
-        with st.chat_message("assistant"):
-            st.markdown(draft)
-
-    # 8) Immediately rerun so the next question (or final draft) shows up fast
-    st.rerun()
-
-
-
-# ==========================================================
 # 🧩 MODE ROUTER — Which flow to show?
 # ==========================================================
 mode = st.session_state.current_mode
@@ -323,21 +155,14 @@ if mode is None:
 
 elif mode == "offer_letter":
     st.subheader("Draft an Offer Letter")
-    st.caption("We’ll guide you step-by-step and generate a complete draft.")
     show_offer_letter_flow()
+    st.markdown(DISCLAIMER_SHORT)
 
-elif mode == "eval_property":
-    st.subheader("Should I Buy This Property?")
-    show_generic_chat()
 
-elif mode == "purchase_agreement":
-    st.subheader("Purchase Agreement")
-    show_generic_chat()
-
-elif mode == "education":
-    st.subheader("Homebuying Education")
-    show_generic_chat()
-
-elif mode == "free_chat":
-    st.subheader("Ask Anything")
-    show_generic_chat()
+    # Disclaimer + paid review CTA
+    st.markdown(DISCLAIMER_SHORT)
+    if st.button("Request Professional Review – $75", key="offer_review_btn"):
+        st.info(
+            "Review service and payment integration are coming soon. "
+            "For now, please contact us directly if you’d like a licensed realtor to review your draft."
+        )
