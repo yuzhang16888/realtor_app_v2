@@ -212,53 +212,65 @@ Sincerely,
 # 🤖 OFFER LETTER FLOW (guided wizard)
 # ==========================================================
 def show_offer_letter_flow():
+    """Guided chat for drafting an offer letter."""
 
-    # Display existing messages
+    # 1) Show previous messages (Q&A history)
     for msg in st.session_state.offer_messages:
         with st.chat_message(msg["role"]):
             st.write(msg["content"])
 
     step = st.session_state.offer_step
 
-    # Ask the current question
-    if step <= 6 and st.session_state.offer_last_prompted_step != step:
+    # 2) If we still have questions to ask, show the current one
+    if step <= 6:
         prompt = get_offer_prompt_for_step(step)
-        st.session_state.offer_messages.append({"role": "assistant", "content": prompt})
-        st.session_state.offer_last_prompted_step = step
-        with st.chat_message("assistant"):
-            st.write(prompt)
-
-    # Wait for user response
-    user_input = st.chat_input("Answer here…")
-    if user_input:
-        st.session_state.offer_messages.append({"role": "user", "content": user_input})
-        with st.chat_message("user"):
-            st.write(user_input)
-
-        # Save data depending on step
-        if step == 0:
-            st.session_state.offer_data["property_address"] = user_input.strip()
-        elif step == 1:
-            st.session_state.offer_data["buyer_name"] = user_input.strip()
-        elif step == 2:
-            st.session_state.offer_data["offer_price"] = user_input.strip()
-        elif step == 3:
-            st.session_state.offer_data["earnest_money"] = user_input.strip()
-        elif step == 4:
-            st.session_state.offer_data["closing_timeline"] = user_input.strip()
-        elif step == 5:
-            st.session_state.offer_data["contingencies"] = user_input.strip()
-        elif step == 6:
-            st.session_state.offer_data["special_terms"] = user_input.strip()
-
-        st.session_state.offer_step += 1
-
-        # If all steps are done → generate final letter
-        if st.session_state.offer_step > 6:
-            draft = generate_offer_letter_text(st.session_state.offer_data)
-            st.session_state.offer_messages.append({"role": "assistant", "content": draft})
+        # Only add the prompt once per step
+        if not st.session_state.offer_messages or st.session_state.offer_messages[-1]["content"] != prompt:
+            st.session_state.offer_messages.append({"role": "assistant", "content": prompt})
             with st.chat_message("assistant"):
-                st.markdown(draft)
+                st.write(prompt)
+
+    # 3) Wait for user's answer
+    user_input = st.chat_input("Answer here…")
+    if not user_input:
+        # Nothing typed yet → just show current prompt & history
+        return
+
+    # 4) Record and show user's answer
+    st.session_state.offer_messages.append({"role": "user", "content": user_input})
+    with st.chat_message("user"):
+        st.write(user_input)
+
+    # 5) Save data depending on step
+    if step == 0:
+        st.session_state.offer_data["property_address"] = user_input.strip()
+    elif step == 1:
+        st.session_state.offer_data["buyer_name"] = user_input.strip()
+    elif step == 2:
+        st.session_state.offer_data["offer_price"] = user_input.strip()
+    elif step == 3:
+        st.session_state.offer_data["earnest_money"] = user_input.strip()
+    elif step == 4:
+        st.session_state.offer_data["closing_timeline"] = user_input.strip()
+    elif step == 5:
+        st.session_state.offer_data["contingencies"] = user_input.strip()
+    elif step == 6:
+        st.session_state.offer_data["special_terms"] = user_input.strip()
+
+    # 6) Move to the next step
+    st.session_state.offer_step += 1
+    step = st.session_state.offer_step
+
+    # 7) If we just finished the last step, generate the draft
+    if step > 6:
+        draft = generate_offer_letter_text(st.session_state.offer_data)
+        st.session_state.offer_messages.append({"role": "assistant", "content": draft})
+        with st.chat_message("assistant"):
+            st.markdown(draft)
+
+    # 8) Immediately rerun so the next question (or final draft) shows up fast
+    st.rerun()
+
 
 
 # ==========================================================
