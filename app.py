@@ -38,12 +38,12 @@ if "offer_messages" not in st.session_state:
 # # ==========================================================
 # # ⚠️ GLOBAL DISCLAIMER TEXT
 # # ==========================================================
-# DISCLAIMER_SHORT = """
-# > **Disclaimer:** This is an AI-generated draft.  
-# > Review all terms carefully before sharing with a seller or relying on it in a real transaction,  
-# > as an accepted offer or agreement may become legally binding.  
-# > Need a professional review? Request a **licensed-realtor review within 24 hours for $75.**
-# """
+DISCLAIMER_SHORT = """
+> **Disclaimer:** This is an AI-generated draft.  
+> Review all terms carefully before sharing with a seller or relying on it in a real transaction,  
+> as an accepted offer or agreement may become legally binding.  
+> Need a professional review? Request a **licensed-realtor review within 24 hours for $75.**
+"""
 
 # ==========================================================
 # 🎛️ SIDEBAR
