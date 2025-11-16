@@ -156,26 +156,32 @@ def get_offer_prompt_for_step(step: int) -> str:
         ),
         4: (
             "Noted. What is your **preferred closing timeline**?\n\n"
-            "Typical closings are around **21–30 days** after offer acceptance."
+            "For example: “30 days after offer acceptance.” Typical closings are around **21–30 days** after acceptance."
         ),
         5: (
-            "Let’s choose your **contingencies**.\n\n"
-            "A contingency is a protection for the buyer. Common ones:\n"
-            "• **Inspection** – inspect the property, request repairs.\n"
-            "• **Financing** – your loan must be approved.\n"
-            "• **Appraisal** – the property must appraise above the offer price.\n\n"
-            "Which contingencies would you like to include?"
+            "Until **when** should this offer remain valid? (Offer expiration)\n\n"
+            "For example: “This offer expires on Monday at 5:00 PM Pacific.”"
         ),
         6: (
+            "Let’s choose your **contingencies**.\n\n"
+            "A contingency is a protection for the buyer. Common ones:\n"
+            "• **Inspection** – inspect the property and request repairs.\n"
+            "• **Financing** – your loan must be approved.\n"
+            "• **Appraisal** – the property must appraise at or above the purchase price.\n\n"
+            "Which contingencies would you like to include?"
+        ),
+        7: (
             "Any **special terms** you want to include? (Optional)\n\n"
             "Examples:\n"
             "• Do you need to sell your current home first?\n"
             "• Buying on behalf of someone (child/parent/LLC)?\n"
-            "• Want a rent-back period for the seller?\n\n"
+            "• Want a rent-back period for the seller or to include certain items (appliances, furniture)?\n\n"
             "If nothing special, type “none”."
         ),
     }
     return prompts.get(step, "")
+
+    
 
 
 # ==========================================================
@@ -187,27 +193,58 @@ def generate_offer_letter_text(data: dict) -> str:
     offer_price = data.get("offer_price", "[Offer Price]")
     earnest_money = data.get("earnest_money", "[Earnest Money]")
     closing_timeline = data.get("closing_timeline", "[Closing Timeline]")
+    offer_expiration = data.get("offer_expiration", "[Offer Expiration]")
     contingencies = data.get("contingencies", "Standard inspection, appraisal, and financing contingencies.")
     special_terms = data.get("special_terms", "None specified.")
 
     return f"""
-**Draft Offer Letter**
+**Offer Letter — {property_address}**
 
-Dear Seller / Listing Agent,
+Dear Listing Agent / Seller,
 
-On behalf of **{buyer_name}**, I am pleased to submit an offer to purchase the property located at **{property_address}** under the following terms:
+On behalf of **{buyer_name}**, I am pleased to submit this offer to purchase the property located at **{property_address}**. We appreciate your consideration and have outlined the proposed terms below for your review.
 
-1. **Purchase Price:** ${offer_price}
-2. **Earnest Money Deposit:** ${earnest_money}
-3. **Closing Timeline:** {closing_timeline}
-4. **Contingencies:** {contingencies}
-5. **Special Terms:** {special_terms}
+---
 
-This offer is made in good faith with the intention to move forward promptly and cooperatively.
+### **📌 Key Offer Terms**
+
+**1. Purchase Price:**  
+${offer_price}
+
+**2. Earnest Money Deposit:**  
+${earnest_money}  
+This deposit will be placed into escrow upon acceptance of the offer.
+
+**3. Closing Timeline:**  
+{closing_timeline}
+
+**4. Offer Expiration:**  
+This offer remains valid until **{offer_expiration}**, unless formally withdrawn or extended in writing.
+
+**5. Contingencies:**  
+{contingencies}
+
+**6. Special Terms (if any):**  
+{special_terms}
+
+---
+
+### **📄 Acknowledgment**
+
+This letter serves as a summary of the buyer’s intentions and proposed terms. The full contractual obligations will be detailed in the formal Residential Purchase Agreement and related disclosures.
+
+{buyer_name} is prepared to cooperate promptly and professionally throughout the process and looks forward to working together toward a successful transaction.
+
+Thank you for your time and consideration.
 
 Sincerely,  
-{buyer_name}
+**{buyer_name}**
+
+---
+
+*This draft was generated for convenience. Please review the formal Residential Purchase Agreement for binding terms.*
 """
+
 # ==========================================================
 # 🤖 OFFER LETTER FLOW (guided wizard)
 # ==========================================================
@@ -253,10 +290,13 @@ def show_offer_letter_flow():
     elif step == 4:
         st.session_state.offer_data["closing_timeline"] = user_input.strip()
     elif step == 5:
-        st.session_state.offer_data["contingencies"] = user_input.strip()
+        st.session_state.offer_data["offer_expiration"] = user_input.strip()
     elif step == 6:
+        st.session_state.offer_data["contingencies"] = user_input.strip()
+    elif step == 7:
         st.session_state.offer_data["special_terms"] = user_input.strip()
 
+      
     # 6) Move to the next step
     st.session_state.offer_step += 1
     step = st.session_state.offer_step
