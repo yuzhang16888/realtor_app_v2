@@ -27,7 +27,7 @@ def render_section_1_offer():
             "I already understand – just fill Section 1 quickly",
         ],
         index=0,
-        key="s1_mode_select",  # unique key
+        key="s1_mode_select_v2",  # 🔹 brand-new key
     )
 
     st.divider()
@@ -159,7 +159,7 @@ def _render_section_1_walkthrough(s1: dict):
         index=0
         if s1.get("close_type", "days_after_acceptance") == "days_after_acceptance"
         else 1,
-        key="s1_close_type_select",  # unique key
+        key="s1_close_type_select_v2",  # 🔹 brand-new key
     )
 
     if close_type == "Days after acceptance":
@@ -239,7 +239,7 @@ def _render_section_1_fast(s1: dict):
         index=0
         if s1.get("close_type", "days_after_acceptance") == "days_after_acceptance"
         else 1,
-        key="s1_close_type_select_fast",  # unique key for fast mode
+        key="s1_close_type_select_fast_v2",  # 🔹 brand-new key
     )
 
     if close_type == "Days after acceptance":
@@ -298,7 +298,7 @@ def _render_section_1_summary(s1: dict):
 
     # Plain-English summary
     st.markdown("---")
-    if st.button("✨ Generate plain-English summary of Section 1", key="s1_summary_btn"):
+    if st.button("✨ Generate plain-English summary of Section 1", key="s1_summary_btn_v2"):
         s1["human_summary"] = _generate_section_1_human_summary(s1)
 
     if s1.get("human_summary"):
