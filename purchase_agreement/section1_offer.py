@@ -20,15 +20,14 @@ def render_section_1_offer():
 
     # Top-of-funnel fork
     st.markdown("#### How would you like to start?")
-    mode = st.radio(
+    mode = st.selectbox(
         "Choose your path:",
         options=[
             "Walk me through and explain each part",
             "I already understand – just fill Section 1 quickly",
         ],
         index=0,
-        label_visibility="collapsed",
-        key="s1_mode_radio",  # ✅ unique key
+        key="s1_mode_select",  # unique key
     )
 
     st.divider()
@@ -154,13 +153,13 @@ def _render_section_1_walkthrough(s1: dict):
             "- Your lender must be able to meet this timeline."
         )
 
-    close_type = st.radio(
+    close_type = st.selectbox(
         "How do you want to define the closing?",
         options=["Days after acceptance", "Specific calendar date"],
         index=0
         if s1.get("close_type", "days_after_acceptance") == "days_after_acceptance"
         else 1,
-        key="s1_close_type_radio",  # ✅ unique key
+        key="s1_close_type_select",  # unique key
     )
 
     if close_type == "Days after acceptance":
@@ -240,6 +239,7 @@ def _render_section_1_fast(s1: dict):
         index=0
         if s1.get("close_type", "days_after_acceptance") == "days_after_acceptance"
         else 1,
+        key="s1_close_type_select_fast",  # unique key for fast mode
     )
 
     if close_type == "Days after acceptance":
@@ -296,7 +296,7 @@ def _render_section_1_summary(s1: dict):
             else "- **Close of escrow:** —"
         )
 
-    # 🔹 Plain-English summary (local, not calling external APIs here)
+    # Plain-English summary
     st.markdown("---")
     if st.button("✨ Generate plain-English summary of Section 1", key="s1_summary_btn"):
         s1["human_summary"] = _generate_section_1_human_summary(s1)
