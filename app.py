@@ -24,7 +24,7 @@ if "messages" not in st.session_state:
 if "is_logged_in" not in st.session_state:
     st.session_state.is_logged_in = False
 
-# Offer letter state
+# Offer letter state (used inside the Offer Letter tab)
 if "offer_step" not in st.session_state:
     st.session_state.offer_step = 0
 
@@ -36,6 +36,14 @@ if "offer_data" not in st.session_state:
 
 if "offer_messages" not in st.session_state:
     st.session_state.offer_messages = []
+
+
+def reset_offer_state():
+    st.session_state.offer_step = 0
+    st.session_state.offer_last_prompted_step = -1
+    st.session_state.offer_data = {}
+    st.session_state.offer_messages = []
+
 
 # ==========================================================
 # ⚠️ GLOBAL DISCLAIMER TEXT
@@ -94,18 +102,12 @@ st.markdown("### What do you want help with today?")
 col1, col2, col3 = st.columns(3)
 col4, col5, _ = st.columns(3)
 
-
-def reset_offer_state():
-    st.session_state.offer_step = 0
-    st.session_state.offer_last_prompted_step = -1
-    st.session_state.offer_data = {}
-    st.session_state.offer_messages = []
-
-
 with col1:
-    if st.button("Draft an Offer Letter", use_container_width=True):
-        st.session_state.current_mode = "offer_letter"
+    # 🔹 Combined entry: purchase agreement + offer letter
+    if st.button("Purchase Agreement (Offer Letter)", use_container_width=True):
+        st.session_state.current_mode = "purchase_agreement"
         reset_offer_state()
+        st.session_state.messages = []
 
 with col2:
     if st.button("Should I Buy This Property?", use_container_width=True):
@@ -113,9 +115,8 @@ with col2:
         st.session_state.messages = []
 
 with col3:
-    if st.button("Purchase Agreement", use_container_width=True):
-        st.session_state.current_mode = "purchase_agreement"
-        st.session_state.messages = []
+    # (free slot for future feature)
+    pass
 
 with col4:
     if st.button("I’m New — Teach Me", use_container_width=True):
@@ -161,29 +162,35 @@ mode = st.session_state.current_mode
 if mode is None:
     st.info("Select one of the options above to begin.")
 
-elif mode == "offer_letter":
-    st.subheader("Draft an Offer Letter")
-    show_offer_letter_flow()
-
-    # Disclaimer + paid review CTA
-    st.markdown(DISCLAIMER_SHORT)
-    if st.button("Request Professional Review – $75", key="offer_review_btn"):
-        st.info(
-            "Review service and payment integration are coming soon. "
-            "For now, please contact us directly if you’d like a licensed realtor to review your draft."
-        )
-
 elif mode == "purchase_agreement":
     st.subheader("Purchase Agreement – CA RPA Walkthrough (Beta)")
+
     st.markdown(
-        "We’ll start with **Section 1 – Offer**: who is buying, what property, purchase price, "
-        "and when you want to close escrow."
+        "We’ll guide you through a **California Residential Purchase Agreement (RPA)** "
+        "and also help you draft a clear **Offer Letter** based on the same terms."
     )
 
-    # 🔹 Section 1 UI from your new module
-    render_section_1_offer()
+    # 🔹 Two tabs: Agreement walkthrough + Offer Letter
+    tab1, tab2 = st.tabs(
+        ["Purchase Agreement – Section 1", "Offer Letter Draft"]
+    )
 
-    # Global disclaimer
+    with tab1:
+        render_section_1_offer()
+
+    with tab2:
+        st.markdown("### Offer Letter Draft")
+        show_offer_letter_flow()
+
+        # Disclaimer + paid review CTA
+        st.markdown(DISCLAIMER_SHORT)
+        if st.button("Request Professional Review – $75", key="offer_review_btn"):
+            st.info(
+                "Review service and payment integration are coming soon. "
+                "For now, please contact us directly if you’d like a licensed realtor to review your draft."
+            )
+
+    # Global disclaimer under the whole mode
     st.markdown(DISCLAIMER_SHORT)
 
 elif mode == "eval_property":
