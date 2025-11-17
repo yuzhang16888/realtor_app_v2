@@ -245,6 +245,30 @@ def _render_section_1_summary(s1: dict):
         return
 
     st.markdown("**Draft – Section 1: Offer**")
+    
+    # Snapshot preview of Section 1 for context
+    with st.expander("📄 Snapshot: Section 1 — OFFER (for reference)", expanded=False):
+        st.markdown(
+            """
+            ```
+            SECTION 1 — OFFER
+
+            1A. Buyer: ____________________________
+
+            1B. Property to be acquired:
+                Street Address: ____________________________
+                City: ______________   County: ______________   ZIP: ________
+                APN (optional): ____________________________
+
+            1C. Purchase Price: $________________
+
+            1D. Close of Escrow:
+                ☐ _____ Days After Acceptance
+                ☐ Specific Date: ______________
+            ```
+            """
+        )
+
 
     st.write(
         f"- **Buyer(s):** {s1.get('buyer_names') or '—'}\n"
