@@ -44,9 +44,9 @@ def render_section_1_offer():
 
 
 def _render_section_1_walkthrough(s1: dict):
-    # 👇 SNAPSHOT GOES RIGHT AT THE TOP OF WALKTHROUGH
     st.markdown("#### Step 1: Buyer name(s)")
 
+    # Snapshot of the actual form structure
     with st.expander("📄 Snapshot: Section 1 — OFFER (for reference)", expanded=False):
         st.markdown(
             """
@@ -294,7 +294,53 @@ def _render_section_1_summary(s1: dict):
             else "- **Close of escrow:** —"
         )
 
+    # 🔹 AI-style plain-English summary (local, no API)
+    st.markdown("---")
+    if st.button("✨ Generate plain-English summary of Section 1", key="s1_summary_btn"):
+        s1["human_summary"] = _generate_section_1_human_summary(s1)
+
+    if s1.get("human_summary"):
+        st.markdown("##### Plain-English Summary")
+        st.write(s1["human_summary"])
+
     st.caption(
         "This is a drafting summary only. It does not create a binding contract. "
         "A licensed real estate professional must transfer these terms into the official CAR RPA form."
     )
+
+
+def _generate_section_1_human_summary(s1: dict) -> str:
+    """Create a friendly, human-readable paragraph using the user's inputs."""
+    buyer = s1.get("buyer_names") or "the buyer"
+    address_parts = [
+        s1.get("property_address") or "",
+        s1.get("city") or "",
+        s1.get("county") or "",
+        s1.get("zip_code") or "",
+    ]
+    address = ", ".join([p for p in address_parts if p])
+
+    price = s1.get("purchase_price")
+    if price:
+        price_text = f"${price:,.0f}"
+    else:
+        price_text = "a price to be determined"
+
+    if s1.get("close_type") == "days_after_acceptance" and s1.get("close_days_after"):
+        coe_text = f"{s1['close_days_after']} days after the seller accepts the offer"
+    elif s1.get("close_type") == "specific_date" and s1.get("close_date"):
+        coe_text = s1["close_date"].strftime("%B %d, %Y")
+    else:
+        coe_text = "on a date to be agreed between buyer and seller"
+
+    apn_text = ""
+    if s1.get("apn"):
+        apn_text = f" (APN: {s1['apn']})"
+
+    summary = (
+        f"{buyer} are offering to purchase the property at {address}{apn_text}. "
+        f"The proposed purchase price is {price_text}, "
+        f"with a target close of escrow {coe_text}."
+    )
+
+    return summary

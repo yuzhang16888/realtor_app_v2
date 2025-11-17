@@ -1,6 +1,9 @@
 import streamlit as st
 from core.offer_letter_flow import show_offer_letter_flow
 from purchase_agreement.section1_offer import render_section_1_offer
+from purchase_agreement.section2_agency import render_section_2_agency
+
+
 
 
 # ==========================================================
@@ -166,9 +169,23 @@ elif mode == "purchase_agreement":
     st.subheader("Purchase Agreement – CA RPA Walkthrough (Beta)")
 
     st.markdown(
-        "We’ll guide you through a **California Residential Purchase Agreement (RPA)** "
-        "and also help you draft a clear **Offer Letter** based on the same terms."
+        "We’ll guide you through key sections of the **California Residential Purchase Agreement (RPA)**, "
+        "starting with your offer basics and then your agency status."
     )
+
+    # 🔹 Tabs for different sections (Offer + Agency)
+    tab1, tab2 = st.tabs(
+        ["Section 1 – Offer", "Section 2 – Agency / Brokerage"]
+    )
+
+    with tab1:
+        render_section_1_offer()
+
+    with tab2:
+        render_section_2_agency()
+
+    # Global disclaimer under the whole mode
+    st.markdown(DISCLAIMER_SHORT)
 
     # 🔹 Two tabs: Agreement walkthrough + Offer Letter
     tab1, tab2 = st.tabs(
