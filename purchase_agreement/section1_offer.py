@@ -1,3 +1,6 @@
+
+st.markdown("### 🧪 TEST HEADER – Section 1: Offer")
+
 # purchase_agreement/section1_offer.py
 
 import streamlit as st
