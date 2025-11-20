@@ -1,6 +1,3 @@
-
-st.markdown("### 🧪 TEST HEADER – Section 1: Offer")
-
 # purchase_agreement/section1_offer.py
 
 import streamlit as st
@@ -9,7 +6,10 @@ from purchase_agreement.state import init_purchase_agreement_state  # absolute i
 
 
 def render_section_1_offer():
-    """Main entry for Section 1 – Offer (simple linear flow, no mode switch)."""
+    """
+    Main entry for Section 1 – Offer.
+    Simple linear flow (no 'How would you like to start?' selector).
+    """
     init_purchase_agreement_state()
     s1 = st.session_state.purchase_agreement["section_1"]
 
@@ -29,7 +29,7 @@ def render_section_1_offer():
 
 
 def _render_section_1_form(s1: dict):
-    """Single, guided form for Section 1. No branching, no selectbox at top."""
+    """Single, guided form for Section 1."""
 
     # --- Step 1: Buyer names ---
     st.markdown("#### Step 1: Buyer name(s)")
@@ -174,6 +174,7 @@ def _render_section_1_form(s1: dict):
 
 
 def _render_section_1_summary(s1: dict):
+    """Bottom summary + plain-English explanation."""
     if not s1.get("buyer_names") and not s1.get("property_address"):
         st.write("Fill in a few fields above and I’ll summarize Section 1 for you here.")
         return
