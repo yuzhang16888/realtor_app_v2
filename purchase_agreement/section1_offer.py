@@ -8,12 +8,14 @@ from purchase_agreement.state import init_purchase_agreement_state  # absolute i
 def render_section_1_offer():
     """
     Main entry for Section 1 – Offer.
-    Simple linear flow (no 'How would you like to start?' selector).
+    Simple linear flow (no mode selector).
     """
     init_purchase_agreement_state()
     s1 = st.session_state.purchase_agreement["section_1"]
 
     st.markdown("### California Purchase Agreement – Section 1: Offer")
+    # Anchor for "back to top" link
+    st.markdown('<a name="section1_top"></a>', unsafe_allow_html=True)
 
     st.info(
         "In California, the Residential Purchase Agreement (RPA) is usually 10+ pages. "
@@ -174,7 +176,7 @@ def _render_section_1_form(s1: dict):
 
 
 def _render_section_1_summary(s1: dict):
-    """Bottom summary + plain-English explanation."""
+    """Bottom summary + plain-English explanation + navigation."""
     if not s1.get("buyer_names") and not s1.get("property_address"):
         st.write("Fill in a few fields above and I’ll summarize Section 1 for you here.")
         return
@@ -206,6 +208,7 @@ def _render_section_1_summary(s1: dict):
             else "- **Close of escrow:** —"
         )
 
+    # Plain-English summary
     st.markdown("---")
     if st.button("✨ Generate plain-English summary of Section 1"):
         s1["human_summary"] = _generate_section_1_human_summary(s1)
@@ -213,6 +216,19 @@ def _render_section_1_summary(s1: dict):
     if s1.get("human_summary"):
         st.markdown("##### Plain-English Summary")
         st.write(s1["human_summary"])
+
+    # Navigation: back to inputs / move to Section 2
+    st.markdown("---")
+    colA, colB = st.columns(2)
+
+    with colA:
+        # Markdown link that jumps to the top anchor
+        st.markdown("**↺ Review Section 1 Inputs**  \n[Back to top](#section1_top)")
+
+    with colB:
+        if st.button("Move to Section 2 →"):
+            # Switch to Section 2 tab in app.py
+            st.session_state.active_pa_tab = 1
 
     st.caption(
         "This is a drafting summary only. It does not create a binding contract. "

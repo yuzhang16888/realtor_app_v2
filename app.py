@@ -171,9 +171,14 @@ elif mode == "purchase_agreement":
         "starting with your offer basics and then your agency status."
     )
 
+    # Track active tab for navigation from Section 1
+    if "active_pa_tab" not in st.session_state:
+        st.session_state.active_pa_tab = 0
+
     # Tabs for different sections (Offer + Agency)
     tab1, tab2 = st.tabs(
-        ["Section 1 – Offer", "Section 2 – Agency / Brokerage"]
+        ["Section 1 – Offer", "Section 2 – Agency / Brokerage"],
+        default_index=st.session_state.active_pa_tab,
     )
 
     with tab1:
