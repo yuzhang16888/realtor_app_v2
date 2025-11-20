@@ -6,7 +6,7 @@ from purchase_agreement.state import init_purchase_agreement_state  # absolute i
 
 
 def render_section_1_offer():
-    """Main entry for Section 1 – Offer."""
+    """Main entry for Section 1 – Offer (simple linear flow, no mode switch)."""
     init_purchase_agreement_state()
     s1 = st.session_state.purchase_agreement["section_1"]
 
@@ -18,35 +18,19 @@ def render_section_1_offer():
         "and when you plan to close escrow."
     )
 
-    # Top-of-funnel fork
-    st.markdown("#### How would you like to start?")
-    mode = st.selectbox(
-        "Choose your path:",
-        options=[
-            "Walk me through and explain each part",
-            "I already understand – just fill Section 1 quickly",
-        ],
-        index=0,
-        key="s1_mode_select_v2",  # 🔹 brand-new key
-    )
+    _render_section_1_form(s1)
 
-    st.divider()
-
-    if mode == "Walk me through and explain each part":
-        _render_section_1_walkthrough(s1)
-    else:
-        _render_section_1_fast(s1)
-
-    # Live summary
     st.divider()
     st.markdown("#### Section 1 – Live Summary")
     _render_section_1_summary(s1)
 
 
-def _render_section_1_walkthrough(s1: dict):
+def _render_section_1_form(s1: dict):
+    """Single, guided form for Section 1. No branching, no selectbox at top."""
+
+    # --- Step 1: Buyer names ---
     st.markdown("#### Step 1: Buyer name(s)")
 
-    # Snapshot of the actual form structure
     with st.expander("📄 Snapshot: Section 1 — OFFER (for reference)", expanded=False):
         st.markdown(
             """
@@ -82,6 +66,7 @@ def _render_section_1_walkthrough(s1: dict):
         placeholder="e.g. Jane Liu and David Chen",
     )
 
+    # --- Step 2: Property details ---
     st.markdown("#### Step 2: Property details")
 
     with st.expander("What this means", expanded=True):
@@ -123,6 +108,7 @@ def _render_section_1_walkthrough(s1: dict):
         placeholder="Leave blank if unknown",
     )
 
+    # --- Step 3: Purchase price ---
     st.markdown("#### Step 3: Purchase price")
 
     with st.expander("What this means", expanded=True):
@@ -141,6 +127,7 @@ def _render_section_1_walkthrough(s1: dict):
     )
     s1["purchase_price"] = int(purchase_price) if purchase_price else None
 
+    # --- Step 4: Close of escrow ---
     st.markdown("#### Step 4: Close of escrow timing")
 
     with st.expander("What this means", expanded=True):
@@ -153,98 +140,17 @@ def _render_section_1_walkthrough(s1: dict):
             "- Your lender must be able to meet this timeline."
         )
 
-    close_type = st.selectbox(
-        "How do you want to define the closing?",
+    close_type = st.radio(
+        "How do you want to define the close of escrow for Section 1?",
         options=["Days after acceptance", "Specific calendar date"],
         index=0
         if s1.get("close_type", "days_after_acceptance") == "days_after_acceptance"
         else 1,
-        key="s1_close_type_select_v2",  # 🔹 brand-new key
     )
 
     if close_type == "Days after acceptance":
         close_days = st.number_input(
             "Number of days after offer acceptance",
-            min_value=5,
-            max_value=90,
-            step=1,
-            value=s1.get("close_days_after", 30),
-        )
-        s1["close_type"] = "days_after_acceptance"
-        s1["close_days_after"] = int(close_days)
-        s1["close_date"] = None
-    else:
-        default_date = s1.get("close_date") or (date.today() + timedelta(days=30))
-        close_date = st.date_input(
-            "Target closing date",
-            value=default_date,
-        )
-        s1["close_type"] = "specific_date"
-        s1["close_date"] = close_date
-        s1["close_days_after"] = None
-
-
-def _render_section_1_fast(s1: dict):
-    st.markdown("#### Quick fill – Section 1")
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        s1["buyer_names"] = st.text_input(
-            "Buyer full legal name(s)",
-            value=s1.get("buyer_names", ""),
-            placeholder="e.g. Jane Liu and David Chen",
-        )
-        s1["property_address"] = st.text_input(
-            "Property street address",
-            value=s1.get("property_address", ""),
-            placeholder="123 Any Street #502",
-        )
-        s1["city"] = st.text_input(
-            "City",
-            value=s1.get("city", ""),
-            placeholder="San Francisco",
-        )
-
-    with col2:
-        s1["county"] = st.text_input(
-            "County",
-            value=s1.get("county", ""),
-            placeholder="San Francisco",
-        )
-        s1["zip_code"] = st.text_input(
-            "ZIP Code",
-            value=s1.get("zip_code", ""),
-            max_chars=10,
-            placeholder="94107",
-        )
-        s1["apn"] = st.text_input(
-            "APN (optional)",
-            value=s1.get("apn", ""),
-            placeholder="Leave blank if unknown",
-        )
-
-    purchase_price = st.number_input(
-        "Offer price (USD)",
-        min_value=0,
-        step=1000,
-        value=s1.get("purchase_price") or 0,
-        format="%d",
-    )
-    s1["purchase_price"] = int(purchase_price) if purchase_price else None
-
-    close_type = st.selectbox(
-        "Close of escrow definition",
-        options=["Days after acceptance", "Specific calendar date"],
-        index=0
-        if s1.get("close_type", "days_after_acceptance") == "days_after_acceptance"
-        else 1,
-        key="s1_close_type_select_fast_v2",  # 🔹 brand-new key
-    )
-
-    if close_type == "Days after acceptance":
-        close_days = st.number_input(
-            "Days after acceptance",
             min_value=5,
             max_value=90,
             step=1,
@@ -296,9 +202,8 @@ def _render_section_1_summary(s1: dict):
             else "- **Close of escrow:** —"
         )
 
-    # Plain-English summary
     st.markdown("---")
-    if st.button("✨ Generate plain-English summary of Section 1", key="s1_summary_btn_v2"):
+    if st.button("✨ Generate plain-English summary of Section 1"):
         s1["human_summary"] = _generate_section_1_human_summary(s1)
 
     if s1.get("human_summary"):
