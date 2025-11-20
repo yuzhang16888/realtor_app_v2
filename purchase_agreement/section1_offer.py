@@ -226,9 +226,10 @@ def _render_section_1_summary(s1: dict):
         st.markdown("**↺ Review Section 1 Inputs**  \n[Back to top](#section1_top)")
 
     with colB:
-        if st.button("Move to Section 2 →"):
-            # Switch to Section 2 tab in app.py
-            st.session_state.active_pa_tab = 1
+        st.markdown(
+            "**Move to Section 2 →**  \n"
+            "Next, click the **'Section 2 – Agency / Brokerage'** tab at the top."
+        )
 
     st.caption(
         "This is a drafting summary only. It does not create a binding contract. "
