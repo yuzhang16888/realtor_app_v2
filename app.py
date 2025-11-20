@@ -4,8 +4,6 @@ from purchase_agreement.section1_offer import render_section_1_offer
 from purchase_agreement.section2_agency import render_section_2_agency
 
 
-
-
 # ==========================================================
 # 🚀 STREAMLIT APP CONFIG
 # ==========================================================
@@ -27,7 +25,7 @@ if "messages" not in st.session_state:
 if "is_logged_in" not in st.session_state:
     st.session_state.is_logged_in = False
 
-# Offer letter state (used inside the Offer Letter tab)
+# Offer letter state (used inside the Offer Letter flow)
 if "offer_step" not in st.session_state:
     st.session_state.offer_step = 0
 
@@ -106,7 +104,7 @@ col1, col2, col3 = st.columns(3)
 col4, col5, _ = st.columns(3)
 
 with col1:
-    # 🔹 Combined entry: purchase agreement + offer letter
+    # Combined entry: purchase agreement + (future) offer letter
     if st.button("Purchase Agreement (Offer Letter)", use_container_width=True):
         st.session_state.current_mode = "purchase_agreement"
         reset_offer_state()
@@ -118,7 +116,7 @@ with col2:
         st.session_state.messages = []
 
 with col3:
-    # (free slot for future feature)
+    # reserved for future feature
     pass
 
 with col4:
@@ -173,7 +171,7 @@ elif mode == "purchase_agreement":
         "starting with your offer basics and then your agency status."
     )
 
-    # 🔹 Tabs for different sections (Offer + Agency)
+    # Tabs for different sections (Offer + Agency)
     tab1, tab2 = st.tabs(
         ["Section 1 – Offer", "Section 2 – Agency / Brokerage"]
     )
@@ -183,29 +181,6 @@ elif mode == "purchase_agreement":
 
     with tab2:
         render_section_2_agency()
-
-    # Global disclaimer under the whole mode
-    st.markdown(DISCLAIMER_SHORT)
-
-    # 🔹 Two tabs: Agreement walkthrough + Offer Letter
-    tab1, tab2 = st.tabs(
-        ["Purchase Agreement – Section 1", "Offer Letter Draft"]
-    )
-
-    with tab1:
-        render_section_1_offer()
-
-    with tab2:
-        st.markdown("### Offer Letter Draft")
-        show_offer_letter_flow()
-
-        # Disclaimer + paid review CTA
-        st.markdown(DISCLAIMER_SHORT)
-        if st.button("Request Professional Review – $75", key="offer_review_btn"):
-            st.info(
-                "Review service and payment integration are coming soon. "
-                "For now, please contact us directly if you’d like a licensed realtor to review your draft."
-            )
 
     # Global disclaimer under the whole mode
     st.markdown(DISCLAIMER_SHORT)
