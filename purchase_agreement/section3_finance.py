@@ -92,7 +92,7 @@ def render_section3_finance():
         index=[
             "Direct to escrow holder",
             "Given to buyer’s agent to hold then deliver to escrow",
-        ].index(data["initial_deposit_method"]),
+        ].index(data["initial_deposit_method"])
     )
 
     data["initial_deposit_instrument"] = st.selectbox(
