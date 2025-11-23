@@ -351,11 +351,11 @@ def render_section7_allocation_costs():
 
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("💾 Save Section 7 – Allocation of Costs", use_container_width=True):
-            st.session_state[SECTION7_KEY] = data
-            st.success("Section 7 – Allocation of Costs saved.")
+        if st.button("💾 Save Section 7 – Allocation of Costs", key="save_section7", use_container_width=True):
+
+
     with col2:
-        if st.button("⬅️ Back to Section 6 – Other Terms", use_container_width=True):
+        if sst.button("⬅️ Back to Section 6 – Other Terms", key="back_to_section6"):
             st.session_state[SECTION7_KEY] = data
             # Tab index 4 = Section 6 – Other Terms (0-based: 0..5)
             st.session_state.active_pa_tab = 4

@@ -39,11 +39,10 @@ def render_section6_other_terms():
 
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("💾 Save Section 6 – Other Terms", use_container_width=True):
-            st.session_state[SECTION6_KEY] = data
-            st.success("Section 6 – Other Terms saved.")
+        iif st.button("💾 Save Section 6 – Other Terms", key="save_section6", use_container_width=True):
+
     with col2:
-        if st.button("➡️ Move to Section 7 – Allocation of Costs", use_container_width=True):
+        if st.button("➡️ Move to Section 7 – Allocation of Costs", key="go_to_section7"):
             st.session_state[SECTION6_KEY] = data
             # Tab index 5 → Section 7 (0-based: 0..5)
             st.session_state.active_pa_tab = 6
