@@ -1,3 +1,5 @@
+# purchase_agreement/section6_other_terms.py
+
 import streamlit as st
 
 SECTION6_KEY = "pa_section6_other_terms"
