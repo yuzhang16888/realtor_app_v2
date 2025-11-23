@@ -2,6 +2,8 @@ import streamlit as st
 from core.offer_letter_flow import show_offer_letter_flow
 from purchase_agreement.section1_offer import render_section_1_offer
 from purchase_agreement.section2_agency import render_section_2_agency
+from purchase_agreement.section3_finance import render_section3_finance
+
 
 
 # ==========================================================
@@ -172,8 +174,10 @@ elif mode == "purchase_agreement":
     )
 
     # Tabs for different sections (Offer + Agency)
-    tab1, tab2 = st.tabs(
-        ["Section 1 – Offer", "Section 2 – Agency / Brokerage"]
+    tab1, tab2,tab3= st.tabs(
+        ["Section 1 – Offer", 
+        "Section 2 – Agency / Brokerage",
+        "Section 3 - Finance Terms"]
     )
 
     with tab1:
@@ -181,6 +185,9 @@ elif mode == "purchase_agreement":
 
     with tab2:
         render_section_2_agency()
+    with tab3:
+        render_section3_finance()
+        
 
     # Global disclaimer under the whole mode
     st.markdown(DISCLAIMER_SHORT)
