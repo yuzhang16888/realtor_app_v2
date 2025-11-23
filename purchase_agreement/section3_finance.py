@@ -548,5 +548,5 @@ def render_section3_finance():
         if st.button("➡️ Move to Section 4", use_container_width=True):
             st.session_state[SECTION3_KEY] = data
             # assuming tabs are 0-indexed and Section 4 is index 3
-            st.session_state.active_pa_tab = 3
+            st.session_state.active_pa_tab = 4&5
             st.info("Moved to Section 4.")

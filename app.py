@@ -174,20 +174,26 @@ elif mode == "purchase_agreement":
     )
 
     # Tabs for different sections (Offer + Agency)
-    tab1, tab2,tab3= st.tabs(
+    tab1, tab2,tab3,tab4= st.tabs(
         ["Section 1 – Offer", 
         "Section 2 – Agency / Brokerage",
-        "Section 3 - Finance Terms"]
+        "Section 3 - Finance Terms",
+        "Section 4 & 5 -Subject to Sale of Buyer's Property"]
     )
 
     with tab1:
         render_section_1_offer()
 
     with tab2:
+
         render_section_2_agency()
+
     with tab3:
         render_section3_finance()
-        
+    
+    with tab4:
+        render_section_4_sale_if_buyer_property()
+
 
     # Global disclaimer under the whole mode
     st.markdown(DISCLAIMER_SHORT)
