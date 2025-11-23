@@ -1,5 +1,9 @@
 # purchase_agreement/section7_allocation_costs.py
 
+from purchase_agreement.ai_helpers import call_purchase_agreement_ai
+
+
+
 import streamlit as st
 
 SECTION7_KEY = "pa_section7_allocation_costs"
