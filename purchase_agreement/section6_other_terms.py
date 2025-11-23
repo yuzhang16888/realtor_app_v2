@@ -46,5 +46,5 @@ def render_section6_other_terms():
         if st.button("➡️ Move to Section 7 – Allocation of Costs", use_container_width=True):
             st.session_state[SECTION6_KEY] = data
             # Tab index 5 → Section 7 (0-based: 0..5)
-            st.session_state.active_pa_tab = 5
+            st.session_state.active_pa_tab = 6
             st.info("Moved to Section 7 – Allocation of Costs.")
