@@ -155,13 +155,12 @@ def render_section4_sale_of_buyer_property():
 
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("💾 Save Section 4 & 5 – Subject to Sale of Buyer’s Property",
-                     use_container_width=True):
-            st.session_state[SECTION4_KEY] = data
-            st.success("Section 4 & 5 – Subject to Sale of Buyer’s Property saved.")
+        if st.button("💾 Save Section 7 – Allocation of Costs", use_container_width=True):
+            st.session_state[SECTION6_KEY] = data
+            st.success("Section 7 – Allocation of Costs saved.")
     with col2:
-        if st.button("⬅️ Back to Section 3 – Finance Terms", use_container_width=True):
-            st.session_state[SECTION4_KEY] = data
-            # Section 3 tab index = 2 (0-based: 0,1,2,3)
-            st.session_state.active_pa_tab = 2
-            st.info("Moved back to Section 3.")
+        if st.button("⬅️ Back to Section 6 – Other Terms", use_container_width=True):
+            st.session_state[SECTION6_KEY] = data
+            # Tab index 4 = Section 6 – Other Terms (0-based tabs)
+            st.session_state.active_pa_tab = 4
+            st.info("Moved back to Section 6 – Other Terms.")
