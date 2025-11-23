@@ -3,7 +3,7 @@ from core.offer_letter_flow import show_offer_letter_flow
 from purchase_agreement.section1_offer import render_section_1_offer
 from purchase_agreement.section2_agency import render_section_2_agency
 from purchase_agreement.section3_finance import render_section3_finance
-
+from purchase_agreement.section3_finance import render_section4_sale_of_buyer_property
 
 
 # ==========================================================
