@@ -192,7 +192,7 @@ elif mode == "purchase_agreement":
         render_section3_finance()
     
     with tab4:
-        render_section_4_sale_if_buyer_property()
+        render_section_4_sale_of_buyer_property()
 
 
     # Global disclaimer under the whole mode
