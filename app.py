@@ -4,7 +4,7 @@ from purchase_agreement.section1_offer import render_section_1_offer
 from purchase_agreement.section2_agency import render_section_2_agency
 from purchase_agreement.section3_finance import render_section3_finance
 from purchase_agreement.section4_sale_of_buyer_property import render_section4_sale_of_buyer_property
-from purchase_agreement.section6_other_terms import render_section6_other_terms()
+from purchase_agreement.section6_other_terms import render_section6_other_terms
 
 
 # ==========================================================
