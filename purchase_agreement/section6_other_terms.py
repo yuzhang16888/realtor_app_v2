@@ -1,5 +1,3 @@
-# purchase_agreement/section6_other_terms.py
-
 import streamlit as st
 
 SECTION6_KEY = "pa_section6_other_terms"
@@ -20,18 +18,19 @@ def render_section6_other_terms():
 
     st.markdown(
         "> This section corresponds to **Section 6 – Other Terms** in the Purchase "
-        "Agreement. It is used for any additional terms and conditions that are not "
-        "captured elsewhere in the contract."
+        "Agreement. Use it for any additional business terms or conditions that are "
+        "not already captured in Sections 1–5."
     )
 
     data["other_terms"] = st.text_area(
         "Other terms and conditions (optional):",
         value=data["other_terms"],
-        height=180,
+        height=200,
+        key="sec6_other_terms_input",
         placeholder=(
-            "Example: Buyer and Seller agree that seller may remain in possession "
-            "for up to 3 days after Close of Escrow under a separate occupancy "
-            "agreement, or any other special terms you want reflected in the contract."
+            "Example: Buyer and Seller agree that Seller may remain in possession for "
+            "up to 3 days after Close of Escrow under a separate occupancy agreement, "
+            "or any other special terms you want reflected in the contract."
         ),
     )
 
@@ -39,11 +38,20 @@ def render_section6_other_terms():
 
     col1, col2 = st.columns(2)
     with col1:
-        iif st.button("💾 Save Section 6 – Other Terms", key="save_section6", use_container_width=True):
-
+        if st.button(
+            "💾 Save Section 6 – Other Terms",
+            key="sec6_save_btn",
+            use_container_width=True,
+        ):
+            st.session_state[SECTION6_KEY] = data
+            st.success("Section 6 – Other Terms saved.")
     with col2:
-        if st.button("➡️ Move to Section 7 – Allocation of Costs", key="go_to_section7"):
+        if st.button(
+            "➡️ Move to Section 7 – Allocation of Costs",
+            key="sec6_next_sec7_btn",
+            use_container_width=True,
+        ):
             st.session_state[SECTION6_KEY] = data
             # Tab index 5 → Section 7 (0-based: 0..5)
-            st.session_state.active_pa_tab = 6
+            st.session_state.active_pa_tab = 5
             st.info("Moved to Section 7 – Allocation of Costs.")
