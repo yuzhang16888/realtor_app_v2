@@ -8,7 +8,7 @@ def _init_section3_state():
     if SECTION3_KEY not in st.session_state:
         st.session_state[SECTION3_KEY] = {
             "initial_deposit_amount": 0.0,
-            "initial_deposit_method": "Direct to escrow",
+            "initial_deposit_method": "Direct to escrow holder",
             "initial_deposit_instrument": "Wire transfer",
             "initial_deposit_days": 3,
 
@@ -92,7 +92,7 @@ def render_section3_finance():
         index=[
             "Direct to escrow holder",
             "Given to buyer’s agent to hold then deliver to escrow",
-        ].index(data["initial_deposit_method"])
+        ].index(data["initial_deposit_method"]),
     )
 
     data["initial_deposit_instrument"] = st.selectbox(
