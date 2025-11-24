@@ -311,4 +311,19 @@ def render_section8_property_condition():
                     "Buyer acknowledges existing cosmetic wear consistent with age of property.",
     )
 
-    st.success("Section 8 – Property Condition & Repairs saved in session. Continue when you’re ready.")
+      # ---------------------------
+    # Section Navigation Buttons (Same style as other sections)
+    # ---------------------------
+    st.markdown("### Save & Continue")
+
+    col_prev, col_next = st.columns([1, 1])
+
+    with col_prev:
+        if st.button("⬅️ Back to Section 7", key="pa7_back_btn", use_container_width=True):
+            st.session_state.active_pa_tab = 6  # zero-index: section 6
+
+    with col_next:
+        if st.button("Save Section 8 & Continue ➡️", key="pa7_next_btn", use_container_width=True):
+            st.session_state.active_pa_tab = 8  # zero-index: section 8
+            st.success("Section 7 saved. Moving to Section 8…")
+
