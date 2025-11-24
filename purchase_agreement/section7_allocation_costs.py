@@ -23,40 +23,41 @@ def render_section7_allocation_costs():
         default_prompt = (
             "You are an experienced California residential real estate agent. "
             "Help the buyer understand how to complete Section 7 – Allocation of Costs "
-            "in the CAR Residential Purchase Agreement. Explain typical local norms, "
-            "but always remind them that practices vary by area and are negotiable."
+            "in the CAR Residential Purchase Agreement. Explain typical local norms "
+            "for escrow/title/transfer taxes and HOA costs, but always remind them that "
+            "practices vary by area and are negotiable."
         )
 
-        user_prompt = st.text_area(
-            "What do you want help with in Section 7?",
-            key="pa7_ai_prompt",
-            height=120,
-            placeholder=(
-                "Example: I'm not sure who usually pays for escrow fees and the "
-                "owner's title policy in San Francisco. Can you explain common options "
-                "and what’s typical in the Bay Area?"
-            ),
-        )
-
-        col_ai1, col_ai2 = st.columns([3, 1])
-        with col_ai1:
-            use_context = st.checkbox(
-                "Include default Section 7 context in my question",
-                value=True,
-                key="pa7_ai_use_context",
-            )
-        with col_ai2:
-            ask_clicked = st.button(
-                "Ask AI Realtor about Section 7",
-                key="pa7_ai_button",
-                use_container_width=True,
+        # Use a form so pressing Enter inside the text input will submit (Ask AI)
+        with st.form("pa7_ai_form"):
+            user_prompt = st.text_input(
+                "What do you want help with in Section 7?",
+                key="pa7_ai_prompt",
+                placeholder=(
+                    "Example: In San Francisco, who usually pays escrow fees and the "
+                    "owner's title policy? How are county and city transfer taxes often split?"
+                ),
             )
 
-        # When button is clicked
+            col_ai1, col_ai2 = st.columns([3, 2])
+            with col_ai1:
+                use_context = st.checkbox(
+                    "Include default Section 7 context in my question",
+                    value=True,
+                    key="pa7_ai_use_context",
+                )
+            with col_ai2:
+                ask_clicked = st.form_submit_button(
+                    "Ask AI Realtor about Section 7",
+                    use_container_width=True,
+                )
+                connect_clicked = st.form_submit_button(
+                    "Connect with a Human Realtor",
+                    use_container_width=True,
+                )
+
+        # Handle Ask AI (form submit or Enter)
         if ask_clicked:
-            # Debug marker so we can see that the click is working
-            st.write("🛠️ Debug: Ask AI button was clicked.")
-
             if not user_prompt.strip():
                 st.warning("Please enter a question or description first.")
             else:
@@ -75,10 +76,50 @@ def render_section7_allocation_costs():
 
                     st.session_state["pa7_ai_answer"] = answer
 
-        # Always show the latest answer if we have one
+        # Handle Connect with Human Realtor
+        if connect_clicked:
+            st.session_state["pa7_show_human_realtor_form"] = True
+
+        # Show AI answer if we have one
         if "pa7_ai_answer" in st.session_state:
             st.markdown("#### 🧠 AI Realtor Suggestion")
             st.info(st.session_state["pa7_ai_answer"])
+
+        # Show the human-realtor contact form if toggled on
+        if st.session_state.get("pa7_show_human_realtor_form", False):
+            st.markdown("#### 🤝 Connect with a Human Realtor")
+
+            contact_info = st.text_input(
+                "Your preferred phone or email",
+                key="pa7_human_contact",
+                placeholder="Example: 415-555-1234 or you@example.com",
+            )
+            human_question = st.text_area(
+                "What would you like to ask a human?",
+                key="pa7_human_question",
+                height=100,
+                placeholder="Share your questions or situation so a human realtor can follow up.",
+            )
+
+            send_clicked = st.button(
+                "Send my question to a Human Realtor",
+                key="pa7_human_send_btn",
+                use_container_width=True,
+            )
+
+            if send_clicked:
+                if not contact_info.strip() or not human_question.strip():
+                    st.warning("Please provide both your contact info and your question.")
+                else:
+                    # Later you can integrate this with email, database, or CRM.
+                    st.session_state["pa7_human_realtor_request"] = {
+                        "contact": contact_info.strip(),
+                        "question": human_question.strip(),
+                    }
+                    st.success(
+                        "Your request has been recorded. A human realtor will reach out to you "
+                        "using the contact info you provided."
+                    )
 
     st.markdown("---")
 
