@@ -1,6 +1,7 @@
 # purchase_agreement/section9_closing_possession.py
 
 import streamlit as st
+from purchase_agreement.ai_helpers import call_purchase_agreement_ai
 
 # ⬇️ IMPORTANT:
 # Make sure to import call_purchase_agreement_ai the same way you do in Section 8, e.g.:
