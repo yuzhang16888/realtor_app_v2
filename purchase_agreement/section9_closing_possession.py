@@ -3,8 +3,6 @@
 import streamlit as st
 
 
-    
-
 def render_section9_closing_possession():
     """
     Render Section 9 – Closing and Possession of the Purchase Agreement.
@@ -12,88 +10,93 @@ def render_section9_closing_possession():
     """
 
     st.markdown("## 9. Closing and Possession")
-# -------------------------------
-# Ask AI + Connect with Human Realtor (Helper Block)
-# -------------------------------
-st.markdown("### Need help with Section 9 – Closing & Possession?")
 
-# Initialize session state for this helper so the UI behaves predictably
-if "pa_9_ai_answer" not in st.session_state:
-    st.session_state["pa_9_ai_answer"] = ""
+    # ---------------------------------------
+    # 🔮 AI Helper – TOP of Section 9
+    # ---------------------------------------
 
-if "pa_9_show_human_form" not in st.session_state:
-    st.session_state["pa_9_show_human_form"] = False
+    # Initialize state
+    if "pa_9_ai_answer" not in st.session_state:
+        st.session_state["pa_9_ai_answer"] = ""
 
-with st.expander("💬 Ask AI Realtor or Connect with a Human Realtor", expanded=False):
-    st.markdown(
-        "Use this helper if you’re unsure about closing timelines, rent-backs, or possession terms."
-    )
+    if "pa_9_show_human_form" not in st.session_state:
+        st.session_state["pa_9_show_human_form"] = False
 
-    # --- AI question input ---
-    ai_question = st.text_area(
-        "Ask AI Realtor for Section 9",
-        key="pa_9_ai_question",
-        placeholder=(
-            "Example: Is it better to close on a Friday or Monday?\n"
-            "Example: What are the pros and cons of allowing the seller to stay after closing?"
-        ),
-    )
+    st.markdown("### Need help with Section 9 – Closing & Possession?")
 
-    col_ai, col_human = st.columns(2)
+    with st.expander("💬 Ask AI Realtor or Connect with a Human Realtor", expanded=False):
 
-    # --- Ask AI button (only handles AI; does NOT touch the human form) ---
-    with col_ai:
-        if st.button("Ask AI Realtor for Section 9", key="pa_9_ai_button"):
-            if not ai_question.strip():
-                st.warning("Please enter a question before asking AI Realtor.")
-            else:
-                # 🔧 Replace this with your real AI call
-                # Example:
-                # answer = call_ai_helper(section="9", question=ai_question)
-                # st.session_state["pa_9_ai_answer"] = answer
-                st.session_state["pa_9_ai_answer"] = (
-                    "This is a placeholder AI response for Section 9.\n\n"
-                    "In production, wire this button to your AI backend or knowledge base "
-                    "and store the answer in st.session_state['pa_9_ai_answer']."
-                )
-
-    # Show AI answer (if we have one)
-    if st.session_state["pa_9_ai_answer"]:
-        st.markdown("**AI Realtor Answer:**")
-        st.info(st.session_state["pa_9_ai_answer"])
-
-    # --- Connect with Human Realtor button ---
-    with col_human:
-        if st.button("Connect with a Human Realtor", key="pa_9_human_button"):
-            st.session_state["pa_9_show_human_form"] = True
-
-    # --- Human Realtor form (controlled ONLY by pa_9_show_human_form) ---
-    if st.session_state["pa_9_show_human_form"]:
-        st.markdown("##### Connect with a Human Realtor")
-
-        st.text_area(
-            "Describe your situation and questions",
-            key="pa_9_human_message",
+        # --- AI QUESTION INPUT ---
+        ai_question = st.text_area(
+            "Ask AI Realtor for Section 9",
+            key="pa_9_ai_question",
             placeholder=(
-                "Example: I’m not sure if I should let the seller stay after closing. "
-                "Please review my situation and call or email me with advice."
+                "Example:\n"
+                "- Should I close on Friday or Monday?\n"
+                "- Should I let the seller stay after closing?\n"
+                "- What are the risks of a rent-back?\n"
+                "- When should we schedule final walkthrough?"
             ),
         )
 
-        st.text_input(
-            "Preferred contact (phone or email)",
-            key="pa_9_human_contact",
-            placeholder="Example: 415-555-1234 or name@email.com",
-        )
+        col_ai, col_human = st.columns(2)
 
-        if st.button("Submit to Human Realtor", key="pa_9_human_submit"):
-            # 🔧 Wire this into your backend / database / email system
-            # save_to_db(section="9", message=st.session_state["pa_9_human_message"], contact=st.session_state["pa_9_human_contact"])
-            st.success(
-                "Your message has been submitted. A licensed Realtor will follow up using your preferred contact."
+        # --- ASK AI BUTTON ---
+        with col_ai:
+            if st.button("Ask AI Realtor for Section 9", key="pa_9_ai_btn"):
+                if not ai_question.strip():
+                    st.warning("Please enter a question before asking AI Realtor.")
+                else:
+                    # 🔧 Replace this with your real AI call
+                    # Example:
+                    # answer = call_ai_helper(section="9", question=ai_question)
+                    # st.session_state["pa_9_ai_answer"] = answer
+                    st.session_state["pa_9_ai_answer"] = (
+                        "This is a placeholder AI answer for Section 9.\n\n"
+                        "In production, wire this button to your AI backend or knowledge base "
+                        "and store the real answer in st.session_state['pa_9_ai_answer']."
+                    )
+
+        # --- SHOW AI ANSWER ---
+        if st.session_state["pa_9_ai_answer"]:
+            st.markdown("**AI Realtor Answer:**")
+            st.info(st.session_state["pa_9_ai_answer"])
+
+        # --- HUMAN REALTOR BUTTON ---
+        with col_human:
+            if st.button("Connect with a Human Realtor", key="pa_9_human_btn"):
+                st.session_state["pa_9_show_human_form"] = True
+
+        # --- HUMAN REALTOR FORM ---
+        if st.session_state["pa_9_show_human_form"]:
+            st.markdown("##### Connect with a Human Realtor")
+
+            st.text_area(
+                "Describe your situation",
+                key="pa_9_human_msg",
+                placeholder=(
+                    "Example: I'm unsure whether to allow the seller to stay after closing. "
+                    "Please review my situation and call or email me with guidance."
+                ),
             )
-            # Optional: hide the form after submission
-            st.session_state["pa_9_show_human_form"] = False
+
+            st.text_input(
+                "Preferred contact (phone or email)",
+                key="pa_9_human_contact",
+                placeholder="Example: 415-555-1234 or email@example.com",
+            )
+
+            if st.button("Submit to Human Realtor", key="pa_9_human_submit"):
+                # 🔧 Wire this into your backend / database / email system
+                # save_to_db(section="9", message=st.session_state["pa_9_human_msg"],
+                #           contact=st.session_state["pa_9_human_contact"])
+                st.success(
+                    "Your message has been submitted. A licensed Realtor will reach out using your preferred contact."
+                )
+                # Hide form after submission
+                st.session_state["pa_9_show_human_form"] = False
+
+    st.markdown("---")
 
     # -------------------------------
     # 9A. Closing Date
@@ -127,7 +130,10 @@ with st.expander("💬 Ask AI Realtor or Connect with a Human Realtor", expanded
     st.text_area(
         "Notes or special instructions about the closing date (optional)",
         key="pa_9A_notes",
-        placeholder="Example: Buyer and Seller agree that if lender or title needs extra time, the closing date may be extended up to 5 calendar days...",
+        placeholder=(
+            "Example: Buyer and Seller agree that if lender or title needs extra time, "
+            "the closing date may be extended up to 5 calendar days..."
+        ),
     )
 
     st.markdown("---")
@@ -157,7 +163,10 @@ with st.expander("💬 Ask AI Realtor or Connect with a Human Realtor", expanded
     st.text_area(
         "Any additional details about buyer possession (optional)",
         key="pa_9B_notes",
-        placeholder="Example: Buyer may access property for measurements or contractor bids at reasonable times with notice...",
+        placeholder=(
+            "Example: Buyer may access property for measurements or contractor bids at "
+            "reasonable times with notice..."
+        ),
     )
 
     st.markdown("---")
@@ -179,7 +188,8 @@ with st.expander("💬 Ask AI Realtor or Connect with a Human Realtor", expanded
 
     if seller_possession != "No – Seller will deliver vacant possession at close":
         st.markdown(
-            "_If Seller stays after close, a separate written agreement is typically required (e.g., SIP or RLAS)._"
+            "_If Seller stays after close, a separate written agreement is typically "
+            "required (e.g., SIP or RLAS)._"
         )
 
         col_forms = st.columns(3)
@@ -240,7 +250,10 @@ with st.expander("💬 Ask AI Realtor or Connect with a Human Realtor", expanded
     st.text_area(
         "Any exceptions or special instructions (optional)",
         key="pa_9D_notes",
-        placeholder="Example: One mailbox key currently missing; HOA to re-key mailbox at buyer’s expense...",
+        placeholder=(
+            "Example: One mailbox key currently missing; HOA to re-key mailbox at buyer’s "
+            "expense..."
+        ),
     )
 
     st.markdown("---")
@@ -277,12 +290,14 @@ with st.expander("💬 Ask AI Realtor or Connect with a Human Realtor", expanded
     st.text_area(
         "Notes about final verification (optional)",
         key="pa_9E_notes",
-        placeholder="Example: Buyer to confirm repairs are complete and property is in substantially the same condition as when offer was accepted...",
+        placeholder=(
+            "Example: Buyer to confirm repairs are complete and property is in substantially "
+            "the same condition as when offer was accepted..."
+        ),
     )
 
     st.markdown("---")
 
-    
     # -------------------------------
     # Bottom Navigation – Save / Next Section
     # -------------------------------
@@ -295,8 +310,8 @@ with st.expander("💬 Ask AI Realtor or Connect with a Human Realtor", expanded
 
     with col_right:
         if st.button("Next: Section 10", key="pa_9_next"):
-            # 🔧 Update this index to match your tab / navigation system
+            # 🔧 Update this to match your app's navigation
             # Example if you're using st.session_state.active_pa_tab:
-            # st.session_state.active_pa_tab = 9  # adjust to actual index for Section 10
+            # st.session_state.active_pa_tab = 9  # or another index for Section 10
             st.session_state["active_pa_tab"] = st.session_state.get("active_pa_tab", 0) + 1
             st.info("Moving to Section 10… (ensure this updates your main app navigation).")
