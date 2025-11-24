@@ -319,11 +319,11 @@ def render_section8_property_condition():
     col_prev, col_next = st.columns([1, 1])
 
     with col_prev:
-        if st.button("⬅️ Back to Section 7", key="pa7_back_btn", use_container_width=True):
+        if st.button("⬅️ Back to Section 7", key="pa8_back_btn", use_container_width=True):
             st.session_state.active_pa_tab = 6  # zero-index: section 6
 
     with col_next:
-        if st.button("Save Section 8 & Continue ➡️", key="pa7_next_btn", use_container_width=True):
+        if st.button("Save Section 8 & Continue ➡️", key="pa8_next_btn", use_container_width=True):
             st.session_state.active_pa_tab = 8  # zero-index: section 8
             st.success("Section 7 saved. Moving to Section 8…")
 
