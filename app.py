@@ -55,7 +55,7 @@ def reset_offer_state():
 # ==========================================================
 DISCLAIMER_SHORT = """
 > **Note (not part of the offer letter or agreement):** This tool does not provide legal advice or brokerage services. \
-> Please review all terms carefully and consult a licensed real estate professional before using this in a real transaction.
+> Please review all terms carefully before using this in a real transaction.
 """
 
 
