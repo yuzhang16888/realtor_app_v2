@@ -3,7 +3,16 @@
 import streamlit as st
 
 
-# -------------------------------
+    
+
+def render_section9_closing_possession():
+    """
+    Render Section 9 – Closing and Possession of the Purchase Agreement.
+    All UI is contained inside this function so the module can be safely imported.
+    """
+
+    st.markdown("## 9. Closing and Possession")
+    # -------------------------------
     # Ask AI + Connect with Human Realtor (Helper Block)
     # -------------------------------
     st.markdown("### Need help with Section 9 – Closing & Possession?")
@@ -68,14 +77,6 @@ import streamlit as st
     st.markdown("---")
 
 
-
-def render_section9_closing_possession():
-    """
-    Render Section 9 – Closing and Possession of the Purchase Agreement.
-    All UI is contained inside this function so the module can be safely imported.
-    """
-
-    st.markdown("## 9. Closing and Possession")
 
     # -------------------------------
     # 9A. Closing Date
