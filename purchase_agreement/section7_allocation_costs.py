@@ -260,20 +260,65 @@ def render_section7_allocation_costs():
     # ---------------------------
     # 7D–7N. Other Costs (Free-form notes)
     # ---------------------------
-    st.markdown("### 7D–7N. Other Costs (Free-form)")
+  
+    st.markdown("### 7D. Other Costs – Transfer Taxes & Fees")
 
     st.write(
-        "Use this area to capture any remaining cost allocations used in your local "
-        "market (for example: home warranty plans, natural hazard disclosure reports, "
-        "private transfer taxes, retrofit items, etc.)."
+        "Allocate who pays county and city transfer taxes/fees and any private transfer fee "
+        "(for example: HOA or community transfer fee). Practices can vary by county and city."
     )
 
-    st.text_area(
-        "Other specific cost allocations for Section 7 (free-form notes)",
-        key="pa7_other_costs_freeform",
-        height=120,
-        placeholder="Example: Seller to pay county transfer tax; Buyer to pay city transfer tax. "
-                    "Seller to provide home warranty not to exceed $700.",
-    )
+    col_7d_1, col_7d_2 = st.columns(2)
+
+    # Left column: county + city transfer tax/fee
+    with col_7d_1:
+        st.markdown("**County Transfer Tax / Fee**")
+        st.radio(
+            "County transfer tax / fee paid by:",
+            options=["Buyer", "Seller", "Split", "Other", "Not applicable"],
+            key="pa7d_county_transfer_party",
+            horizontal=True,
+        )
+        st.text_input(
+            "If Split/Other, describe:",
+            key="pa7d_county_transfer_other",
+            placeholder="e.g., Seller pays first $5,000; remainder Buyer.",
+        )
+
+        st.markdown("**City Transfer Tax / Fee**")
+        st.radio(
+            "City transfer tax / fee paid by:",
+            options=["Buyer", "Seller", "Split", "Other", "Not applicable"],
+            key="pa7d_city_transfer_party",
+            horizontal=True,
+        )
+        st.text_input(
+            "If Split/Other, describe:",
+            key="pa7d_city_transfer_other",
+            placeholder="e.g., Buyer and Seller split 50/50.",
+        )
+
+    # Right column: private transfer fee + notes
+    with col_7d_2:
+        st.markdown("**Private Transfer Fee**")
+        st.radio(
+            "Private transfer fee paid by:",
+            options=["Buyer", "Seller", "Split", "Other", "Not applicable"],
+            key="pa7d_private_transfer_party",
+            horizontal=True,
+        )
+        st.text_input(
+            "If Split/Other, describe:",
+            key="pa7d_private_transfer_other",
+            placeholder="e.g., Buyer pays HOA private transfer fee in full.",
+        )
+
+        st.text_area(
+            "Other specific cost allocations or notes for Section 7D (optional)",
+            key="pa7d_other_notes",
+            height=100,
+            placeholder="Example: Seller to pay county transfer tax; Buyer to pay city transfer tax. "
+                        "Any special city/HOA rules about transfer fees.",
+        )
 
     st.success("Section 7 – Allocation of Costs saved in session. Continue when you’re ready.")
