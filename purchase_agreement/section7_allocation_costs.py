@@ -321,4 +321,19 @@ def render_section7_allocation_costs():
                         "Any special city/HOA rules about transfer fees.",
         )
 
-    st.success("Section 7 – Allocation of Costs saved in session. Continue when you’re ready.")
+    s    # ---------------------------
+    # Section Navigation Buttons (Same style as other sections)
+    # ---------------------------
+    st.markdown("### Save & Continue")
+
+    col_prev, col_next = st.columns([1, 1])
+
+    with col_prev:
+        if st.button("⬅️ Back to Section 6", key="pa7_back_btn", use_container_width=True):
+            st.session_state.active_pa_tab = 5  # zero-index: section 6
+
+    with col_next:
+        if st.button("Save Section 7 & Continue ➡️", key="pa7_next_btn", use_container_width=True):
+            st.session_state.active_pa_tab = 7  # zero-index: section 8
+            st.success("Section 7 saved. Moving to Section 8…")
+

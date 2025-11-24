@@ -6,6 +6,7 @@ from purchase_agreement.section3_finance import render_section3_finance
 from purchase_agreement.section4_sale_of_buyer_property import render_section4_sale_of_buyer_property
 from purchase_agreement.section6_other_terms import render_section6_other_terms
 from purchase_agreement.section7_allocation_costs import render_section7_allocation_costs
+from purchase_agreement.section8_property_condition import render_section8_property_condition
 
 # ==========================================================
 # 🚀 STREAMLIT APP CONFIG
@@ -175,13 +176,14 @@ elif mode == "purchase_agreement":
     )
 
     # Tabs for different sections (Offer + Agency)
-    tab1, tab2,tab3,tab4,tab5,tab6= st.tabs(
+    tab1, tab2,tab3,tab4,tab5,tab6,tab7= st.tabs(
         ["Section 1 – Offer", 
         "Section 2 – Agency / Brokerage",
         "Section 3 - Finance Terms",
         "Section 4 & 5 -Subject to Sale of Buyer's Property",
         "Section 6 - Other Terms",
-        "Section 7 - Allocation of Costs"
+        "Section 7 - Allocation of Costs",
+        "Section 8 - Property Condtion & Repairs"
         ]
     )
 
@@ -203,6 +205,9 @@ elif mode == "purchase_agreement":
     
     with tab6:
         render_section7_allocation_costs()
+
+    with tab8:
+        render_section8_property_condition()
 
 
     # Global disclaimer under the whole mode
