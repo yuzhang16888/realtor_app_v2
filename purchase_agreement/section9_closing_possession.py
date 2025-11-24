@@ -2,99 +2,136 @@
 
 import streamlit as st
 
+# ⬇️ IMPORTANT:
+# Make sure to import call_purchase_agreement_ai the same way you do in Section 8, e.g.:
+# from purchase_agreement.ai_helpers import call_purchase_agreement_ai
+
 
 def render_section9_closing_possession():
     """
     Render Section 9 – Closing and Possession of the Purchase Agreement.
-    All UI is contained inside this function so the module can be safely imported.
     """
 
     st.markdown("## 9. Closing and Possession")
 
-    # ---------------------------------------
-    # 🔮 AI Helper – TOP of Section 9
-    # ---------------------------------------
-
-    # Initialize state
-    if "pa_9_ai_answer" not in st.session_state:
-        st.session_state["pa_9_ai_answer"] = ""
-
-    if "pa_9_show_human_form" not in st.session_state:
-        st.session_state["pa_9_show_human_form"] = False
-
-    st.markdown("### Need help with Section 9 – Closing & Possession?")
-
-    with st.expander("💬 Ask AI Realtor or Connect with a Human Realtor", expanded=False):
-
-        # --- AI QUESTION INPUT ---
-        ai_question = st.text_area(
-            "Ask AI Realtor for Section 9",
-            key="pa_9_ai_question",
-            placeholder=(
-                "Example:\n"
-                "- Should I close on Friday or Monday?\n"
-                "- Should I let the seller stay after closing?\n"
-                "- What are the risks of a rent-back?\n"
-                "- When should we schedule final walkthrough?"
-            ),
+    # ---------------------------
+    # 🔹 GPT / AI Realtor – at the top of Section 9
+    # ---------------------------
+    with st.expander("💬 Need help with Section 9? Ask AI Realtor", expanded=True):
+        st.markdown(
+            "Use this assistant to understand closing timelines, possession, rent-backs, "
+            "key/remote delivery, and final walkthroughs in California purchase agreements.\n\n"
+            "**Reminder:** This is not legal advice. Always confirm with your broker or attorney."
         )
 
-        col_ai, col_human = st.columns(2)
+        default_prompt_9 = (
+            "You are an experienced California residential real estate agent. "
+            "Help the buyer understand how to complete Section 9 – Closing and Possession "
+            "in the CAR Residential Purchase Agreement. Explain typical norms for: "
+            "close of escrow timing, when the buyer gets possession, seller rent-backs, "
+            "key/remote delivery, and final walkthroughs. "
+            "Always remind them that everything is negotiable and practices vary by area."
+        )
 
-        # --- ASK AI BUTTON ---
-        with col_ai:
-            if st.button("Ask AI Realtor for Section 9", key="pa_9_ai_btn"):
-                if not ai_question.strip():
-                    st.warning("Please enter a question before asking AI Realtor.")
-                else:
-                    # 🔧 Replace this with your real AI call
-                    # Example:
-                    # answer = call_ai_helper(section="9", question=ai_question)
-                    # st.session_state["pa_9_ai_answer"] = answer
-                    st.session_state["pa_9_ai_answer"] = (
-                        "This is a placeholder AI answer for Section 9.\n\n"
-                        "In production, wire this button to your AI backend or knowledge base "
-                        "and store the real answer in st.session_state['pa_9_ai_answer']."
-                    )
-
-        # --- SHOW AI ANSWER ---
-        if st.session_state["pa_9_ai_answer"]:
-            st.markdown("**AI Realtor Answer:**")
-            st.info(st.session_state["pa_9_ai_answer"])
-
-        # --- HUMAN REALTOR BUTTON ---
-        with col_human:
-            if st.button("Connect with a Human Realtor", key="pa_9_human_btn"):
-                st.session_state["pa_9_show_human_form"] = True
-
-        # --- HUMAN REALTOR FORM ---
-        if st.session_state["pa_9_show_human_form"]:
-            st.markdown("##### Connect with a Human Realtor")
-
-            st.text_area(
-                "Describe your situation",
-                key="pa_9_human_msg",
+        # Use a form so pressing Enter in the text input will submit (Ask AI)
+        with st.form("pa9_ai_form"):
+            user_prompt_9 = st.text_input(
+                "What do you want help with in Section 9?",
+                key="pa9_ai_prompt",
                 placeholder=(
-                    "Example: I'm unsure whether to allow the seller to stay after closing. "
-                    "Please review my situation and call or email me with guidance."
+                    "Example: Is it risky to let the seller stay 10 days after closing?\n"
+                    "Example: Should I plan possession at close or on recordation?\n"
+                    "Example: When should I schedule the final walkthrough?"
                 ),
             )
 
-            st.text_input(
-                "Preferred contact (phone or email)",
-                key="pa_9_human_contact",
-                placeholder="Example: 415-555-1234 or email@example.com",
+            col_ai1, col_ai2 = st.columns([3, 2])
+            with col_ai1:
+                use_context_9 = st.checkbox(
+                    "Include default Section 9 context in my question",
+                    value=True,
+                    key="pa9_ai_use_context",
+                )
+            with col_ai2:
+                ask_clicked_9 = st.form_submit_button(
+                    "Ask AI Realtor about Section 9",
+                    use_container_width=True,
+                )
+                connect_clicked_9 = st.form_submit_button(
+                    "Connect with a Human Realtor",
+                    use_container_width=True,
+                )
+
+        # Handle Ask AI (form submit or Enter)
+        if ask_clicked_9:
+            if not user_prompt_9.strip():
+                st.warning("Please enter a question or description first.")
+            else:
+                full_prompt_9 = user_prompt_9.strip()
+                if use_context_9:
+                    full_prompt_9 = (
+                        default_prompt_9
+                        + "\n\nUser question:\n"
+                        + user_prompt_9.strip()
+                    )
+
+                with st.spinner("Thinking like a California Realtor..."):
+                    try:
+                        # 🔹 Same backend call as Section 8, but with section="9"
+                        answer_9 = call_purchase_agreement_ai(
+                            full_prompt_9, section="9"
+                        )
+                    except Exception as e:
+                        answer_9 = (
+                            "There was an error calling the AI backend for Section 9.\n\n"
+                            f"Details: {e}"
+                        )
+
+                    st.session_state["pa9_ai_answer"] = answer_9
+
+        # Handle Connect with Human Realtor
+        if connect_clicked_9:
+            st.session_state["pa9_show_human_realtor_form"] = True
+
+        # Show AI answer if we have one
+        if "pa9_ai_answer" in st.session_state:
+            st.markdown("#### 🧠 AI Realtor Suggestion (Section 9)")
+            st.info(st.session_state["pa9_ai_answer"])
+
+        # Show the human-realtor contact form if toggled on
+        if st.session_state.get("pa9_show_human_realtor_form", False):
+            st.markdown("#### 🤝 Connect with a Human Realtor")
+
+            contact_info_9 = st.text_input(
+                "Your preferred phone or email",
+                key="pa9_human_contact",
+                placeholder="Example: 415-555-1234 or you@example.com",
+            )
+            human_question_9 = st.text_area(
+                "What would you like to ask a human?",
+                key="pa9_human_question",
+                height=100,
+                placeholder="Share your questions or situation so a human realtor can follow up.",
             )
 
-            if st.button("Submit to Human Realtor", key="pa_9_human_submit"):
-                # 🔧 Wire this into your backend / database / email system
-                # save_to_db(section="9", message=st.session_state["pa_9_human_msg"],
-                #           contact=st.session_state["pa_9_human_contact"])
-                st.success(
-                    "Your message has been submitted. A licensed Realtor will reach out using your preferred contact."
-                )
-                # Hide form after submission
-                st.session_state["pa_9_show_human_form"] = False
+            send_clicked_9 = st.button(
+                "Send my question to a Human Realtor",
+                key="pa9_human_send_btn",
+                use_container_width=True,
+            )
+
+            if send_clicked_9:
+                if not contact_info_9.strip() or not human_question_9.strip():
+                    st.warning("Please provide both your contact info and your question.")
+                else:
+                    # Integrate with email / DB / CRM if desired
+                    st.session_state["pa9_human_realtor_request"] = {
+                        "contact": contact_info_9.strip(),
+                        "question": human_question_9.strip(),
+                    }
+                    st.success(
+                        "Your request has been recorded. A human realtor will reach out to you using the contact info you provided."
+                    )
 
     st.markdown("---")
 
@@ -305,12 +342,12 @@ def render_section9_closing_possession():
 
     with col_left:
         if st.button("💾 Save Section 9", key="pa_9_save"):
-            # 🔧 Hook to your persistence logic (e.g., save to session/DB)
+            # Hook to your persistence logic (e.g., save to session/DB)
             st.success("Section 9 responses saved (connect this button to your save logic).")
 
     with col_right:
         if st.button("Next: Section 10", key="pa_9_next"):
-            # 🔧 Update this to match your app's navigation
+            # Update this to match your app's navigation
             # Example if you're using st.session_state.active_pa_tab:
             # st.session_state.active_pa_tab = 9  # or another index for Section 10
             st.session_state["active_pa_tab"] = st.session_state.get("active_pa_tab", 0) + 1
