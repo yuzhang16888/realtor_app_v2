@@ -321,7 +321,7 @@ def render_section7_allocation_costs():
                         "Any special city/HOA rules about transfer fees.",
         )
 
-    s    # ---------------------------
+    # ---------------------------
     # Section Navigation Buttons (Same style as other sections)
     # ---------------------------
     st.markdown("### Save & Continue")
