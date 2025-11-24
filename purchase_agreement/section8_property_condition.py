@@ -9,7 +9,7 @@ def render_section8_property_condition():
 
     st.markdown("## Section 8 – Property Condition & Repairs")
 
-    # ---------------------------
+       # ---------------------------
     # 🔹 GPT / AI Realtor – at the top of Section 8
     # ---------------------------
     with st.expander("💬 Need help with Section 8? Ask AI Realtor", expanded=True):
@@ -27,33 +27,36 @@ def render_section8_property_condition():
             "Always remind them that everything is negotiable and practices vary by area."
         )
 
-        user_prompt = st.text_area(
-            "What do you want help with in Section 8?",
-            key="pa8_ai_prompt",
-            height=120,
-            placeholder=(
-                "Example: What does it really mean when the property is sold 'as-is' in California? "
-                "Can I still ask for repairs after inspections?"
-            ),
-        )
-
-        col_ai1, col_ai2 = st.columns([3, 1])
-        with col_ai1:
-            use_context = st.checkbox(
-                "Include default Section 8 context in my question",
-                value=True,
-                key="pa8_ai_use_context",
-            )
-        with col_ai2:
-            ask_clicked = st.button(
-                "Ask AI Realtor about Section 8",
-                key="pa8_ai_button",
-                use_container_width=True,
+        # Use a form so pressing Enter in the text input will submit (Ask AI)
+        with st.form("pa8_ai_form"):
+            user_prompt = st.text_input(
+                "What do you want help with in Section 8?",
+                key="pa8_ai_prompt",
+                placeholder=(
+                    "Example: What does it really mean when the property is sold 'as-is' in California? "
+                    "Can I still ask for repairs after inspections?"
+                ),
             )
 
+            col_ai1, col_ai2 = st.columns([3, 2])
+            with col_ai1:
+                use_context = st.checkbox(
+                    "Include default Section 8 context in my question",
+                    value=True,
+                    key="pa8_ai_use_context",
+                )
+            with col_ai2:
+                ask_clicked = st.form_submit_button(
+                    "Ask AI Realtor about Section 8",
+                    use_container_width=True,
+                )
+                connect_clicked = st.form_submit_button(
+                    "Connect with a Human Realtor",
+                    use_container_width=True,
+                )
+
+        # Handle Ask AI (form submit or Enter)
         if ask_clicked:
-            st.write("🛠️ Debug: Ask AI button was clicked for Section 8.")
-
             if not user_prompt.strip():
                 st.warning("Please enter a question or description first.")
             else:
@@ -72,11 +75,53 @@ def render_section8_property_condition():
 
                     st.session_state["pa8_ai_answer"] = answer
 
+        # Handle Connect with Human Realtor
+        if connect_clicked:
+            st.session_state["pa8_show_human_realtor_form"] = True
+
+        # Show AI answer if we have one
         if "pa8_ai_answer" in st.session_state:
             st.markdown("#### 🧠 AI Realtor Suggestion")
             st.info(st.session_state["pa8_ai_answer"])
 
-    st.markdown("---")
+        # Show the human-realtor contact form if toggled on
+        if st.session_state.get("pa8_show_human_realtor_form", False):
+            st.markdown("#### 🤝 Connect with a Human Realtor")
+
+            contact_info = st.text_input(
+                "Your preferred phone or email",
+                key="pa8_human_contact",
+                placeholder="Example: 415-555-1234 or you@example.com",
+            )
+            human_question = st.text_area(
+                "What would you like to ask a human?",
+                key="pa8_human_question",
+                height=100,
+                placeholder="Share your questions or situation so a human realtor can follow up.",
+            )
+
+            send_clicked = st.button(
+                "Send my question to a Human Realtor",
+                key="pa8_human_send_btn",
+                use_container_width=True,
+            )
+
+            if send_clicked:
+                if not contact_info.strip() or not human_question.strip():
+                    st.warning("Please provide both your contact info and your question.")
+                else:
+                    # Here is where you would integrate an email, database, or CRM.
+                    # For now, we just store it in session_state.
+                    st.session_state["pa8_human_realtor_request"] = {
+                        "contact": contact_info.strip(),
+                        "question": human_question.strip(),
+                    }
+                    st.success(
+                        "Your request has been recorded. A human realtor will reach out to you using the contact info you provided."
+                    )
+
+
+
 
     # ---------------------------
     # 8A. Property Condition / “As-Is”
