@@ -3,6 +3,72 @@
 import streamlit as st
 
 
+# -------------------------------
+    # Ask AI + Connect with Human Realtor (Helper Block)
+    # -------------------------------
+    st.markdown("### Need help with Section 9 – Closing & Possession?")
+
+    with st.expander("💬 Ask AI Realtor or Connect with a Human Realtor", expanded=False):
+        st.markdown(
+            "Use this helper if you’re unsure about closing timelines, rent-backs, or possession terms."
+        )
+
+        # AI question input
+        ai_question = st.text_area(
+            "Ask AI Realtor for Section 9",
+            key="pa_9_ai_question",
+            placeholder="Example: Is it better for me to close on a Friday or Monday? What are the pros and cons of allowing the seller to stay after closing?",
+        )
+
+        col_ai, col_human = st.columns(2)
+
+        with col_ai:
+            if st.button("Ask AI Realtor for Section 9", key="pa_9_ai_button"):
+                # 🔧 Hook this into your AI backend / knowledge base
+                # Example pattern (pseudo-code):
+                # st.session_state.pa_9_ai_answer = call_ai_helper(section="9", question=ai_question)
+                if not ai_question.strip():
+                    st.warning("Please enter a question before asking AI Realtor.")
+                else:
+                    st.info(
+                        "Your question has been sent to the AI Realtor helper. "
+                        "Wire this button to your AI backend to return a real answer."
+                    )
+
+        with col_human:
+            if st.button("Connect with a Human Realtor", key="pa_9_human_button"):
+                st.session_state["pa_9_show_human_form"] = True
+
+        # Human Realtor form (shown after button click)
+        if st.session_state.get("pa_9_show_human_form", False):
+            st.markdown("##### Connect with a Human Realtor")
+            st.text_area(
+                "Describe your situation and questions",
+                key="pa_9_human_message",
+                placeholder=(
+                    "Example: I’m not sure if I should let the seller stay after closing. "
+                    "Please review my situation and call or email me with advice."
+                ),
+            )
+            st.text_input(
+                "Preferred contact (phone or email)",
+                key="pa_9_human_contact",
+                placeholder="Example: 415-555-1234 or name@email.com",
+            )
+
+            if st.button("Submit to Human Realtor", key="pa_9_human_submit"):
+                # 🔧 Wire this into your backend / database / email system
+                # Example: save_to_db(section="9", message=..., contact=...)
+                st.success(
+                    "Your message has been submitted. A licensed Realtor will follow up using your preferred contact."
+                )
+                # Optionally hide the form after submission
+                st.session_state["pa_9_show_human_form"] = False
+
+    st.markdown("---")
+
+
+
 def render_section9_closing_possession():
     """
     Render Section 9 – Closing and Possession of the Purchase Agreement.
@@ -198,70 +264,7 @@ def render_section9_closing_possession():
 
     st.markdown("---")
 
-    # -------------------------------
-    # Ask AI + Connect with Human Realtor (Helper Block)
-    # -------------------------------
-    st.markdown("### Need help with Section 9 – Closing & Possession?")
-
-    with st.expander("💬 Ask AI Realtor or Connect with a Human Realtor", expanded=False):
-        st.markdown(
-            "Use this helper if you’re unsure about closing timelines, rent-backs, or possession terms."
-        )
-
-        # AI question input
-        ai_question = st.text_area(
-            "Ask AI Realtor for Section 9",
-            key="pa_9_ai_question",
-            placeholder="Example: Is it better for me to close on a Friday or Monday? What are the pros and cons of allowing the seller to stay after closing?",
-        )
-
-        col_ai, col_human = st.columns(2)
-
-        with col_ai:
-            if st.button("Ask AI Realtor for Section 9", key="pa_9_ai_button"):
-                # 🔧 Hook this into your AI backend / knowledge base
-                # Example pattern (pseudo-code):
-                # st.session_state.pa_9_ai_answer = call_ai_helper(section="9", question=ai_question)
-                if not ai_question.strip():
-                    st.warning("Please enter a question before asking AI Realtor.")
-                else:
-                    st.info(
-                        "Your question has been sent to the AI Realtor helper. "
-                        "Wire this button to your AI backend to return a real answer."
-                    )
-
-        with col_human:
-            if st.button("Connect with a Human Realtor", key="pa_9_human_button"):
-                st.session_state["pa_9_show_human_form"] = True
-
-        # Human Realtor form (shown after button click)
-        if st.session_state.get("pa_9_show_human_form", False):
-            st.markdown("##### Connect with a Human Realtor")
-            st.text_area(
-                "Describe your situation and questions",
-                key="pa_9_human_message",
-                placeholder=(
-                    "Example: I’m not sure if I should let the seller stay after closing. "
-                    "Please review my situation and call or email me with advice."
-                ),
-            )
-            st.text_input(
-                "Preferred contact (phone or email)",
-                key="pa_9_human_contact",
-                placeholder="Example: 415-555-1234 or name@email.com",
-            )
-
-            if st.button("Submit to Human Realtor", key="pa_9_human_submit"):
-                # 🔧 Wire this into your backend / database / email system
-                # Example: save_to_db(section="9", message=..., contact=...)
-                st.success(
-                    "Your message has been submitted. A licensed Realtor will follow up using your preferred contact."
-                )
-                # Optionally hide the form after submission
-                st.session_state["pa_9_show_human_form"] = False
-
-    st.markdown("---")
-
+    
     # -------------------------------
     # Bottom Navigation – Save / Next Section
     # -------------------------------
