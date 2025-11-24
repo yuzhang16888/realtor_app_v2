@@ -12,6 +12,7 @@ def render_section9_closing_possession():
     """
 
     st.markdown("## 9. Closing and Possession")
+
     # -------------------------------
     # Ask AI + Connect with Human Realtor (Helper Block)
     # -------------------------------
@@ -31,18 +32,33 @@ def render_section9_closing_possession():
 
         col_ai, col_human = st.columns(2)
 
-        with col_ai:
-            if st.button("Ask AI Realtor for Section 9", key="pa_9_ai_button"):
-                # 🔧 Hook this into your AI backend / knowledge base
-                # Example pattern (pseudo-code):
-                # st.session_state.pa_9_ai_answer = call_ai_helper(section="9", question=ai_question)
-                if not ai_question.strip():
-                    st.warning("Please enter a question before asking AI Realtor.")
-                else:
-                    st.info(
-                        "Your question has been sent to the AI Realtor helper. "
-                        "Wire this button to your AI backend to return a real answer."
-                    )
+              # Use a form so pressing Enter in the text input will submit (Ask AI)
+        with st.form("pa8_ai_form"):
+            user_prompt = st.text_input(
+                "What do you want help with in Section 8?",
+                key="pa8_ai_prompt",
+                placeholder=(
+                    "Example: What does it really mean when the property is sold 'as-is' in California? "
+                    "Can I still ask for repairs after inspections?"
+                ),
+            )
+
+            col_ai1, col_ai2 = st.columns([3, 2])
+            with col_ai1:
+                use_context = st.checkbox(
+                    "Include default Section 8 context in my question",
+                    value=True,
+                    key="pa8_ai_use_context",
+                )
+            with col_ai2:
+                ask_clicked = st.form_submit_button(
+                    "Ask AI Realtor about Section 8",
+                    use_container_width=True,
+                )
+                connect_clicked = st.form_submit_button(
+                    "Connect with a Human Realtor",
+                    use_container_width=True,
+                )
 
         with col_human:
             if st.button("Connect with a Human Realtor", key="pa_9_human_button"):
