@@ -209,8 +209,9 @@ elif mode == "purchase_agreement":
 
     with tab7:
         render_section8_property_condition()
+
     with tab8:
-        rrender_section9_closing_possession()
+        render_section9_closing_possession()
 
 
     # Global disclaimer under the whole mode
