@@ -206,7 +206,7 @@ elif mode == "purchase_agreement":
     with tab6:
         render_section7_allocation_costs()
 
-    with tab8:
+    with tab7:
         render_section8_property_condition()
 
 
