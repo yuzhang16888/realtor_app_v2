@@ -179,12 +179,12 @@ elif mode == "purchase_agreement":
     # Tabs for different sections (Offer + Agency)
     tab1, tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9= st.tabs(
         ["Section 1 – Offer", 
-        "Section 2 – Agency (skipped)",
-        "Section 3 - Finance Terms",
-        "Section 4 & 5 -Subject to Sale of Buyer's Property",
-        "Section 6 - Other Terms(Optional)",
-        "Section 7 - Allocation of Costs",
-        "Section 8 - Property Condtion & Repairs",
+        "Section 2 – Agency",
+        "Section 3 - Finance",
+        "Section 4 & 5- Sale of Buyer's Property",
+        "Section 6 - Others(Optional)",
+        "Section 7 - Costs",
+        "Section 8 - Condtion & Repairs",
         "Section 9 -Closing and Possession",
         "Section 10-13 Overview"
         ]
