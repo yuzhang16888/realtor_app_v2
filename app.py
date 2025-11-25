@@ -9,6 +9,8 @@ from purchase_agreement.section7_allocation_costs import render_section7_allocat
 from purchase_agreement.section8_property_condition import render_section8_property_condition
 from purchase_agreement.section9_closing_possession import render_section9_closing_possession
 from purchase_agreement.section10_13_overview import render_section10_13_overview
+from purchase_agreement.section14_contingencies import render_section14_contingencies
+
 # ==========================================================
 # 🚀 STREAMLIT APP CONFIG
 # ==========================================================
@@ -186,7 +188,8 @@ elif mode == "purchase_agreement":
         "Section 7 - Costs",
         "Section 8 - Condtion & Repairs",
         "Section 9 -Closing and Possession",
-        "Section 10-13 Overview"
+        "Section 10-13 Overview",
+        "Section 14-Contingencies"
         ]
     )
 
@@ -216,6 +219,8 @@ elif mode == "purchase_agreement":
         render_section9_closing_possession()
     with tab9:
         render_section10_13_overview()
+    with tab14:
+    render_section14_contingencies()
 
 
     # Global disclaimer under the whole mode
