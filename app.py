@@ -220,7 +220,7 @@ elif mode == "purchase_agreement":
     with tab9:
         render_section10_13_overview()
     with tab14:
-    render_section14_contingencies()
+        render_section14_contingencies()
 
 
     # Global disclaimer under the whole mode
