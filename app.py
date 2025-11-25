@@ -182,7 +182,7 @@ elif mode == "purchase_agreement":
         "Section 2 – Agency (skipped)",
         "Section 3 - Finance Terms",
         "Section 4 & 5 -Subject to Sale of Buyer's Property",
-        "Section 6 - Other Terms",
+        "Section 6 - Other Terms(Optional)",
         "Section 7 - Allocation of Costs",
         "Section 8 - Property Condtion & Repairs",
         "Section 9 -Closing and Possession",
