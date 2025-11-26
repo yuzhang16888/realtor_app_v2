@@ -8,12 +8,12 @@ def render_section7_allocation_costs():
     All Streamlit calls stay inside this function.
     """
 
-    st.markdown("## Section 7 – Allocation of Costs")
+    st.markdown("## Section 2 – Allocation of Costs")
 
     # ---------------------------
     # 🔹 GPT / AI Realtor – at the top of Section 7
     # ---------------------------
-    with st.expander("💬 Need help with Section 7? Ask AI Realtor", expanded=True):
+    with st.expander("💬 Need help with Section 2? Ask AI Realtor", expanded=True):
         st.markdown(
             "Use this assistant to understand typical cost allocations in California "
             "(for example: who usually pays escrow fees, title insurance, HOA docs, etc.).\n\n"
@@ -31,7 +31,7 @@ def render_section7_allocation_costs():
         # Use a form so pressing Enter inside the text input will submit (Ask AI)
         with st.form("pa7_ai_form"):
             user_prompt = st.text_input(
-                "What do you want help with in Section 7?",
+                "What do you want help with in allocation costs?",
                 key="pa7_ai_prompt",
                 placeholder=(
                     "Example: In San Francisco, who usually pays escrow fees and the "
@@ -42,13 +42,13 @@ def render_section7_allocation_costs():
             col_ai1, col_ai2 = st.columns([3, 2])
             with col_ai1:
                 use_context = st.checkbox(
-                    "Include default Section 7 context in my question",
+                    "Include default Section 2 context in my question",
                     value=True,
                     key="pa7_ai_use_context",
                 )
             with col_ai2:
                 ask_clicked = st.form_submit_button(
-                    "Ask AI Realtor about Section 7",
+                    "Ask AI Realtor about Section 2",
                     use_container_width=True,
                 )
                 connect_clicked = st.form_submit_button(
@@ -126,7 +126,7 @@ def render_section7_allocation_costs():
     # ---------------------------
     # 7A. Inspections, Reports and Certificates
     # ---------------------------
-    st.markdown("### 7A. Inspections, Reports and Certificates")
+    st.markdown("### 2A. Inspections, Reports and Certificates")
 
     st.write(
         "Specify who will pay for general inspections, pest reports, and required "
@@ -183,7 +183,7 @@ def render_section7_allocation_costs():
     # ---------------------------
     # 7B. Escrow and Title
     # ---------------------------
-    st.markdown("### 7B. Escrow and Title")
+    st.markdown("### 2B. Escrow and Title")
 
     st.write(
         "Allocate who pays escrow fees, owner’s title insurance policy, and lender’s "
@@ -245,7 +245,7 @@ def render_section7_allocation_costs():
     # ---------------------------
     # 7C. HOA / Community Association Fees and Documents
     # ---------------------------
-    st.markdown("### 7C. HOA / Community Association Fees and Documents")
+    st.markdown("### 2C. HOA / Community Association Fees and Documents")
 
     st.write(
         "If the property is in a common interest development, specify who pays "
@@ -302,7 +302,7 @@ def render_section7_allocation_costs():
     # 7D–7N. Other Costs (Free-form notes)
     # ---------------------------
   
-    st.markdown("### 7D. Other Costs – Transfer Taxes & Fees")
+    st.markdown("### 2D. Other Costs – Transfer Taxes & Fees")
 
     st.write(
         "Allocate who pays county and city transfer taxes/fees and any private transfer fee "
@@ -370,11 +370,11 @@ def render_section7_allocation_costs():
     col_prev, col_next = st.columns([1, 1])
 
     with col_prev:
-        if st.button("⬅️ Back to Section 6", key="pa7_back_btn", use_container_width=True):
+        if st.button("⬅️ Back to Section 3", key="pa7_back_btn", use_container_width=True):
             st.session_state.active_pa_tab = 5  # zero-index: section 6
 
     with col_next:
-        if st.button("Save Section 7 & Continue ➡️", key="pa7_next_btn", use_container_width=True):
+        if st.button("Save Section 2 & Continue ➡️", key="pa7_next_btn", use_container_width=True):
             st.session_state.active_pa_tab = 7  # zero-index: section 8
-            st.success("Section 7 saved. Moving to Section 8…")
+            st.success("Section 2 saved. Moving to Section 8…")
 
