@@ -216,7 +216,7 @@ def render_section31_expiration():
             st.success("saved (connect this to your persistence logic).")
 
     with col_right:
-        if st.button("Next:Final Review"):
+        if st.button("Next:Costs"):
             # Example navigation (adjust index to your app)
             # st.session_state['active_pa_tab'] = your_next_tab_index
-            st.info("Moving to Final Signatures…")
+            st.info("Moving to Costs")
