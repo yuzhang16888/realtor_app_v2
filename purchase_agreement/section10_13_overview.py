@@ -12,12 +12,12 @@ def render_section10_13_overview():
     - Expanders to read full section content later
     """
 
-    st.markdown("## Sections 10–13 – Disclosures, Rules & Rights")
+    st.markdown("## Other Disclosures, Rules & Rights")
 
     # ---------------------------
     # 🔹 GPT / AI Realtor – overview for 10–13
     # ---------------------------
-    with st.expander("💬 Need help with Sections 10–13? Ask AI Realtor", expanded=True):
+    with st.expander("💬 Need help? Ask AI Realtor", expanded=True):
         st.markdown(
             "Use this assistant to understand the big picture for disclosures, inspections, "
             "access, and what happens if someone breaches the agreement.\n\n"
@@ -37,7 +37,7 @@ def render_section10_13_overview():
         # Use a form so pressing Enter submits
         with st.form("pa_10_13_ai_form"):
             user_prompt_1013 = st.text_input(
-                "What do you want help with in Sections 10–13?",
+                "What do you want help with ?",
                 key="pa_10_13_ai_prompt",
                 placeholder=(
                     "Example: What disclosures do I get if I'm buying a condo?\n"
@@ -140,7 +140,7 @@ def render_section10_13_overview():
     # ---------------------------
 
     # Section 10
-    st.markdown("### Section 10 – Statutory & Contractual Disclosures")
+    st.markdown("### Statutory & Contractual Disclosures")
 
     st.markdown(
         "- This section covers **all the disclosures the seller must give you**.\n"
@@ -153,7 +153,7 @@ def render_section10_13_overview():
         "your **right to cancel** if they’re late or incomplete."
     )
 
-    with st.expander("📄 Click to view full Section 10 content", expanded=False):
+    with st.expander("📄 Click to view full content", expanded=False):
         st.info(
             "Full Section 10 UI will go here.\n\n"
             "You can either:\n"
@@ -166,7 +166,7 @@ def render_section10_13_overview():
     st.markdown("---")
 
     # Section 11
-    st.markdown("### Section 11 – Buyer Investigation, Inspections & Due Diligence")
+    st.markdown("### Buyer Investigation, Inspections & Due Diligence")
 
     st.markdown(
         "- Confirms your **right to investigate the property**: condition, permits, "
@@ -176,7 +176,7 @@ def render_section10_13_overview():
         "- Reminds you that you must use care during inspections and repair any damage caused."
     )
 
-    with st.expander("📄 Click to view full Section 11 content", expanded=False):
+    with st.expander("📄 Click to view full content", expanded=False):
         st.info(
             "Full Section 11 UI will go here.\n\n"
             "Later you can plug in a detailed inspections/due-diligence section here."
@@ -187,7 +187,7 @@ def render_section10_13_overview():
     st.markdown("---")
 
     # Section 12
-    st.markdown("### Section 12 – Seller Access to the Property")
+    st.markdown("###  Seller Access to the Property")
 
     st.markdown(
         "- Explains when the **seller and their contractors can access the property** "
@@ -198,7 +198,7 @@ def render_section10_13_overview():
         "use professional vendors."
     )
 
-    with st.expander("📄 Click to view full Section 12 content", expanded=False):
+    with st.expander("📄 Click to view full content", expanded=False):
         st.info(
             "Full Section 12 UI will go here.\n\n"
             "You can later render your full Section 12 form or logic inside this expander."
@@ -209,7 +209,7 @@ def render_section10_13_overview():
     st.markdown("---")
 
     # Section 13
-    st.markdown("### Section 13 – Remedies for Breach (Buyer or Seller)")
+    st.markdown("###  Remedies for Breach (Buyer or Seller)")
 
     st.markdown(
         "- Covers **what happens if either side breaches** the contract.\n"
@@ -220,7 +220,7 @@ def render_section10_13_overview():
         "- Ties into mediation, arbitration, and attorney’s fees later in the RPA."
     )
 
-    with st.expander("📄 Click to view full Section 13 content", expanded=False):
+    with st.expander("📄 Click to view full content", expanded=False):
         st.info(
             "Full Section 13 UI will go here.\n\n"
             "Later you can plug in a more detailed explanation of remedies, liquidated damages, "

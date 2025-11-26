@@ -245,7 +245,7 @@ elif mode == "purchase_agreement":
         render_section6_other_terms()
 
         st.markdown("---")
-        st.markdown("### Sections 10–13 – Disclosures Overview")
+        #st.markdown("### Sections 10–13 – Disclosures Overview")
         render_section10_13_overview()
 
         st.markdown("---")
