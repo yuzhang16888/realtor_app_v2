@@ -257,7 +257,7 @@ elif mode == "purchase_agreement":
         render_section21_22_remedies_disputes()
 
         st.markdown("---")
-        st.markdown("### Sections 23–30 – General Terms & Brokers")
+        #st.markdown("### Sections 23–30 – General Terms & Brokers")
         render_section23_30_overview()
 
     # 7️⃣ Final Review + Export in one flow

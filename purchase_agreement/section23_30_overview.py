@@ -29,12 +29,12 @@ def render_section23_30_overview():
     - Miscellaneous boilerplate that matters but usually isn’t edited by buyers
     """
 
-    st.markdown("## Sections 23–30 – General Terms, Brokers & Other Legal Details")
+    st.markdown("## General Terms, Brokers & Other Legal Details")
 
     # --------------------------------------------------
     # 💬 GPT / AI Realtor + Human Realtor – Top Helper
     # --------------------------------------------------
-    with st.expander("💬 Need help with Sections 23–30? Ask AI Realtor", expanded=True):
+    with st.expander("💬 Need help with? Ask AI Realtor", expanded=True):
         st.markdown(
             "These sections cover **general legal terms, broker relationships, and other fine print** "
             "that support the rest of the contract.\n\n"
@@ -58,7 +58,7 @@ def render_section23_30_overview():
 
         with st.form("pa23_30_ai_form"):
             user_prompt_2330 = st.text_input(
-                "What do you want help with in Sections 23–30?",
+                "What do you want help with?",
                 key="pa23_30_ai_prompt",
                 placeholder=(
                     "Examples:\n"
@@ -159,7 +159,7 @@ def render_section23_30_overview():
     # --------------------------------------------------
     # Quick overview text
     # --------------------------------------------------
-    st.markdown("### Quick overview of Sections 23–30")
+    st.markdown("### Quick overview of this section")
 
     st.markdown(
         "These sections act like the **fine print that supports everything else** in your offer:\n"
@@ -178,7 +178,7 @@ def render_section23_30_overview():
     # --------------------------------------------------
 
     # 23–24: Assignment / Successors / Notices / Equal Housing
-    st.markdown("#### Sections 23–24 – Assignment, Successors & Equal Housing")
+    st.markdown("#### Assignment, Successors & Equal Housing")
 
     st.markdown(
         "- Explain **who can step into the buyer or seller’s shoes** (assignment), "
@@ -189,7 +189,7 @@ def render_section23_30_overview():
         "federal and state anti-discrimination laws."
     )
 
-    with st.expander("📄 Click to view more about Sections 23–24 (placeholder)", expanded=False):
+    with st.expander("📄 Click to view more about Assignment, Successors & Equal Housing", expanded=False):
         st.markdown(
             "_Placeholder for the actual RPA wording or a more detailed explanation of "
             "assignment, successors, notices, and equal housing. You can paste or link content here later._"
@@ -198,7 +198,7 @@ def render_section23_30_overview():
     st.markdown("---")
 
     # 25–26: Attorney’s Fees, Governing Law, Additional Terms
-    st.markdown("#### Sections 25–26 – Attorney’s Fees, Governing Law & Additional Terms")
+    st.markdown("#### Attorney’s Fees, Governing Law & Additional Terms")
 
     st.markdown(
         "- Explain **attorney’s fees**: typically, the prevailing party in certain disputes may "
@@ -208,7 +208,7 @@ def render_section23_30_overview():
         "for example, custom agreements or clarifications negotiated between buyer and seller."
     )
 
-    with st.expander("📄 Click to view more about Sections 25–26 (placeholder)", expanded=False):
+    with st.expander("📄 Click to view more about  Attorney’s Fees, Governing Law & Additional Term (placeholder)", expanded=False):
         st.markdown(
             "_Placeholder for full or partial contract text about attorney’s fees, governing law, "
             "and additional terms. You can replace this with more precise language or links later._"
@@ -217,7 +217,7 @@ def render_section23_30_overview():
     st.markdown("---")
 
     # 27–28: Addenda, Counter-Offers, Integrated Agreement
-    st.markdown("#### Sections 27–28 – Addenda, Counter-Offers & Entire Agreement")
+    st.markdown("#### Addenda, Counter-Offers & Entire Agreement")
 
     st.markdown(
         "- Clarify how **addenda, counter-offers, and other attached forms** become part of the contract.\n"
@@ -235,7 +235,7 @@ def render_section23_30_overview():
     st.markdown("---")
 
     # 29–30: Brokers, Agency Confirmation, Misc. Broker Terms
-    st.markdown("#### Sections 29–30 – Brokers, Agency & Compensation")
+    st.markdown("#### Brokers, Agency & Compensation")
 
     st.markdown(
         "- Confirm the identity of the **buyer’s broker** and the **seller’s broker**.\n"
@@ -284,12 +284,12 @@ def render_section23_30_overview():
     col_left, col_right = st.columns(2)
 
     with col_left:
-        if st.button("💾 Save Sections 23–30", key="pa23_30_save"):
+        if st.button("💾 Save", key="pa23_30_save"):
             # Hook this into your persistence logic (DB, file, etc.)
             st.success("Sections 23–30 notes saved (connect this button to your actual save logic).")
 
     with col_right:
-        if st.button("Next: Section 31 – Expiration of Offer", key="pa23_30_next"):
+        if st.button("Next: Final Review", key="pa23_30_next"):
             # If you are using an active_pa_tab index, set it here (adjust to your nav)
             # Example:
             # st.session_state['active_pa_tab'] = 14  # whatever index corresponds to Section 31 tab
