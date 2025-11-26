@@ -11,7 +11,7 @@ from purchase_agreement.section9_closing_possession import render_section9_closi
 from purchase_agreement.section10_13_overview import render_section10_13_overview
 from purchase_agreement.section14_contingencies import render_section14_contingencies
 from purchase_agreement.section15_time_dates import render_section15_time_dates
-from purchase_agreement.section15_time_dates import render_section15_time_dates
+
 
 
 
