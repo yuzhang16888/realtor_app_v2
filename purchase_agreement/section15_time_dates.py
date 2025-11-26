@@ -14,12 +14,12 @@ def render_section15_time_dates():
     - Light user inputs: notes about flexibility/preferences on dates.
     """
 
-    st.markdown("## 15. Time Periods; Dates; Time of Essence")
+    st.markdown("## 5. Time Periods; Dates; Time of Essence")
 
     # ---------------------------
     # 💬 GPT / AI Realtor + Human Realtor — Top Helper for Section 15
     # ---------------------------
-    with st.expander("💬 Need help with Section 15 – Time & Dates?", expanded=True):
+    with st.expander("💬 Need help with Section 5 – Time & Dates?", expanded=True):
 
         st.markdown(
             "Use this assistant to understand how time periods and dates work in the contract, "
@@ -145,7 +145,7 @@ def render_section15_time_dates():
     # ---------------------------
     # Plain-English summary of Section 15
     # ---------------------------
-    st.markdown("### What Section 15 is about (plain English)")
+    st.markdown("### What Section 5 is about (plain English)")
 
     st.markdown(
         "- Section 15 explains **how all contract time periods and dates are counted**.\n"
@@ -239,13 +239,13 @@ def render_section15_time_dates():
     col_left, col_right = st.columns(2)
 
     with col_left:
-        if st.button("💾 Save Section 15", key="pa15_save"):
+        if st.button("💾 Save Section 5", key="pa15_save"):
             # Hook this into your persistence logic (e.g., save to DB or session)
-            st.success("Section 15 responses saved (connect this button to your save logic).")
+            st.success("Section 55 responses saved (connect this button to your save logic).")
 
     with col_right:
-        if st.button("Next: Section 16", key="pa15_next"):
+        if st.button("Next: Section Others", key="pa15_next"):
             # If you are using an active_pa_tab index, set it here (adjust index as needed)
             # Example:
             # st.session_state['active_pa_tab'] = 11  # whatever index corresponds to Section 16
-            st.info("Moving to Section 16… (make sure this updates your main app navigation).")
+            st.info("Moving to Others… (make sure this updates your main app navigation).")
