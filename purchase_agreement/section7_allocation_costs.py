@@ -370,8 +370,8 @@ def render_section7_allocation_costs():
     col_prev, col_next = st.columns([1, 1])
 
     with col_prev:
-        if st.button("⬅️ Back to Section 3", key="pa7_back_btn", use_container_width=True):
-            st.session_state.active_pa_tab = 5  # zero-index: section 6
+        if st.button("⬅️ Back to Section 1", key="pa7_back_btn", use_container_width=True):
+            st.session_state.active_pa_tab = 1  # zero-index: section 6
 
     with col_next:
         if st.button("Save Section 2 & Continue ➡️", key="pa7_next_btn", use_container_width=True):
