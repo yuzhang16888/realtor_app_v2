@@ -24,10 +24,7 @@ def render_section_1_offer():
     )
 
     _render_section_1_form(s1)
-
-    st.divider()
-    st.markdown("#### Section 1 – Live Summary")
-    _render_section_1_summary(s1)
+    # 🔹 Live Summary removed on purpose
 
 
 def _render_section_1_form(s1: dict):
