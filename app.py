@@ -249,7 +249,7 @@ elif mode == "purchase_agreement":
         render_section10_13_overview()
 
         st.markdown("---")
-        st.markdown("### Sections 16–20 – Repairs, Taxes & Other Details")
+        #st.markdown("### Sections 16–20 – Repairs, Taxes & Other Details")
         render_section16_20_info()
 
         st.markdown("---")
