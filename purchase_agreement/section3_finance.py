@@ -538,15 +538,15 @@ def render_section3_finance():
         )
 
     # --- Save + Navigation Buttons ---
-    st.markdown("---")
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("💾 Save Section 3 – Finance Terms", use_container_width=True):
-            st.session_state[SECTION3_KEY] = data
-            st.success("Section 3 – Finance Terms saved.")
-    with col2:
-        if st.button("➡️ Move to Section 4", use_container_width=True):
-            st.session_state[SECTION3_KEY] = data
-            # assuming tabs are 0-indexed and Section 4 is index 3
-            st.session_state.active_pa_tab = 4&5
-            st.info("Moved to Section 4.")
+    # st.markdown("---")
+    # col1, col2 = st.columns(2)
+    # with col1:
+    #     if st.button("💾 Save Section 3 – Finance Terms", use_container_width=True):
+    #         st.session_state[SECTION3_KEY] = data
+    #         st.success("Section 3 – Finance Terms saved.")
+    # with col2:
+    #     if st.button("➡️ Move to Section 4", use_container_width=True):
+    #         st.session_state[SECTION3_KEY] = data
+    #         # assuming tabs are 0-indexed and Section 4 is index 3
+    #         st.session_state.active_pa_tab = 4&5
+    #         st.info("Moved to Section 4.")
