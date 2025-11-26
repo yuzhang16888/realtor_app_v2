@@ -7,7 +7,7 @@ from purchase_agreement.ai_helpers import call_purchase_agreement_ai
 
 def render_section31_expiration():
     """
-    Section 31 – Expiration of Offer
+    Section 5 – Expiration of Offer
     Buyer sets the exact date/time their offer expires.
     """
 
@@ -125,7 +125,7 @@ def render_section31_expiration():
     # --------------------------------------------------
     # Plain-English Summary
     # --------------------------------------------------
-    st.markdown("### What Section 31 means (plain English)")
+    st.markdown("### What this means (plain English)")
 
     st.markdown(
         "- The offer automatically **expires** at the exact date and time you set.\n"
@@ -212,11 +212,11 @@ def render_section31_expiration():
     col_left, col_right = st.columns(2)
 
     with col_left:
-        if st.button("💾 Save Section 31"):
-            st.success("Section 31 saved (connect this to your persistence logic).")
+        if st.button("💾 Save "):
+            st.success("saved (connect this to your persistence logic).")
 
     with col_right:
-        if st.button("Next: Final Signatures"):
+        if st.button("Next:Final Review"):
             # Example navigation (adjust index to your app)
             # st.session_state['active_pa_tab'] = your_next_tab_index
             st.info("Moving to Final Signatures…")
