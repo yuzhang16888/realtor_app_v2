@@ -11,14 +11,12 @@ from purchase_agreement.section9_closing_possession import render_section9_closi
 from purchase_agreement.section10_13_overview import render_section10_13_overview
 from purchase_agreement.section14_contingencies import render_section14_contingencies
 from purchase_agreement.section15_time_dates import render_section15_time_dates
+from purchase_agreement.section16_20_info import render_section16_20_info
 from purchase_agreement.section21_22_remedies_disputes import render_section21_22_remedies_disputes
 from purchase_agreement.section23_30_overview import render_section23_30_overview
 from purchase_agreement.section31_expiration import render_section31_expiration
 from purchase_agreement.section_final_review_signatures import render_final_review_signatures
 from purchase_agreement.section_signatures_export import render_signatures_export
-
-
-
 
 
 # ==========================================================
@@ -184,78 +182,91 @@ elif mode == "purchase_agreement":
     st.subheader("Purchase Agreement – CA RPA Walkthrough (Beta)")
 
     st.markdown(
-        "We’ll guide you through key sections of the **California Residential Purchase Agreement (RPA)**, "
-        "starting with your offer basics and then your agency status."
+        "We’ll guide you through the **core deal terms first** (price, financing, sale of your current home, "
+        "and when your offer expires), then walk through costs, condition, contingencies, and the remaining fine print."
     )
 
-    # Tabs for different sections (Offer + Agency)
-    tab1, tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10,tab11,tab12,tab13,tab14,tab15,tab16 = st.tabs(
-        ["Section 1 – Offer", 
-        "Section 2 – Agency",
-        "Section 3 - Finance",
-        "Section 4 & 5- Sale of Buyer's Property",
-        "Section 6 - Others(Optional)",
-        "Section 7 - Costs",
-        "Section 8 - Condtion & Repairs",
-        "Section 9 -Closing and Possession",
-        "Section 10-13 Overview",
-        "Section 14-Contingencies",
-        "Section 15-Verification",
-        "Section 16-Dispute",
-        "Section 17-Misc",
-        "Section 18-Expiration",
-        "Final Review – Key Terms Summary",
-        "Signatures & Export",
+    # ======================================================
+    # 🧱 TABS – COLLAPSED STRUCTURE
+    # ======================================================
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(
+        [
+            "Core Deal Terms (1, 3, 4–5, Expiration)",
+            "Section 7 – Costs",
+            "Section 8 – Condition & Repairs",
+            "Section 14 – Contingencies",
+            "Section 15 – Final Verification",
+            "Other (Agency, Misc & Disclosures)",
+            "Final Review & Export",
         ]
     )
 
+    # 1️⃣ Core Deal Terms: Section 1 + Section 3 + Sections 4–5 + Expiration
     with tab1:
+        st.markdown("### Section 1 – Offer")
         render_section_1_offer()
 
-    with tab2:
-
-        render_section_2_agency()
-
-    with tab3:
+        st.markdown("---")
+        st.markdown("### Section 3 – Finance")
         render_section3_finance()
-    
-    with tab4:
+
+        st.markdown("---")
+        st.markdown("### Sections 4–5 – Sale of Buyer's Property")
         render_section4_sale_of_buyer_property()
 
-    with tab5:
-        render_section6_other_terms()
-    
-    with tab6:
+        st.markdown("---")
+        st.markdown("### Expiration of Offer")
+        render_section31_expiration()
+
+    # 2️⃣ Section 7 – Costs
+    with tab2:
         render_section7_allocation_costs()
 
-    with tab7:
+    # 3️⃣ Section 8 – Condition & Repairs
+    with tab3:
         render_section8_property_condition()
 
-    with tab8:
-        render_section9_closing_possession()
-    with tab9:
-        render_section10_13_overview()
-    with tab10:
+    # 4️⃣ Section 14 – Contingencies
+    with tab4:
         render_section14_contingencies()
-    # Example:
-    with tab11:
+
+    # 5️⃣ Section 15 – Final Verification / Time
+    with tab5:
         render_section15_time_dates()
-    # Example:
-    with tab12:
+
+    # 6️⃣ Other: Agency, Misc, Disclosures, General Terms
+    with tab6:
+        st.markdown("### Section 2 – Agency / Representation")
+        render_section_2_agency()
+
+        st.markdown("---")
+        st.markdown("### Section 6 – Other Terms (Optional)")
+        render_section6_other_terms()
+
+        st.markdown("---")
+        st.markdown("### Sections 10–13 – Disclosures Overview")
+        render_section10_13_overview()
+
+        st.markdown("---")
+        st.markdown("### Sections 16–20 – Repairs, Taxes & Other Details")
+        render_section16_20_info()
+
+        st.markdown("---")
+        st.markdown("### Sections 21–22 – Remedies & Dispute Resolution")
         render_section21_22_remedies_disputes()
-    with tab13:
+
+        st.markdown("---")
+        st.markdown("### Sections 23–30 – General Terms & Brokers")
         render_section23_30_overview()
-    with tab14:
-        render_section31_expiration()
-    with tab15:
+
+    # 7️⃣ Final Review + Export in one flow
+    with tab7:
+        st.markdown("### Step 1 – Final Review of Key Terms")
         render_final_review_signatures()
-    with tab16:
+
+        st.markdown("---")
+        st.markdown("### Step 2 – Signatures & Export")
         render_signatures_export()
-        
-
-
-
-
 
     # Global disclaimer under the whole mode
     st.markdown(DISCLAIMER_SHORT)
@@ -276,4 +287,3 @@ elif mode == "free_chat":
 
 else:
     st.warning("Unknown mode. Please pick an option above.")
-##
