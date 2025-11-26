@@ -15,7 +15,7 @@ from purchase_agreement.section21_22_remedies_disputes import render_section21_2
 from purchase_agreement.section23_30_overview import render_section23_30_overview
 from purchase_agreement.section31_expiration import render_section31_expiration
 from purchase_agreement.section_final_review_signatures import render_final_review_signatures
-
+from purchase_agreement.section_signatures_export import render_signatures_export
 
 
 
@@ -189,7 +189,7 @@ elif mode == "purchase_agreement":
     )
 
     # Tabs for different sections (Offer + Agency)
-    tab1, tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10,tab11,tab12,tab13,tab14,tab15= st.tabs(
+    tab1, tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10,tab11,tab12,tab13,tab14= st.tabs(
         ["Section 1 – Offer", 
         "Section 2 – Agency",
         "Section 3 - Finance",
@@ -205,6 +205,7 @@ elif mode == "purchase_agreement":
         "Section 17-Misc",
         "Section 18-Expiration",
         "Section Final-Signature"
+         "Export Contract"
         ]
     )
 
@@ -246,8 +247,19 @@ elif mode == "purchase_agreement":
         render_section23_30_overview()
     with tab14:
         render_section31_expiration()
-    with tab15:
-        render_final_review_signatures()
+    # with tab15:
+    #     render_final_review_signatures()
+    # Example only – adjust to your actual tab structure
+    tab_final_review, tab_signatures = st.tabs(
+            ["Final Review", "Signatures & Export"]
+        )
+
+        with tab_final_review:
+            render_final_review_signatures()
+
+        with tab_signatures:
+            render_signatures_export()
+        
 
 
 
