@@ -14,7 +14,7 @@ def render_section14_contingencies():
     - 14B(2), 14B(3), 14B(4) shown as plain-English explanations and tables.
     """
 
-    st.markdown("## 14. Contingencies, Removal of Contingencies, and Cancellation Rights")
+    st.markdown("## 4. Contingencies, Removal of Contingencies, and Cancellation Rights")
 
     # ---------------------------
     # 💬 GPT / AI Realtor + Human Realtor — Top Helper for Section 14
