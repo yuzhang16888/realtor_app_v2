@@ -28,8 +28,8 @@ def render_section4_sale_of_buyer_property():
     # st.subheader("Section 4 & 5 – Subject to Sale of Buyer’s Property")
 
     st.markdown(
-        "> This screen combines **Section 4 – Sale of Buyer’s Property** and the "
-        "related portion of **Section 5 – Addenda and Advisories**. In most "
+        "> This screen combines **Section 3 – Sale of Buyer’s Property** and the "
+        "related portion of **Section 3.1 – Addenda and Advisories**. In most "
         "California transactions, the purchase is **not** contingent on the sale of "
         "another property. If it **is** contingent, a **C.A.R. Form COP** addendum "
         "is typically required and listed in the Addenda section."
@@ -38,7 +38,7 @@ def render_section4_sale_of_buyer_property():
     # ---------------------------
     # 4. SALE OF BUYER'S PROPERTY
     # ---------------------------
-    st.markdown("### 4. Sale of Buyer’s Property")
+    st.markdown("### 3. Sale of Buyer’s Property")
 
     st.markdown("**Which statement applies to Buyer?**")
 
@@ -123,7 +123,7 @@ def render_section4_sale_of_buyer_property():
     # ------------------------------------------
     # 5. ADDENDA AND ADVISORIES (related to 4)
     # ------------------------------------------
-    st.markdown("### 4.1 Addenda and Advisories (Related to Sale of Buyer’s Property)")
+    st.markdown("### 3.1 Addenda and Advisories (Related to Sale of Buyer’s Property)")
 
     if data["is_contingent_on_sale"]:
         st.markdown(
