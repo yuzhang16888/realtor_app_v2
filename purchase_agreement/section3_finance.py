@@ -4,6 +4,18 @@ import streamlit as st
 
 SECTION3_KEY = "pa_section3_finance"
 
+# Try to import the shared AI helper; fall back gracefully if not available
+try:
+    from purchase_agreement.ai_helpers import call_purchase_agreement_ai
+except Exception:
+    def call_purchase_agreement_ai(prompt, section=None):
+        """
+        Fallback stub so this module still imports even if ai_helpers is missing.
+        """
+        return (
+            "AI helper backend is not available right now. "
+            "Please check your configuration or try again later."
+        )
 
 def _init_section3_state():
     if SECTION3_KEY not in st.session_state:
@@ -80,6 +92,126 @@ def _get_purchase_price_from_section1() -> float:
 
 
 def render_section3_finance():
+        # ---------------------------
+    # 💬 GPT / AI Realtor – Finance Terms helper
+    # ---------------------------
+    with st.expander("💬 Need help with Section 3? Ask AI Realtor", expanded=True):
+        st.markdown(
+            "Use this assistant to better understand **how your financing terms work** in a California offer:\n"
+            "- purchase price & loan amount\n"
+            "- down payment & earnest money\n"
+            "- cash vs. financed offers\n"
+            "- loan & appraisal contingencies\n\n"
+            "**Reminder:** This is general info, not legal or lending advice. "
+            "Always confirm numbers with your lender and your agent."
+        )
+
+        default_prompt_3 = (
+            "You are an experienced California residential real estate agent. "
+            "Explain, in simple language, how Section 3 – Finance Terms works in the CAR Residential Purchase Agreement. "
+            "Cover topics like: purchase price, earnest money deposit, down payment, loan vs. all-cash, "
+            "and how loan/appraisal contingencies usually fit with the financing structure. "
+            "Do not give legal or tax advice. Always remind the user to confirm details with their own lender and agent."
+        )
+
+        with st.form("pa3_ai_form"):
+            user_prompt_3 = st.text_input(
+                "What do you want help with in Section 3 – Finance Terms?",
+                key="pa3_ai_prompt",
+                placeholder=(
+                    "Examples:\n"
+                    "• How much earnest money should I put down in California?\n"
+                    "• What’s the difference between all-cash and financed offers?\n"
+                    "• How do loan and appraisal contingencies relate to my financing?\n"
+                    "• Is 20% down required, or can I do 5% down?"
+                ),
+            )
+
+            col_ai1, col_ai2 = st.columns([3, 2])
+
+            with col_ai1:
+                use_context_3 = st.checkbox(
+                    "Include default finance context in my question",
+                    value=True,
+                    key="pa3_ai_use_context",
+                )
+
+            with col_ai2:
+                ask_clicked_3 = st.form_submit_button(
+                    "Ask AI Realtor about Finance Terms",
+                    use_container_width=True,
+                )
+                connect_clicked_3 = st.form_submit_button(
+                    "Connect with a Human Realtor",
+                    use_container_width=True,
+                )
+
+        # Handle Ask AI
+        if ask_clicked_3:
+            if not user_prompt_3.strip():
+                st.warning("Please enter a question or description first.")
+            else:
+                full_prompt_3 = user_prompt_3.strip()
+                if use_context_3:
+                    full_prompt_3 = (
+                        default_prompt_3
+                        + "\n\nUser question:\n"
+                        + user_prompt_3.strip()
+                    )
+
+                with st.spinner("Thinking like a California Realtor..."):
+                    answer_3 = call_purchase_agreement_ai(
+                        full_prompt_3,
+                        section="3",
+                    )
+                    st.session_state["pa3_ai_answer"] = answer_3
+
+        # Show AI answer
+        if "pa3_ai_answer" in st.session_state:
+            st.markdown("#### 🧠 AI Realtor – Finance Terms Suggestion")
+            st.info(st.session_state["pa3_ai_answer"])
+
+        # Handle Connect with Human Realtor
+        if connect_clicked_3:
+            st.session_state["pa3_show_human_realtor_form"] = True
+
+        if st.session_state.get("pa3_show_human_realtor_form", False):
+            st.markdown("#### 🤝 Connect with a Human Realtor")
+
+            contact_info_3 = st.text_input(
+                "Your preferred phone or email",
+                key="pa3_human_contact",
+                placeholder="Example: 415-555-1234 or you@example.com",
+            )
+
+            human_question_3 = st.text_area(
+                "What would you like to ask a human?",
+                key="pa3_human_question",
+                height=100,
+                placeholder=(
+                    "Example: Can you check if my down payment + loan structure looks realistic "
+                    "for this price range and area?"
+                ),
+            )
+
+            send_clicked_3 = st.button(
+                "Send my question to a Human Realtor",
+                key="pa3_human_send_btn",
+                use_container_width=True,
+            )
+
+            if send_clicked_3:
+                if not contact_info_3.strip() or not human_question_3.strip():
+                    st.warning("Please provide both your contact info and your question.")
+                else:
+                    st.session_state["pa3_human_realtor_request"] = {
+                        "contact": contact_info_3.strip(),
+                        "question": human_question_3.strip(),
+                    }
+                    st.success(
+                        "Your request has been recorded. A human realtor will reach out to you using the contact info you provided."
+                    )
+
     _init_section3_state()
     data = st.session_state[SECTION3_KEY]
 
