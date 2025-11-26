@@ -23,7 +23,7 @@ from purchase_agreement.section_signatures_export import render_signatures_expor
 # 🚀 STREAMLIT APP CONFIG
 # ==========================================================
 st.set_page_config(
-    page_title="Enchanted AI Realtor — with Human Expertise",
+    page_title="Buyerside AI Realtor with human in loop",
     page_icon="🏡",
     layout="wide",
 )
