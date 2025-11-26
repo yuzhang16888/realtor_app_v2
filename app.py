@@ -10,6 +10,10 @@ from purchase_agreement.section8_property_condition import render_section8_prope
 from purchase_agreement.section9_closing_possession import render_section9_closing_possession
 from purchase_agreement.section10_13_overview import render_section10_13_overview
 from purchase_agreement.section14_contingencies import render_section14_contingencies
+from purchase_agreement.section15_time_dates import render_section15_time_dates
+from purchase_agreement.section15_time_dates import render_section15_time_dates
+
+
 
 # ==========================================================
 # 🚀 STREAMLIT APP CONFIG
@@ -179,7 +183,7 @@ elif mode == "purchase_agreement":
     )
 
     # Tabs for different sections (Offer + Agency)
-    tab1, tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10= st.tabs(
+    tab1, tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10,tab11= st.tabs(
         ["Section 1 – Offer", 
         "Section 2 – Agency",
         "Section 3 - Finance",
@@ -189,7 +193,8 @@ elif mode == "purchase_agreement":
         "Section 8 - Condtion & Repairs",
         "Section 9 -Closing and Possession",
         "Section 10-13 Overview",
-        "Section 14-Contingencies"
+        "Section 14-Contingencies",
+        "Section 11-Verification"
         ]
     )
 
@@ -221,6 +226,10 @@ elif mode == "purchase_agreement":
         render_section10_13_overview()
     with tab10:
         render_section14_contingencies()
+    # Example:
+    with tab11:
+        render_section15_time_dates()
+
 
 
     # Global disclaimer under the whole mode
