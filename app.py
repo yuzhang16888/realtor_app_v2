@@ -219,7 +219,7 @@ elif mode == "purchase_agreement":
         render_section9_closing_possession()
     with tab9:
         render_section10_13_overview()
-    with tab14:
+    with tab10:
         render_section14_contingencies()
 
 
