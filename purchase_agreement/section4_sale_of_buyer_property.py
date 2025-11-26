@@ -25,7 +25,7 @@ def render_section4_sale_of_buyer_property():
     _init_section4_state()
     data = st.session_state[SECTION4_KEY]
 
-    st.subheader("Section 4 & 5 – Subject to Sale of Buyer’s Property")
+    # st.subheader("Section 4 & 5 – Subject to Sale of Buyer’s Property")
 
     st.markdown(
         "> This screen combines **Section 4 – Sale of Buyer’s Property** and the "
