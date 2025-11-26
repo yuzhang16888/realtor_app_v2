@@ -284,18 +284,18 @@ def render_section21_22_remedies_disputes():
     # --------------------------------------------------
     # Bottom navigation – Save / Next
     # --------------------------------------------------
-    col_left, col_right = st.columns(2)
+    # col_left, col_right = st.columns(2)
 
-    with col_left:
-        if st.button("💾 Save Sections 21–22", key="pa21_22_save"):
-            # Hook this into your persistence logic (DB or session)
-            st.success(
-                "Sections 21–22 notes saved (connect this button to your actual save logic)."
-            )
+    # with col_left:
+    #     if st.button("💾 Save Sections 21–22", key="pa21_22_save"):
+    #         # Hook this into your persistence logic (DB or session)
+    #         st.success(
+    #             "Sections 21–22 notes saved (connect this button to your actual save logic)."
+    #         )
 
-    with col_right:
-        if st.button("Next: Remaining General Terms / Signatures", key="pa21_22_next"):
-            # If you are using an active_pa_tab index, set it here (adjust to your nav)
-            # Example:
-            # st.session_state['active_pa_tab'] = 13  # whatever index corresponds to next section
-            st.info("Moving to the remaining general terms and signatures…")
+    # with col_right:
+    #     if st.button("Next: Remaining General Terms / Signatures", key="pa21_22_next"):
+    #         # If you are using an active_pa_tab index, set it here (adjust to your nav)
+    #         # Example:
+    #         # st.session_state['active_pa_tab'] = 13  # whatever index corresponds to next section
+    #         st.info("Moving to the remaining general terms and signatures…")
