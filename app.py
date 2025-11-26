@@ -192,13 +192,13 @@ elif mode == "purchase_agreement":
     # ======================================================
     tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(
         [
-            "Core Deal Terms (1, 3, 4–5, Expiration)",
-            "Section 7 – Costs",
-            "Section 8 – Condition & Repairs",
-            "Section 14 – Contingencies",
-            "Section 15 – Final Verification",
+            "Core Deal Terms",
+            "Section 2 – Costs",
+            "Section 3 – Condition & Repairs",
+            "Section 4 – Time Period to remove contingencies",
+            "Section 5 – Final Verification",
             "Other (Agency, Misc & Disclosures)",
-            "Final Review & Export",
+            "Final Review & Export"
         ]
     )
 
