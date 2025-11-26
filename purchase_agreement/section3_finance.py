@@ -17,6 +17,7 @@ except Exception:
             "Please check your configuration or try again later."
         )
 
+
 def _init_section3_state():
     if SECTION3_KEY not in st.session_state:
         st.session_state[SECTION3_KEY] = {
@@ -92,7 +93,14 @@ def _get_purchase_price_from_section1() -> float:
 
 
 def render_section3_finance():
-        # ---------------------------
+    # init state
+    _init_section3_state()
+    data = st.session_state[SECTION3_KEY]
+
+    # Header
+    st.markdown("### Section 3 – Finance Terms")
+
+    # ---------------------------
     # 💬 GPT / AI Realtor – Finance Terms helper
     # ---------------------------
     with st.expander("💬 Need help with Section 3? Ask AI Realtor", expanded=True):
@@ -212,11 +220,9 @@ def render_section3_finance():
                         "Your request has been recorded. A human realtor will reach out to you using the contact info you provided."
                     )
 
-    _init_section3_state()
-    data = st.session_state[SECTION3_KEY]
-
-    st.subheader("Section 2 -Finance Terms")
-
+    # ---------------------------
+    # Existing Section 3 UI
+    # ---------------------------
     st.markdown(
         "> This section mirrors **Section 3 – Finance Terms** of the California "
         "Residential Purchase Agreement (RPA). It covers deposits, loans, and key "
@@ -225,7 +231,7 @@ def render_section3_finance():
     )
 
     # --- 3A. Initial Deposit ---
-    st.markdown("### 2.A Initial Deposit")
+    st.markdown("### 3.A Initial Deposit")
 
     col1, col2 = st.columns(2)
     with col1:
@@ -332,7 +338,7 @@ def render_section3_finance():
     st.markdown("---")
 
     # --- 3B. Increased Deposit ---
-    st.markdown("### 2.B. Increased Deposit (optional)")
+    st.markdown("### 3.B. Increased Deposit (optional)")
     data["has_increased_deposit"] = st.checkbox(
         "Will there be an additional increased deposit?",
         value=bool(data["has_increased_deposit"]),
@@ -363,7 +369,7 @@ def render_section3_finance():
     st.markdown("---")
 
     # --- 3C–3E. All-Cash / Loan Terms ---
-    st.markdown("### 2.C–2.E All-Cash / Loan Terms")
+    st.markdown("### 3.C–3.E All-Cash / Loan Terms")
 
     data["is_all_cash"] = st.checkbox(
         "All-cash offer (Buyer does not need a loan to close)",
@@ -522,7 +528,7 @@ def render_section3_finance():
             )
 
     # Additional Financing Terms
-    st.markdown("### 2.E. Additional Financing Terms (optional)")
+    st.markdown("### 3.E. Additional Financing Terms (optional)")
     data["additional_financing_terms"] = st.text_area(
         "Additional terms related to financing, credits, rate buydown, or special structures:",
         value=data["additional_financing_terms"],
@@ -537,7 +543,7 @@ def render_section3_finance():
     st.markdown("---")
 
     # --- 3F. Purchase Price (Total) ---
-    st.markdown("### 2.F. Purchase Price (Total)")
+    st.markdown("### 3.F. Purchase Price (Total)")
     auto_price = _get_purchase_price_from_section1()
     if auto_price > 0:
         st.info(
@@ -558,7 +564,7 @@ def render_section3_finance():
     st.markdown("---")
 
     # --- 3G. Balance of Down Payment ---
-    st.markdown("### 2.G. Balance of Down Payment")
+    st.markdown("### 3.G. Balance of Down Payment")
     data["down_payment_balance_amount"] = st.number_input(
         "Balance of down payment or purchase price to be deposited with escrow ($)",
         min_value=0.0,
@@ -571,7 +577,7 @@ def render_section3_finance():
     st.markdown("---")
 
     # --- 3H. Verification of Down Payment and Closing Costs ---
-    st.markdown("### 2.H. Verification of Down Payment and Closing Costs")
+    st.markdown("### 3.H. Verification of Down Payment and Closing Costs")
     data["verification_funds_days"] = st.number_input(
         "Days After Acceptance for Buyer to provide verification of funds",
         min_value=0,
@@ -586,7 +592,7 @@ def render_section3_finance():
     st.markdown("---")
 
     # --- 3I. Appraisal Contingency ---
-    st.markdown("### 2.I. Appraisal Contingency")
+    st.markdown("### 3.I. Appraisal Contingency")
 
     data["has_appraisal_contingency"] = st.checkbox(
         "Include appraisal contingency (property must appraise at or above purchase price)",
@@ -610,7 +616,7 @@ def render_section3_finance():
     st.markdown("---")
 
     # --- 3J. Loan Application / Preapproval ---
-    st.markdown("### 2.J. Loan Application and Preapproval Letter")
+    st.markdown("### 3.J. Loan Application and Preapproval Letter")
 
     col1, col2 = st.columns(2)
     with col1:
@@ -637,7 +643,7 @@ def render_section3_finance():
     st.markdown("---")
 
     # --- 3K. Loan Contingency ---
-    st.markdown("### 2.K. Loan Contingency")
+    st.markdown("### 3.K. Loan Contingency")
 
     data["has_loan_contingency"] = st.checkbox(
         "Include loan contingency (Buyer’s obligation is contingent on obtaining the specified loan)",
@@ -668,17 +674,3 @@ def render_section3_finance():
             "Buyer may be in default and Seller may be entitled to retain the deposit "
             "as liquidated damages if that provision is initialed."
         )
-
-    # --- Save + Navigation Buttons ---
-    # st.markdown("---")
-    # col1, col2 = st.columns(2)
-    # with col1:
-    #     if st.button("💾 Save Section 3 – Finance Terms", use_container_width=True):
-    #         st.session_state[SECTION3_KEY] = data
-    #         st.success("Section 3 – Finance Terms saved.")
-    # with col2:
-    #     if st.button("➡️ Move to Section 4", use_container_width=True):
-    #         st.session_state[SECTION3_KEY] = data
-    #         # assuming tabs are 0-indexed and Section 4 is index 3
-    #         st.session_state.active_pa_tab = 4&5
-    #         st.info("Moved to Section 4.")
