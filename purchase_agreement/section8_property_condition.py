@@ -126,7 +126,7 @@ def render_section8_property_condition():
     # ---------------------------
     # 8A. Property Condition / “As-Is”
     # ---------------------------
-    st.markdown("### 8A. Property Condition / “As-Is”")
+    st.markdown("### 3.A. Property Condition / “As-Is”")
 
     st.write(
         "Clarify whether the property is being sold in its present physical condition "
