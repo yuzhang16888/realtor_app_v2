@@ -1,155 +1,77 @@
 # purchase_agreement/section14_contingencies.py
 
 import streamlit as st
-
-# IMPORTANT: adjust this import to match how you did it in Section 8 / Section 9
-# Example (if this is what Section 8 uses):
-# from purchase_agreement.ai_helpers import call_purchase_agreement_ai
-from purchase_agreement.ai_helpers import call_purchase_agreement_ai
+from purchase_agreement.ai_helpers import call_purchase_agreement_ai  # adjust path if needed
 
 
 def render_section14_contingencies():
     """
     Render Section 14 – Contingencies; Removal of Contingencies; Cancellation Rights.
 
-    UX decisions:
-    - At the top: AI helper with quick default options + custom question.
-    - User only fills 14B(1) (time to remove buyer contingencies).
-    - 14B(2), 14B(3), 14B(4) are explained in layman's terms and shown in tables,
-      instead of asking the user to tweak legal language.
+    UX design:
+    - Top expander: Ask AI Realtor + Connect with Human Realtor.
+    - User only edits 14B(1) (number of days for buyer contingencies + notes).
+    - 14B(2), 14B(3), 14B(4) shown as plain-English explanations and tables.
     """
 
     st.markdown("## 14. Contingencies, Removal of Contingencies, and Cancellation Rights")
 
     # ---------------------------
-    # 💬 GPT / AI Realtor – Section 14 Helper
+    # 💬 GPT / AI Realtor + Human Realtor — Top Helper for Section 14
     # ---------------------------
-    with st.expander("💬 Ask AI Realtor about Section 14 – Contingencies & Cancellation", expanded=True):
+    with st.expander("💬 Need help with contingencies (Section 14)?", expanded=True):
+
         st.markdown(
-            "Use this helper to understand how contingency deadlines, notices, and cancellation "
-            "rights work in Section 14.\n\n"
+            "Use this assistant to understand contingency periods, deadlines, Notices to Perform, "
+            "and cancellation rights.\n\n"
             "**Reminder:** This is not legal advice. Always confirm with your broker or attorney."
         )
 
+        # Default prompt for Section 14 questions
         default_prompt_14 = (
             "You are an experienced California residential real estate agent. "
-            "Help the buyer understand Section 14 of the CAR Residential Purchase Agreement, "
-            "especially Section 14.B(1), 14.B(2), 14.B(3), and 14.B(4). Explain:\n"
-            "- what each part means in plain language,\n"
-            "- what happens if the buyer or seller does not perform,\n"
-            "- how the 48-hour 'Notice to Perform' works, and\n"
-            "- how contingency deadlines are affected when the seller is late delivering disclosures.\n"
-            "Give clear, practical explanations and remind them that timelines and practices may vary by area."
+            "Explain Section 14 of the CAR Residential Purchase Agreement in simple terms. "
+            "Cover contingency timelines, removal requirements, Notice to Buyer to Perform, "
+            "Notice to Seller to Perform, cancellation rights, and how delays in seller disclosures "
+            "affect buyer deadlines. Provide practical, plain-language advice."
         )
 
-        # -------------------------
-        # Quick choices
-        # -------------------------
-        st.markdown("**Quick options:**")
-
-        col_q1, col_q2 = st.columns(2)
-        with col_q1:
-            show_contract_clicked = st.button(
-                "📄 Show me the contract details",
-                key="pa14_show_contract_details",
-                use_container_width=True,
-            )
-        with col_q2:
-            show_timeline_clicked = st.button(
-                "📊 Who does what by when?",
-                key="pa14_show_timeline",
-                use_container_width=True,
-            )
-
-        # Handle "Show me the contract details" via AI
-        if show_contract_clicked:
-            full_prompt_14_contract = (
-                default_prompt_14
-                + "\n\nUser question:\n"
-                "Please walk me through the meaning of Section 14.B(1), 14.B(2), 14.B(3), "
-                "and 14.B(4) in plain English. Focus on what contingencies are, when they must "
-                "be removed, when the seller can cancel, when the buyer can cancel, and how "
-                "the 48-hour 'Notice to Perform' works."
-            )
-            with st.spinner("Thinking like a California Realtor..."):
-                try:
-                    answer_14_contract = call_purchase_agreement_ai(
-                        full_prompt_14_contract,
-                        section="14",
-                    )
-                except Exception as e:
-                    answer_14_contract = (
-                        "There was an error calling the AI backend for Section 14.\n\n"
-                        f"Details: {e}"
-                    )
-                st.session_state["pa14_ai_answer"] = answer_14_contract
-
-        # Handle "Who does what by when?" – show static tables
-        if show_timeline_clicked:
-            st.markdown("#### 📊 What needs to be done, by whom, and by when")
-
-            st.markdown("**14.B(2) – Seller’s right to cancel if buyer does nothing**")
-            st.markdown(
-                "| Party | Responsibility | When |\n"
-                "|-------|----------------|------|\n"
-                "| **Buyer** | Remove contingencies or cancel | Before the contingency period expires |\n"
-                "| **Seller** | May issue a *Notice to Buyer to Perform* | After buyer fails to act by the deadline |\n"
-                "| **Buyer** | Must perform (remove or cancel) after notice | Within 48 hours after receiving the notice |\n"
-                "| **Seller** | May cancel the contract | If buyer still does nothing after the 48 hours |\n"
-            )
-
-            st.markdown("**14.B(3) – Seller delays that affect buyer’s deadlines**")
-            st.markdown(
-                "| Party | Responsibility | Effect on deadlines |\n"
-                "|-------|----------------|---------------------|\n"
-                "| **Seller** | Provide required disclosures, access, or repairs | Within the agreed time (e.g., 7 days) |\n"
-                "| **Buyer** | Gets extended contingency periods if seller is late | Deadlines may be extended until seller has completed their part |\n"
-                "| **Seller** | Must complete their tasks before expecting buyer to remove contingencies | Buyer’s practical countdown starts after seller performs |\n"
-            )
-
-            st.markdown("**14.B(4) – Buyer’s right to cancel if seller doesn’t perform**")
-            st.markdown(
-                "| Party | Responsibility | When |\n"
-                "|-------|----------------|------|\n"
-                "| **Seller** | Deliver disclosures, allow access, complete agreed repairs, sign required papers | By the agreed timelines in the contract |\n"
-                "| **Buyer** | May issue a *Notice to Seller to Perform* | If seller fails to perform on time |\n"
-                "| **Seller** | Must perform after receiving the notice | Within 48 hours after receiving the notice |\n"
-                "| **Buyer** | May cancel the contract | If seller still has not performed after the 48 hours |\n"
-            )
-
-        # -------------------------
-        # Custom AI question
-        # -------------------------
-        st.markdown("---")
-        st.markdown("**Or ask your own question about Section 14:**")
-
-        with st.form("pa14_ai_form"):
+        # --- FORM for Ask AI + Connect Human ---
+        with st.form("pa14_ai_form_top"):
             user_prompt_14 = st.text_input(
-                "What do you want help with in Section 14?",
-                key="pa14_ai_prompt",
+                "Ask a question about contingencies (Section 14):",
+                key="pa14_ai_prompt_top",
                 placeholder=(
-                    "Example: What happens if I miss my contingency deadline?\n"
-                    "Example: Can I still cancel if the seller is late with disclosures?\n"
-                    "Example: What exactly is a 'Notice to Perform'?"
+                    "Examples:\n"
+                    "• What happens if I miss my contingency deadline?\n"
+                    "• What is a 'Notice to Perform'?\n"
+                    "• Can I cancel if the seller is late with disclosures?"
                 ),
             )
 
-            col_ai1, col_ai2 = st.columns([3, 2])
-            with col_ai1:
+            col_ai_top1, col_ai_top2 = st.columns([3, 2])
+
+            with col_ai_top1:
                 use_context_14 = st.checkbox(
-                    "Include default Section 14 context in my question",
+                    "Include default context in my question",
+                    key="pa14_ai_use_context_top",
                     value=True,
-                    key="pa14_ai_use_context",
                 )
-            with col_ai2:
-                ask_clicked_14 = st.form_submit_button(
-                    "Ask AI Realtor about Section 14",
+
+            with col_ai_top2:
+                ask_clicked_14_top = st.form_submit_button(
+                    "Ask AI Realtor",
+                    use_container_width=True,
+                )
+                connect_clicked_14_top = st.form_submit_button(
+                    "Connect with a Human Realtor",
                     use_container_width=True,
                 )
 
-        if ask_clicked_14:
+        # --- Handle Ask AI ---
+        if ask_clicked_14_top:
             if not user_prompt_14.strip():
-                st.warning("Please enter a question or description first.")
+                st.warning("Please type something to ask the AI Realtor.")
             else:
                 full_prompt_14 = user_prompt_14.strip()
                 if use_context_14:
@@ -170,13 +92,54 @@ def render_section14_contingencies():
                             "There was an error calling the AI backend for Section 14.\n\n"
                             f"Details: {e}"
                         )
+                    st.session_state["pa14_ai_answer_top"] = answer_14
 
-                    st.session_state["pa14_ai_answer"] = answer_14
+        # --- Show AI Answer ---
+        if "pa14_ai_answer_top" in st.session_state:
+            st.markdown("#### 🧠 AI Realtor Suggestion")
+            st.info(st.session_state["pa14_ai_answer_top"])
 
-        # Show AI answer if we have one
-        if "pa14_ai_answer" in st.session_state:
-            st.markdown("#### 🧠 AI Realtor Suggestion (Section 14)")
-            st.info(st.session_state["pa14_ai_answer"])
+        # --- Handle Connect with Human Realtor ---
+        if connect_clicked_14_top:
+            st.session_state["pa14_show_human_realtor_form_top"] = True
+
+        if st.session_state.get("pa14_show_human_realtor_form_top", False):
+            st.markdown("#### 🤝 Connect with a Human Realtor")
+
+            contact_info_14_top = st.text_input(
+                "Your preferred phone or email",
+                key="pa14_human_contact_top",
+                placeholder="Example: 415-555-1234 or you@example.com",
+            )
+
+            human_question_14_top = st.text_area(
+                "What would you like to ask a human?",
+                key="pa14_human_question_top",
+                height=100,
+                placeholder=(
+                    "Example: Can you help me select a safe but competitive contingency period?\n"
+                    "Example: Should I shorten my inspection contingency for a competitive offer?\n"
+                    "Example: What is typical in Bay Area contingencies?"
+                ),
+            )
+
+            send_clicked_14_top = st.button(
+                "Send my question to a Human Realtor",
+                key="pa14_human_send_btn_top",
+                use_container_width=True,
+            )
+
+            if send_clicked_14_top:
+                if not contact_info_14_top.strip() or not human_question_14_top.strip():
+                    st.warning("Please provide both your contact info and your question.")
+                else:
+                    st.session_state["pa14_human_realtor_request_top"] = {
+                        "contact": contact_info_14_top.strip(),
+                        "question": human_question_14_top.strip(),
+                    }
+                    st.success(
+                        "Your request has been recorded. A human realtor will reach out to you using the contact info you provided."
+                    )
 
     st.markdown("---")
 
@@ -186,13 +149,12 @@ def render_section14_contingencies():
     st.markdown("### What Section 14 is about (plain English)")
 
     st.markdown(
-        "- Section 14 is where the contract explains **contingencies** — "
-        "things that must happen, or information you must approve, before you are fully locked in.\n"
-        "- It also explains **how and when contingencies must be removed**, and "
-        "**what happens if either side fails to perform**.\n"
-        "- This app lets you set the time for your **buyer contingencies in 14.B(1)** "
-        "and then explains 14.B(2), 14.B(3), and 14.B(4) in plain language so you "
-        "understand your rights and risks."
+        "- Section 14 explains your **buyer contingencies** — conditions that must be satisfied "
+        "before you are fully locked into the purchase.\n"
+        "- It sets the **time period** for your contingencies, and explains how and when they "
+        "must be removed.\n"
+        "- It also explains **what happens if either side fails to perform**, including when a "
+        "Notice to Perform can be used and when someone may cancel the contract."
     )
 
     st.markdown("---")
@@ -272,7 +234,7 @@ def render_section14_contingencies():
     with st.expander("📄 14B(3) – Seller delays that affect buyer’s deadlines", expanded=False):
         st.markdown(
             "- If the seller is late delivering required disclosures, reports, or access, "
-            "your contingency deadlines can be **extended**.\n"
+            "your contingency deadlines can be **affected and may be extended**.\n"
             "- You are not expected to remove contingencies based on information that the "
             "seller has not yet provided.\n"
         )
@@ -282,7 +244,7 @@ def render_section14_contingencies():
             "| Party | Responsibility | Effect on deadlines |\n"
             "|-------|----------------|---------------------|\n"
             "| **Seller** | Provide required disclosures, access, or repairs | Within the agreed time (e.g., 7 days) |\n"
-            "| **Buyer** | Gets extended contingency periods if seller is late | Deadlines may be extended until seller has completed their part |\n"
+            "| **Buyer** | May receive extended contingency periods if seller is late | Deadlines may be extended until seller has completed their part |\n"
             "| **Seller** | Must complete tasks before expecting buyer to remove contingencies | Buyer’s practical countdown starts after seller performs |\n"
         )
 
@@ -321,5 +283,6 @@ def render_section14_contingencies():
     with col_right:
         if st.button("Next: Section 15", key="pa14_next"):
             # If you are using an active_pa_tab index, set it here (adjust index as needed)
-            # st.session_state["active_pa_tab"] = SOME_INDEX_FOR_SECTION_15
+            # Example:
+            # st.session_state['active_pa_tab'] = 10  # whatever index corresponds to Section 15
             st.info("Moving to Section 15… (make sure this updates your main app navigation).")
