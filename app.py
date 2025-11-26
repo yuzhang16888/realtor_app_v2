@@ -241,7 +241,7 @@ elif mode == "purchase_agreement":
         render_section_2_agency()
 
         st.markdown("---")
-        st.markdown("### Section 6 – Other Terms (Optional)")
+       # st.markdown("### Section 6 – Other Terms (Optional)")
         render_section6_other_terms()
 
         st.markdown("---")
