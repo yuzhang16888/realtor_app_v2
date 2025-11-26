@@ -195,7 +195,7 @@ elif mode == "purchase_agreement":
         "Section 9 -Closing and Possession",
         "Section 10-13 Overview",
         "Section 14-Contingencies",
-        "Section 11-Verification"
+        "Section 15-Verification"
         ]
     )
 
