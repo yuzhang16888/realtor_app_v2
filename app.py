@@ -246,7 +246,7 @@ elif mode == "purchase_agreement":
         render_section23_30_overview()
     with tab14:
         render_section31_expiration()
-    with tab_15:
+    with tab15:
         render_final_review_signatures()
 
 
