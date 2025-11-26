@@ -123,7 +123,7 @@ def render_section4_sale_of_buyer_property():
     # ------------------------------------------
     # 5. ADDENDA AND ADVISORIES (related to 4)
     # ------------------------------------------
-    st.markdown("### 5. Addenda and Advisories (Related to Sale of Buyer’s Property)")
+    st.markdown("### 4.1 Addenda and Advisories (Related to Sale of Buyer’s Property)")
 
     if data["is_contingent_on_sale"]:
         st.markdown(
