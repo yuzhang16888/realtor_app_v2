@@ -7,7 +7,7 @@ from purchase_agreement.ai_helpers import call_purchase_agreement_ai
 
 def render_section31_expiration():
     """
-    Section 5 – Expiration of Offer
+    Section 4 – Expiration of Offer
     Buyer sets the exact date/time their offer expires.
     """
 
