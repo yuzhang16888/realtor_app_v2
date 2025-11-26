@@ -390,7 +390,7 @@ def render_section3_finance():
             )
 
     # Additional Financing Terms
-    st.markdown("### 3E. Additional Financing Terms (optional)")
+    st.markdown("### 2.E. Additional Financing Terms (optional)")
     data["additional_financing_terms"] = st.text_area(
         "Additional terms related to financing, credits, rate buydown, or special structures:",
         value=data["additional_financing_terms"],
