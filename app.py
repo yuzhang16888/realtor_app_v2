@@ -254,11 +254,11 @@ elif mode == "purchase_agreement":
             ["Final Review", "Signatures & Export"]
         )
 
-        with tab_final_review:
-            render_final_review_signatures()
+    with tab_final_review:
+        render_final_review_signatures()
 
-        with tab_signatures:
-            render_signatures_export()
+    with tab_signatures:
+        render_signatures_export()
         
 
 
