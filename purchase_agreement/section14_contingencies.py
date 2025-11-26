@@ -6,7 +6,7 @@ from purchase_agreement.ai_helpers import call_purchase_agreement_ai  # adjust p
 
 def render_section14_contingencies():
     """
-    Render Section 14 – Contingencies; Removal of Contingencies; Cancellation Rights.
+    Render Section 4 – Contingencies; Removal of Contingencies; Cancellation Rights.
 
     UX design:
     - Top expander: Ask AI Realtor + Connect with Human Realtor.
@@ -19,7 +19,7 @@ def render_section14_contingencies():
     # ---------------------------
     # 💬 GPT / AI Realtor + Human Realtor — Top Helper for Section 14
     # ---------------------------
-    with st.expander("💬 Need help with contingencies (Section 14)?", expanded=True):
+    with st.expander("💬 Need help with contingencies?", expanded=True):
 
         st.markdown(
             "Use this assistant to understand contingency periods, deadlines, Notices to Perform, "
@@ -146,10 +146,10 @@ def render_section14_contingencies():
     # ---------------------------
     # Short plain-English summary
     # ---------------------------
-    st.markdown("### What Section 14 is about (plain English)")
+    st.markdown("### What Section 4 is about (plain English)")
 
     st.markdown(
-        "- Section 14 explains your **buyer contingencies** — conditions that must be satisfied "
+        "- Section 4 explains your **buyer contingencies** — conditions that must be satisfied "
         "before you are fully locked into the purchase.\n"
         "- It sets the **time period** for your contingencies, and explains how and when they "
         "must be removed.\n"
@@ -162,7 +162,7 @@ def render_section14_contingencies():
     # ---------------------------
     # 14B(1) – Time to remove buyer contingencies (user input)
     # ---------------------------
-    st.markdown("### 14B(1). Time to Remove Buyer Contingencies")
+    st.markdown("### 4B(1). Time to Remove Buyer Contingencies")
 
     st.markdown(
         "Here you choose **how many days after offer acceptance** you want to keep your "
@@ -210,9 +210,9 @@ def render_section14_contingencies():
     # ---------------------------
     # 14B(2)–(4) – Plain-language explanations (read-only)
     # ---------------------------
-    st.markdown("### 14B(2)–(4). What happens if someone doesn’t perform?")
+    st.markdown("### 4B(2)–(4). What happens if someone doesn’t perform?")
 
-    with st.expander("📄 14B(2) – Seller’s right to cancel if buyer does nothing", expanded=False):
+    with st.expander("📄 4B(2) – Seller’s right to cancel if buyer does nothing", expanded=False):
         st.markdown(
             "- If your contingency period expires and you do **nothing** "
             "(you don’t remove contingencies and you don’t cancel), the seller can issue a "
@@ -231,7 +231,7 @@ def render_section14_contingencies():
             "| **Seller** | May cancel the contract | If buyer still does nothing after the 48 hours |\n"
         )
 
-    with st.expander("📄 14B(3) – Seller delays that affect buyer’s deadlines", expanded=False):
+    with st.expander("📄 4B(3) – Seller delays that affect buyer’s deadlines", expanded=False):
         st.markdown(
             "- If the seller is late delivering required disclosures, reports, or access, "
             "your contingency deadlines can be **affected and may be extended**.\n"
@@ -248,7 +248,7 @@ def render_section14_contingencies():
             "| **Seller** | Must complete tasks before expecting buyer to remove contingencies | Buyer’s practical countdown starts after seller performs |\n"
         )
 
-    with st.expander("📄 14B(4) – Buyer’s right to cancel if seller doesn’t perform", expanded=False):
+    with st.expander("📄 4B(4) – Buyer’s right to cancel if seller doesn’t perform", expanded=False):
         st.markdown(
             "- If the seller fails to perform their obligations (for example, providing "
             "disclosures, allowing access, completing agreed repairs, or signing required "
@@ -276,13 +276,13 @@ def render_section14_contingencies():
     col_left, col_right = st.columns(2)
 
     with col_left:
-        if st.button("💾 Save Section 14", key="pa14_save"):
+        if st.button("💾 Save Section 4", key="pa14_save"):
             # Hook this into your persistence logic (e.g., save to DB or session)
-            st.success("Section 14 responses saved (connect this button to your save logic).")
+            st.success("Section 4 responses saved (connect this button to your save logic).")
 
     with col_right:
-        if st.button("Next: Section 15", key="pa14_next"):
+        if st.button("Next: Section 5", key="pa14_next"):
             # If you are using an active_pa_tab index, set it here (adjust index as needed)
             # Example:
             # st.session_state['active_pa_tab'] = 10  # whatever index corresponds to Section 15
-            st.info("Moving to Section 15… (make sure this updates your main app navigation).")
+            st.info("Moving to Section 5… (make sure this updates your main app navigation).")
