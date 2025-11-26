@@ -23,7 +23,7 @@ def render_section6_other_terms():
     )
 
     data["other_terms"] = st.text_area(
-        #"Other terms and conditions (optional):",
+        "Other terms and conditions (optional):",
         value=data["other_terms"],
         height=200,
         key="sec6_other_terms_input",
