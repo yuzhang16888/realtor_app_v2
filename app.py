@@ -207,11 +207,11 @@ elif mode == "purchase_agreement":
         render_section_1_offer()
 
         st.markdown("---")
-        st.markdown("### Section 3 – Finance")
+        # st.markdown("### Section 3 – Finance")
         render_section3_finance()
 
         st.markdown("---")
-        st.markdown("### Sections 4–5 – Sale of Buyer's Property")
+        st.markdown("### Subject to Sale of Buyer's Property")
         render_section4_sale_of_buyer_property()
 
         st.markdown("---")
