@@ -179,7 +179,7 @@ elif mode == "purchase_agreement":
     )
 
     # Tabs for different sections (Offer + Agency)
-    tab1, tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9= st.tabs(
+    tab1, tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10= st.tabs(
         ["Section 1 – Offer", 
         "Section 2 – Agency",
         "Section 3 - Finance",
