@@ -7,7 +7,7 @@ SNAPSHOT_IMAGE_PATH = "assets/section2_agency_snapshot.png"  # optional image pa
 
 
 def render_section_2_agency():
-    """Section 2 – Agency / Broker Representation. For now we assume no agent."""
+    """Section 5 – Agency / Broker Representation. For now we assume no agent."""
     init_purchase_agreement_state()
     s2 = st.session_state.purchase_agreement["section_2"]
 
