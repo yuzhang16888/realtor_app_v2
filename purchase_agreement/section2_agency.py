@@ -20,18 +20,18 @@ def render_section_2_agency():
     )
 
     # Try to show image snapshot first, fallback to text snapshot
-    st.markdown("#### Snapshot of Section 2 (for context)")
+    st.markdown("#### Snapshot of Agency Disclosure")
 
     image_shown = False
     try:
         # If you add a real image file later, this will show it.
-        st.image(SNAPSHOT_IMAGE_PATH, caption="Excerpt: Section 2 – Agency / Brokerage", use_container_width=True)
+        st.image(SNAPSHOT_IMAGE_PATH, caption="Excerpt: Agency / Brokerage", use_container_width=True)
         image_shown = True
     except Exception:
         image_shown = False
 
     if not image_shown:
-        with st.expander("📄 Text snapshot: Section 2 — Agency (for reference)", expanded=False):
+        with st.expander("📄 Text snapshot:  Agency (for reference)", expanded=False):
             st.markdown(
                 """
                 ```
