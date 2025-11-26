@@ -14,7 +14,8 @@ from purchase_agreement.section15_time_dates import render_section15_time_dates
 from purchase_agreement.section21_22_remedies_disputes import render_section21_22_remedies_disputes
 from purchase_agreement.section23_30_overview import render_section23_30_overview
 from purchase_agreement.section31_expiration import render_section31_expiration
-#
+from purchase_agreement.section_final_review_signatures import render_final_review_signatures
+
 
 
 
@@ -188,7 +189,7 @@ elif mode == "purchase_agreement":
     )
 
     # Tabs for different sections (Offer + Agency)
-    tab1, tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10,tab11,tab12,tab13,tab14= st.tabs(
+    tab1, tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10,tab11,tab12,tab13,tab14,tab15= st.tabs(
         ["Section 1 – Offer", 
         "Section 2 – Agency",
         "Section 3 - Finance",
@@ -202,7 +203,8 @@ elif mode == "purchase_agreement":
         "Section 15-Verification",
         "Section 16-Dispute",
         "Section 17-Misc",
-        "Section 18-Expiration"
+        "Section 18-Expiration",
+        "Section Final-Signature"
         ]
     )
 
@@ -244,6 +246,9 @@ elif mode == "purchase_agreement":
         render_section23_30_overview()
     with tab14:
         render_section31_expiration()
+    with tab_15:
+        render_final_review_signatures()
+
 
 
 
