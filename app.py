@@ -102,7 +102,7 @@ st.markdown(
     """
     <div style="text-align: center; margin-bottom: 1.5rem;">
         <h1 style="margin-bottom: 0;">Buyerside AI Realtor with human in loop</h1>
-        <p style="margin-top: 0.3rem; font-size: 1.05rem; color: gray;">
+        <p style="margin-top: 0.3rem; font-size: 1.05rem; color: green;">
                 only pay for what you need,
                   plan starting from $99
         </p>

@@ -11,7 +11,7 @@ def render_section31_expiration():
     Buyer sets the exact date/time their offer expires.
     """
 
-    st.markdown("## 31. Expiration of Offer")
+    #st.markdown("## 31. Expiration of Offer")
 
     # --------------------------------------------------
     # 💬 GPT + Human Realtor Helper (Top)
