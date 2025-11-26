@@ -193,7 +193,7 @@ def render_section31_expiration():
     st.markdown("### Notes (optional)")
 
     st.text_area(
-        "Anything you want to remember or ask your agent about offer timing?",
+        "Anything you want to ask AI Realtor or need involve an human realtor about offer timing?",
         key="pa31_notes",
         height=100,
         placeholder=(
