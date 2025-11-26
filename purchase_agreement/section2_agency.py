@@ -11,7 +11,7 @@ def render_section_2_agency():
     init_purchase_agreement_state()
     s2 = st.session_state.purchase_agreement["section_2"]
 
-    st.markdown("### Section 2 – Agency and Brokerage (Assuming No Agent)")
+    #st.markdown("### Section 2 – Agency and Brokerage (Assuming No Agent)")
 
     st.info(
         "This part of the California RPA identifies the real estate brokers and agents "
