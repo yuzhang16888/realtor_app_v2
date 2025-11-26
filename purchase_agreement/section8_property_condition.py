@@ -7,12 +7,12 @@ def render_section8_property_condition():
     Section 8 – Property Condition & Repairs
     """
 
-    st.markdown("## Section 8 – Property Condition & Repairs")
+    st.markdown("## Section 3 – Property Condition & Repairs")
 
-       # ---------------------------
+    # ---------------------------
     # 🔹 GPT / AI Realtor – at the top of Section 8
     # ---------------------------
-    with st.expander("💬 Need help with Section 8? Ask AI Realtor", expanded=True):
+    with st.expander("💬 Need help with Section 3? Ask AI Realtor", expanded=True):
         st.markdown(
             "Use this assistant to understand how \"as-is\" condition, repairs, and "
             "credits typically work in California purchase agreements.\n\n"
@@ -21,7 +21,7 @@ def render_section8_property_condition():
 
         default_prompt = (
             "You are an experienced California residential real estate agent. "
-            "Help the buyer understand how to complete Section 8 – Property Condition & Repairs "
+            "Help the buyer understand how to complete Section 3 – Property Condition & Repairs "
             "in the CAR Residential Purchase Agreement. Explain typical norms for 'as-is' sales, "
             "seller repairs, credits in lieu of repairs, and home warranties. "
             "Always remind them that everything is negotiable and practices vary by area."
@@ -30,7 +30,7 @@ def render_section8_property_condition():
         # Use a form so pressing Enter in the text input will submit (Ask AI)
         with st.form("pa8_ai_form"):
             user_prompt = st.text_input(
-                "What do you want help with in Section 8?",
+                "What do you want help with in Section 3?",
                 key="pa8_ai_prompt",
                 placeholder=(
                     "Example: What does it really mean when the property is sold 'as-is' in California? "
@@ -41,13 +41,13 @@ def render_section8_property_condition():
             col_ai1, col_ai2 = st.columns([3, 2])
             with col_ai1:
                 use_context = st.checkbox(
-                    "Include default Section 8 context in my question",
+                    "Include default Section 3 context in my question",
                     value=True,
                     key="pa8_ai_use_context",
                 )
             with col_ai2:
                 ask_clicked = st.form_submit_button(
-                    "Ask AI Realtor about Section 8",
+                    "Ask AI Realtor about Section 3",
                     use_container_width=True,
                 )
                 connect_clicked = st.form_submit_button(
@@ -164,7 +164,7 @@ def render_section8_property_condition():
     # ---------------------------
     # 8B. Seller Repair Obligations (Before Close of Escrow)
     # ---------------------------
-    st.markdown("### 8B. Seller Repair Obligations (Before Close of Escrow)")
+    st.markdown("### 3.B. Seller Repair Obligations (Before Close of Escrow)")
 
     st.write(
         "If the seller is agreeing up front to perform certain repairs or corrections "
@@ -205,7 +205,7 @@ def render_section8_property_condition():
     # ---------------------------
     # 8C. Credits in Lieu of Repairs
     # ---------------------------
-    st.markdown("### 8C. Credits in Lieu of Repairs")
+    st.markdown("### 3.C. Credits in Lieu of Repairs")
 
     st.write(
         "Sometimes, instead of the Seller doing work, the parties agree to a credit to "
@@ -238,7 +238,7 @@ def render_section8_property_condition():
     # ---------------------------
     # 8D. Home Warranty Plan
     # ---------------------------
-    st.markdown("### 8D. Home Warranty Plan")
+    st.markdown("### 3.D. Home Warranty Plan")
 
     st.write(
         "Indicate whether a home warranty plan will be provided, who pays for it, "
@@ -296,7 +296,7 @@ def render_section8_property_condition():
     # ---------------------------
     # 8E. Other Property Condition Terms (Free-form)
     # ---------------------------
-    st.markdown("### 8E. Other Property Condition Terms (Free-form)")
+    st.markdown("### 3.E. Other Property Condition Terms (Free-form)")
 
     st.write(
         "Use this area for any additional property condition or repair-related terms "
@@ -319,11 +319,11 @@ def render_section8_property_condition():
     col_prev, col_next = st.columns([1, 1])
 
     with col_prev:
-        if st.button("⬅️ Back to Section 7", key="pa8_back_btn", use_container_width=True):
+        if st.button("⬅️ Back to Section 2", key="pa8_back_btn", use_container_width=True):
             st.session_state.active_pa_tab = 6  # zero-index: section 6
 
     with col_next:
-        if st.button("Save Section 8 & Continue ➡️", key="pa8_next_btn", use_container_width=True):
+        if st.button("Save Section 3 & Continue ➡️", key="pa8_next_btn", use_container_width=True):
             st.session_state.active_pa_tab = 8  # zero-index: section 8
-            st.success("Section 7 saved. Moving to Section 8…")
+            st.success("Section 4 saved. Moving to Section 8…")
 
