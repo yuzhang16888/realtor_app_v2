@@ -4,6 +4,7 @@ import streamlit as st
 from datetime import datetime, timedelta
 from purchase_agreement.ai_helpers import call_purchase_agreement_ai
 
+SECTION31_KEY = "pa_section31_offer_expiration"
 
 def render_section31_expiration():
     """
