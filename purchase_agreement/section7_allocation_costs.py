@@ -10,28 +10,20 @@ def render_section7_allocation_costs():
 
     st.markdown("## Section 2 – Allocation of Costs")
 
-    # ---------------------------
+        # ---------------------------
     # 🔹 GPT / AI Realtor – at the top of Section 7
     # ---------------------------
-    with st.expander("💬 Need help with Section 2? Ask AI Realtor", expanded=True):
+    with st.expander("💬 Need help with Section 7? Ask AI Realtor", expanded=True):
         st.markdown(
             "Use this assistant to understand typical cost allocations in California "
             "(for example: who usually pays escrow fees, title insurance, HOA docs, etc.).\n\n"
             "**Reminder:** This is not legal advice. Always confirm with your broker or attorney."
         )
 
-        default_prompt = (
-            "You are an experienced California residential real estate agent. "
-            "Help the buyer understand how to complete Section 7 – Allocation of Costs "
-            "in the CAR Residential Purchase Agreement. Explain typical local norms "
-            "for escrow/title/transfer taxes and HOA costs, but always remind them that "
-            "practices vary by area and are negotiable."
-        )
-
         # Use a form so pressing Enter inside the text input will submit (Ask AI)
         with st.form("pa7_ai_form"):
             user_prompt = st.text_input(
-                "What do you want help with in allocation costs?",
+                "What do you want help with in allocation of costs?",
                 key="pa7_ai_prompt",
                 placeholder=(
                     "Example: In San Francisco, who usually pays escrow fees and the "
@@ -39,35 +31,28 @@ def render_section7_allocation_costs():
                 ),
             )
 
-            col_ai1, col_ai2 = st.columns([3, 2])
-            with col_ai1:
-                use_context = st.checkbox(
-                    "Include default Section 2 context in my question",
-                    value=True,
-                    key="pa7_ai_use_context",
-                )
-            with col_ai2:
-                ask_clicked = st.form_submit_button(
-                    "Ask AI Realtor about Section 2",
-                    use_container_width=True,
-                )
-                connect_clicked = st.form_submit_button(
-                    "Connect with a Human Realtor",
-                    use_container_width=True,
-                )
+            ask_clicked = st.form_submit_button(
+                "Ask AI Realtor about Section 7",
+                use_container_width=True,
+            )
+            connect_clicked = st.form_submit_button(
+                "Connect with a Human Realtor",
+                use_container_width=True,
+            )
 
         # Handle Ask AI (form submit or Enter)
         if ask_clicked:
             if not user_prompt.strip():
                 st.warning("Please enter a question or description first.")
             else:
-                full_prompt = user_prompt.strip()
-                if use_context:
-                    full_prompt = default_prompt + "\n\nUser question:\n" + user_prompt.strip()
-
                 with st.spinner("Thinking like a California Realtor..."):
                     try:
-                        answer = call_purchase_agreement_ai(full_prompt, section="7")
+                        answer = call_purchase_agreement_ai(
+                            user_prompt.strip(),
+                            section="7",
+                            # if you have a Section 7 state dict and want to pass it:
+                            # section_state=st.session_state[SECTION7_KEY],
+                        )
                     except Exception as e:
                         answer = (
                             "There was an error calling the AI backend for Section 7.\n\n"
