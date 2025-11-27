@@ -5,19 +5,6 @@ from core.ai_helpers import call_purchase_agreement_ai
 
 SECTION3_KEY = "pa_section3_finance"
 
-# Try to import the shared AI helper; fall back gracefully if not available
-try:
-    from purchase_agreement.ai_helpers import call_purchase_agreement_ai
-except Exception:
-    def call_purchase_agreement_ai(prompt, section=None):
-        """
-        Fallback stub so this module still imports even if ai_helpers is missing.
-        """
-        return (
-            "AI helper backend is not available right now. "
-            "Please check your configuration or try again later."
-        )
-
 
 def _init_section3_state():
     if SECTION3_KEY not in st.session_state:
@@ -77,7 +64,6 @@ def _get_purchase_price_from_section1() -> float:
     Try to pull Purchase Price from Section 1 state if available.
     If not found, return 0.0 and let user enter manually.
     """
-    # Adjust these keys later if your Section 1 uses different naming
     possible_keys = [
         "pa_section1_offer",
         "section1_offer",
@@ -123,6 +109,7 @@ def render_section3_finance():
             "Do not give legal or tax advice. Always remind the user to confirm details with their own lender and agent."
         )
 
+        # Use a form so Enter submits just like Section 8
         with st.form("pa3_ai_form"):
             user_prompt_3 = st.text_input(
                 "What do you want help with in Section 3 – Finance Terms?",
@@ -155,7 +142,7 @@ def render_section3_finance():
                     use_container_width=True,
                 )
 
-        # Handle Ask AI
+        # Handle Ask AI (this is the same pattern as Section 8)
         if ask_clicked_3:
             if not user_prompt_3.strip():
                 st.warning("Please enter a question or description first.")
@@ -169,13 +156,20 @@ def render_section3_finance():
                     )
 
                 with st.spinner("Thinking like a California Realtor..."):
-                    answer_3 = call_purchase_agreement_ai(
-                        full_prompt_3,
-                        section="3",
-                    )
+                    try:
+                        answer_3 = call_purchase_agreement_ai(
+                            full_prompt_3,
+                            section="3",
+                        )
+                    except Exception as e:
+                        answer_3 = (
+                            "There was an error calling the AI backend for Section 3.\n\n"
+                            f"Details: {e}"
+                        )
+
                     st.session_state["pa3_ai_answer"] = answer_3
 
-        # Show AI answer
+        # Show AI answer if we have one
         if "pa3_ai_answer" in st.session_state:
             st.markdown("#### 🧠 AI Realtor – Finance Terms Suggestion")
             st.info(st.session_state["pa3_ai_answer"])
@@ -184,6 +178,7 @@ def render_section3_finance():
         if connect_clicked_3:
             st.session_state["pa3_show_human_realtor_form"] = True
 
+        # Show the human-realtor contact form if toggled on
         if st.session_state.get("pa3_show_human_realtor_form", False):
             st.markdown("#### 🤝 Connect with a Human Realtor")
 
