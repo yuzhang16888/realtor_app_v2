@@ -1,241 +1,126 @@
 # purchase_agreement/section_final_review_signatures.py
 
 import streamlit as st
-from datetime import datetime
-
-
-def _get_value(*keys, default="Not provided yet"):
-    """
-    Helper: safely pull the first non-empty value from st.session_state by trying
-    multiple possible keys. This lets you gradually wire your existing sections
-    to this summary without the app crashing.
-    """
-    for key in keys:
-        if key in st.session_state and st.session_state.get(key):
-            return st.session_state.get(key)
-    return default
-
-
-def _format_expiration():
-    """Helper to format the expiration date/time from Section 31."""
-    exp_date = st.session_state.get("pa31_date")
-    exp_time = st.session_state.get("pa31_time")
-
-    if not exp_date or not exp_time:
-        return "Not set yet"
-
-    try:
-        if isinstance(exp_date, datetime):
-            d = exp_date.date()
-        else:
-            d = exp_date
-        if isinstance(exp_time, datetime):
-            t = exp_time.time()
-        else:
-            t = exp_time
-
-        dt = datetime.combine(d, t)
-        return dt.strftime("%B %d, %Y at %I:%M %p")
-    except Exception:
-        return "Unable to format expiration – please double-check Section 31."
 
 
 def render_final_review_signatures():
-    """
-    Final Review & Signatures – Summary of key inputs before sending / signing.
+    st.markdown("## Final Review – Key Terms Snapshot")
 
-    This section is intentionally READ-ONLY (summary) and pulls from st.session_state.
-    You can adjust the keys below to match your actual Section 1 / 3 / 7 / 14 / 31 fields.
-    """
+    # ---- Pull data from various sections safely ----
+    pa = st.session_state.get("purchase_agreement", {})
+    s1 = pa.get("section_1", {})                     # Section 1 – Offer
+    s3 = st.session_state.get("pa_section3_finance", {})  # Section 3 – Finance
+    # If you later add state keys for contingencies / expiration, you can read them here:
+    s14 = st.session_state.get("pa_section14_contingencies", {})
+    s31 = st.session_state.get("pa_section31_expiration", {})
 
-    st.markdown("## Final Review & Signatures")
+    # ---- Section 1: Who is buying & what property ----
+    buyer_names = s1.get("buyer_names") or "Not entered yet"
+    address_parts = [
+        s1.get("property_address") or "",
+        s1.get("city") or "",
+        s1.get("county") or "",
+        s1.get("zip_code") or "",
+    ]
+    address_str = ", ".join([p for p in address_parts if p])
 
-    st.markdown(
-        "Before you sign or send this offer to the seller, please review the **key terms** "
-        "below. Make sure they match what you intend. If anything looks off, go back to the "
-        "earlier sections and update it first."
+    price = s1.get("purchase_price")
+    price_text = f"${price:,.0f}" if price else "Not entered yet"
+
+    if s1.get("close_type") == "days_after_acceptance" and s1.get("close_days_after"):
+        coe_text = f"{s1['close_days_after']} days after acceptance"
+    elif s1.get("close_type") == "specific_date" and s1.get("close_date"):
+        coe_text = s1["close_date"].strftime("%B %d, %Y")
+    else:
+        coe_text = "Not specified yet"
+
+    # ---- Section 3: Financing snapshot ----
+    is_all_cash = bool(s3.get("is_all_cash"))
+    initial_deposit = s3.get("initial_deposit_amount") or 0
+    initial_deposit_text = f"${initial_deposit:,.0f}" if initial_deposit else "Not entered yet"
+
+    first_loan_amount = s3.get("first_loan_amount") or 0
+    second_loan_amount = s3.get("second_loan_amount") or 0
+    total_loans = first_loan_amount + second_loan_amount
+
+    if is_all_cash:
+        financing_summary = "All-cash offer (no loan needed to close)."
+    elif total_loans > 0:
+        financing_summary = f"Financed offer with approximately ${total_loans:,.0f} in loans."
+    else:
+        financing_summary = "Financing details not completed yet."
+
+    # ---- (Optional) Contingencies from Section 14 ----
+    # These keys will depend on how you structure Section 14.
+    # For now we read them defensively and show a generic line if missing.
+    has_loan_cont = s3.get("has_loan_contingency")
+    has_appraisal_cont = s3.get("has_appraisal_contingency")
+    loan_cont_days = s3.get("loan_contingency_days")
+    appr_cont_days = s3.get("appraisal_contingency_days")
+
+    contingencies_lines = []
+    if has_loan_cont is True:
+        if loan_cont_days:
+            contingencies_lines.append(f"• Loan contingency – {loan_cont_days} days after acceptance")
+        else:
+            contingencies_lines.append("• Loan contingency – included")
+    elif has_loan_cont is False:
+        contingencies_lines.append("• Loan contingency – **removed**")
+
+    if has_appraisal_cont is True:
+        if appr_cont_days:
+            contingencies_lines.append(f"• Appraisal contingency – {appr_cont_days} days after acceptance")
+        else:
+            contingencies_lines.append("• Appraisal contingency – included")
+    elif has_appraisal_cont is False:
+        contingencies_lines.append("• Appraisal contingency – **removed**")
+
+    if not contingencies_lines:
+        contingencies_lines.append("• Contingency details not fully entered yet.")
+
+    # ---- Offer expiration (Section 31) – placeholder wiring ----
+    # Adjust these keys to match however Section 31 stores its state.
+    expiration_summary = s31.get("expiration_summary") or "Expiration details will appear here once wired from Section 31."
+
+    # ==========================================================
+    # DISPLAY LAYOUT
+    # ==========================================================
+    st.markdown("### 1. Buyer & Property")
+
+    st.write(
+        f"- **Buyer(s):** {buyer_names}\n"
+        f"- **Property:** {address_str or 'Not entered yet'}\n"
+        f"- **Purchase price:** {price_text}\n"
+        f"- **Target close of escrow:** {coe_text}"
     )
 
     st.markdown("---")
 
-    # --------------------------------------------------
-    # 1. Who is buying the property
-    # --------------------------------------------------
-    st.markdown("### 1. Buyer(s) – Who is making this offer?")
+    st.markdown("### 2. Financing & Deposit")
 
-    buyer_1 = _get_value("pa_buyer_1_name", "buyer_1_name")
-    buyer_2 = _get_value("pa_buyer_2_name", "buyer_2_name", default="(No second buyer)")
-
-    st.markdown(
-        f"- **Buyer 1:** {buyer_1}\n"
-        f"- **Buyer 2 (if any):** {buyer_2}"
+    st.write(
+        f"- **Initial deposit (earnest money):** {initial_deposit_text}\n"
+        f"- **Financing structure:** {financing_summary}"
     )
+
+    st.caption(
+        "This is a drafting summary based on your entries in Section 1 and Section 3. "
+        "Always confirm final numbers with your lender and agent."
+    )
+
+    st.markdown("---")
+
+    st.markdown("### 3. Key Contingencies (Snapshot)")
+
+    st.write("\n".join(contingencies_lines))
+
+    st.markdown("---")
+
+    st.markdown("### 4. Offer Expiration (high-level)")
+
+    st.write(expiration_summary)
 
     st.info(
-        "Names here should match how you intend to take title. If you plan to buy "
-        "through an LLC, trust, or entity, make sure that is reflected in the actual contract."
+        "If any of these look off, you can click back to the relevant tab "
+        "(Core Deal Terms, Contingencies, or Expiration) to adjust, then return here."
     )
-
-    st.markdown("---")
-
-    # --------------------------------------------------
-    # 2. Property – What are you buying?
-    # --------------------------------------------------
-    st.markdown("### 2. Property – Address of the home you’re offering on")
-
-    property_address = _get_value(
-        "pa_property_address",
-        "property_address",
-        "pa1_property_address",
-    )
-
-    st.markdown(f"- **Property address:** {property_address}")
-
-    st.info(
-        "Double-check that this address matches the MLS listing and your agent’s information."
-    )
-
-    st.markdown("---")
-
-    # --------------------------------------------------
-    # 3. Financing Terms – Price, earnest money, cash vs loan
-    # --------------------------------------------------
-    st.markdown("### 3. Financing Terms – How you are paying for this property")
-
-    purchase_price = _get_value(
-        "pa_purchase_price",
-        "offer_price",
-        "pa1_purchase_price",
-    )
-
-    earnest_money = _get_value(
-        "pa_earnest_money_amount",
-        "earnest_money_amount",
-        "pa1_earnest_deposit",
-    )
-
-    financing_type = _get_value(
-        "pa_financing_type",  # e.g. 'All Cash', 'Convention Loan + Down Payment'
-        "financing_type",
-        default="Not specified yet (cash vs financing not clearly set)",
-    )
-
-    loan_amount = _get_value(
-        "pa_loan_amount",
-        "loan_amount",
-        default="Not specified",
-    )
-
-    down_payment = _get_value(
-        "pa_down_payment_amount",
-        "down_payment_amount",
-        default="Not specified",
-    )
-
-    st.markdown("#### 3A. Purchase Price & Earnest Money")
-    st.markdown(
-        f"- **Offer price:** {purchase_price}\n"
-        f"- **Earnest money / initial deposit:** {earnest_money}"
-    )
-
-    st.markdown("#### 3B. Cash vs Financing")
-    st.markdown(
-        f"- **Financing type:** {financing_type}\n"
-        f"- **Estimated loan amount:** {loan_amount}\n"
-        f"- **Estimated down payment:** {down_payment}"
-    )
-
-    st.info(
-        "Your earnest money and financing structure should match what your lender "
-        "pre-approval letter supports. If anything changed, let your agent and lender know."
-    )
-
-    st.markdown("---")
-
-    # --------------------------------------------------
-    # 4. Contingencies – How much protection & time you have
-    # --------------------------------------------------
-    st.markdown("### 4. Contingencies – Time and protection for your due diligence")
-
-    contingency_days = _get_value(
-        "pa14B1_contingency_days",
-        "contingency_days",
-        default="Not set yet",
-    )
-
-    contingency_notes = _get_value(
-        "pa14B1_notes",
-        "contingency_notes",
-        default="(No additional notes were recorded.)",
-    )
-
-    st.markdown("#### 4A. Overall Buyer Contingency Period")
-    st.markdown(
-        f"- **Total contingency period:** {contingency_days} day(s) after acceptance"
-    )
-
-    st.markdown("#### 4B. Notes about your contingencies")
-    st.markdown(f"{contingency_notes}")
-
-    st.info(
-        "This is the period for inspections, appraisal (if applicable), loan approval, "
-        "and reviewing disclosures. Shorter periods are more competitive but give you less time."
-    )
-
-    st.markdown("---")
-
-    # --------------------------------------------------
-    # 5. Offer Expiration – How long the offer stays open
-    # --------------------------------------------------
-    st.markdown("### 5. Expiration of Offer – How long the seller has to decide")
-
-    expiration_display = _format_expiration()
-
-    st.markdown(
-        f"- **Offer expires on:** {expiration_display}"
-    )
-
-    st.info(
-        "If the seller signs **after** this expiration, it may not be a valid acceptance "
-        "unless you confirm and re-approve with your agent. Make sure this timing matches "
-        "your strategy and the seller’s availability."
-    )
-
-    st.markdown("---")
-
-    # --------------------------------------------------
-    # Confirm & next steps
-    # --------------------------------------------------
-    st.markdown("### Final Check Before Signatures")
-
-    confirm_reviewed = st.checkbox(
-        "I have reviewed the key terms above and they match what I intend to offer.",
-        key="pa_final_review_confirmed",
-    )
-
-    st.warning(
-        "This tool does **not** replace legal advice. Before signing or sending your offer, "
-        "review the full contract with your real estate agent, and consult an attorney if you have questions."
-    )
-
-    st.markdown("---")
-
-    col_left, col_right = st.columns(2)
-
-    with col_left:
-        if st.button("💾 Save Final Review", key="pa_final_save"):
-            # Hook this into your persistence / DB if needed
-            st.success("Final review saved (connect this button to your actual save logic).")
-
-    with col_right:
-        if st.button("Continue to Signatures / Export", key="pa_final_next"):
-            if not confirm_reviewed:
-                st.error(
-                    "Please confirm that you have reviewed the key terms above before continuing."
-                )
-            else:
-                # Example: move to a 'Signatures / Export' tab in your app
-                # st.session_state['active_pa_tab'] = <index_of_signatures_tab>
-                st.info(
-                    "Proceeding to signatures / export… (wire this into your app navigation or PDF/email flow)."
-                )
