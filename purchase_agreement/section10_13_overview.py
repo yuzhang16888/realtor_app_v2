@@ -14,7 +14,7 @@ def render_section10_13_overview():
 
     st.markdown("## Other Disclosures, Rules & Rights")
 
-    # ---------------------------
+     # ---------------------------
     # 🔹 GPT / AI Realtor – overview for 10–13
     # ---------------------------
     with st.expander("💬 Need help? Ask AI Realtor", expanded=True):
@@ -24,20 +24,10 @@ def render_section10_13_overview():
             "**Reminder:** This is not legal advice. Always confirm with your broker or attorney."
         )
 
-        default_prompt_1013 = (
-            "You are an experienced California residential real estate agent. "
-            "Explain to a buyer how Sections 10–13 of the CAR Residential Purchase Agreement work:\n"
-            "- Section 10: Statutory and contractual disclosures, including condo/HOA and planned development disclosures.\n"
-            "- Section 11: Buyer investigation, inspections, and due diligence.\n"
-            "- Section 12: Seller and agent access to the property during escrow.\n"
-            "- Section 13: Remedies if buyer or seller breaches, including liquidated damages and specific performance.\n"
-            "Give clear, practical explanations in plain language and remind them that timelines and practices can vary by area."
-        )
-
         # Use a form so pressing Enter submits
         with st.form("pa_10_13_ai_form"):
             user_prompt_1013 = st.text_input(
-                "What do you want help with ?",
+                "What do you want help with?",
                 key="pa_10_13_ai_prompt",
                 placeholder=(
                     "Example: What disclosures do I get if I'm buying a condo?\n"
@@ -47,40 +37,27 @@ def render_section10_13_overview():
                 ),
             )
 
-            col_ai1, col_ai2 = st.columns([3, 2])
-            with col_ai1:
-                use_context_1013 = st.checkbox(
-                    "Include default Sections 10–13 context in my question",
-                    value=True,
-                    key="pa_10_13_ai_use_context",
-                )
-            with col_ai2:
-                ask_clicked_1013 = st.form_submit_button(
-                    "Ask AI Realtor about Sections 10–13",
-                    use_container_width=True,
-                )
-                connect_clicked_1013 = st.form_submit_button(
-                    "Connect with a Human Realtor",
-                    use_container_width=True,
-                )
+            ask_clicked_1013 = st.form_submit_button(
+                "Ask AI Realtor about Sections 10–13",
+                use_container_width=True,
+            )
+            connect_clicked_1013 = st.form_submit_button(
+                "Connect with a Human Realtor",
+                use_container_width=True,
+            )
 
         # Handle Ask AI
         if ask_clicked_1013:
             if not user_prompt_1013.strip():
                 st.warning("Please enter a question or description first.")
             else:
-                full_prompt_1013 = user_prompt_1013.strip()
-                if use_context_1013:
-                    full_prompt_1013 = (
-                        default_prompt_1013
-                        + "\n\nUser question:\n"
-                        + user_prompt_1013.strip()
-                    )
-
                 with st.spinner("Thinking like a California Realtor..."):
                     try:
                         answer_1013 = call_purchase_agreement_ai(
-                            full_prompt_1013, section="10-13"
+                            user_prompt_1013.strip(),
+                            section="10-13",
+                            # If you later add state for 10–13, pass it here:
+                            # section_state=st.session_state[SECTION_1013_KEY],
                         )
                     except Exception as e:
                         answer_1013 = (
@@ -134,6 +111,7 @@ def render_section10_13_overview():
                     )
 
     st.markdown("---")
+
 
     # ---------------------------
     # Section summaries + expanders
