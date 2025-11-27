@@ -1,7 +1,7 @@
 # purchase_agreement/section3_finance.py
 
 import streamlit as st
-from core.ai_helpers import call_purchase_agreement_ai
+from purchase_agreement.ai_helpers import call_purchase_agreement_ai
 
 SECTION3_KEY = "pa_section3_finance"
 
