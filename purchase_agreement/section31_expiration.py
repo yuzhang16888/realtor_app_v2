@@ -13,29 +13,17 @@ def render_section31_expiration():
 
     #st.markdown("## 31. Expiration of Offer")
 
-    # --------------------------------------------------
+      # --------------------------------------------------
     # 💬 GPT + Human Realtor Helper (Top)
     # --------------------------------------------------
-    with st.expander("💬 Need help with Offer Expiration (Section 31)?", expanded=True):
+    with st.expander("💬 Need help with Offer Expiration ?", expanded=True):
         st.markdown(
             "This section controls **when your offer automatically expires** if the seller does "
             "NOT accept it by a specific deadline.\n\n"
             "**Reminder:** Not legal advice. Always confirm with your agent or attorney."
         )
 
-        default_prompt_31 = (
-            "You are an experienced California residential real estate agent. "
-            "Explain Section 31 – Expiration of Offer in the CAR Residential Purchase Agreement "
-            "in clear, simple terms. Cover:\n"
-            "- Why buyers set an expiration deadline.\n"
-            "- Seller pressure vs flexibility.\n"
-            "- Typical practices in competitive markets vs slow markets.\n"
-            "- What happens if the seller signs after the deadline.\n"
-            "- How expiration affects when the contract becomes binding.\n"
-            "Do NOT give legal advice; keep explanations practical and buyer-oriented."
-        )
-
-        # Form
+        # Simple form – no extra checkbox
         with st.form("pa31_ai_form"):
             user_prompt_31 = st.text_input(
                 "What do you want help with in Section 31?",
@@ -48,38 +36,33 @@ def render_section31_expiration():
                 ),
             )
 
-            col1, col2 = st.columns([3, 2])
+            ask_ai_clicked = st.form_submit_button(
+                "Ask AI Realtor",
+                use_container_width=True,
+            )
+            connect_clicked = st.form_submit_button(
+                "Connect with a Human Realtor",
+                use_container_width=True,
+            )
 
-            with col1:
-                use_context_31 = st.checkbox(
-                    "Include default Section 31 context",
-                    value=True,
-                    key="pa31_use_context",
-                )
-            with col2:
-                ask_ai_clicked = st.form_submit_button(
-                    "Ask AI Realtor",
-                    use_container_width=True,
-                )
-                connect_clicked = st.form_submit_button(
-                    "Connect with a Human Realtor",
-                    use_container_width=True,
-                )
-
-        # Handle Ask AI
+        # Handle Ask AI (always uses GPT)
         if ask_ai_clicked:
             if not user_prompt_31.strip():
                 st.warning("Please enter a question first.")
             else:
-                full_prompt_31 = user_prompt_31.strip()
-                if use_context_31:
-                    full_prompt_31 = default_prompt_31 + "\n\nUser question:\n" + user_prompt_31.strip()
-
                 with st.spinner("Thinking like a California Realtor..."):
                     try:
-                        answer_31 = call_purchase_agreement_ai(full_prompt_31, section="31")
+                        answer_31 = call_purchase_agreement_ai(
+                            user_prompt_31.strip(),
+                            section="31",
+                            # If you have a Section 31 state dict, pass it here:
+                            section_state=st.session_state.get(SECTION31_KEY, None),
+                        )
                     except Exception as e:
-                        answer_31 = f"There was an error calling the AI backend.\n\nDetails: {e}"
+                        answer_31 = (
+                            "There was an error calling the AI backend for Section 31.\n\n"
+                            f"Details: {e}"
+                        )
 
                 st.session_state["pa31_ai_answer"] = answer_31
 
@@ -105,10 +88,16 @@ def render_section31_expiration():
                 "What would you like to ask a human?",
                 key="pa31_human_question",
                 height=100,
-                placeholder="Example: Can you help me choose the right expiration time for my offer?",
+                placeholder=(
+                    "Example: Can you help me choose the right expiration time for my offer?"
+                ),
             )
 
-            send_clicked = st.button("Send my question to a Human Realtor")
+            send_clicked = st.button(
+                "Send my question to a Human Realtor",
+                key="pa31_human_send_btn",
+                use_container_width=True,
+            )
 
             if send_clicked:
                 if not contact_31.strip() or not question_31.strip():
@@ -118,7 +107,9 @@ def render_section31_expiration():
                         "contact": contact_31.strip(),
                         "question": question_31.strip(),
                     }
-                    st.success("Your request has been sent. A human realtor will reach out to you.")
+                    st.success(
+                        "Your request has been sent. A human realtor will reach out to you."
+                    )
 
     st.markdown("---")
 
