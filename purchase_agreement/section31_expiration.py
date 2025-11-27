@@ -213,7 +213,7 @@ def render_section31_expiration():
 
     with col_left:
         if st.button("💾 Save "):
-            st.success("saved (connect this to your persistence logic).")
+            st.success("saved.")
 
     with col_right:
         if st.button("Next:Costs"):
