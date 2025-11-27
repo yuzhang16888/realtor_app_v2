@@ -1,21 +1,27 @@
 # purchase_agreement/section_final_review_signatures.py
 
 import streamlit as st
+from purchase_agreement.state import init_purchase_agreement_state
 
 
 def render_final_review_signatures():
+    """
+    Final Review – pull key info from:
+    - Section 1 (offer basics) via purchase_agreement["section_1"]
+    - Section 3 (finance) via pa_section3_finance
+    - (Optional) contingencies + expiration if available
+    """
+    # Ensure the purchase_agreement structure exists, same as Section 1 does
+    init_purchase_agreement_state()
+
     st.markdown("## Final Review – Key Terms Snapshot")
 
-    # ---- Pull data from various sections safely ----
+    # ---- Section 1: who & what ----
     pa = st.session_state.get("purchase_agreement", {})
-    s1 = pa.get("section_1", {})                     # Section 1 – Offer
-    s3 = st.session_state.get("pa_section3_finance", {})  # Section 3 – Finance
-    # If you later add state keys for contingencies / expiration, you can read them here:
-    s14 = st.session_state.get("pa_section14_contingencies", {})
-    s31 = st.session_state.get("pa_section31_expiration", {})
+    s1 = pa.get("section_1", {})
 
-    # ---- Section 1: Who is buying & what property ----
     buyer_names = s1.get("buyer_names") or "Not entered yet"
+
     address_parts = [
         s1.get("property_address") or "",
         s1.get("city") or "",
@@ -34,7 +40,19 @@ def render_final_review_signatures():
     else:
         coe_text = "Not specified yet"
 
-    # ---- Section 3: Financing snapshot ----
+    st.markdown("### 1. Buyer & Property")
+    st.write(
+        f"- **Buyer(s):** {buyer_names}\n"
+        f"- **Property:** {address_str or 'Not entered yet'}\n"
+        f"- **Purchase price:** {price_text}\n"
+        f"- **Target close of escrow:** {coe_text}"
+    )
+
+    st.markdown("---")
+
+    # ---- Section 3: finance snapshot ----
+    s3 = st.session_state.get("pa_section3_finance", {})
+
     is_all_cash = bool(s3.get("is_all_cash"))
     initial_deposit = s3.get("initial_deposit_amount") or 0
     initial_deposit_text = f"${initial_deposit:,.0f}" if initial_deposit else "Not entered yet"
@@ -50,9 +68,19 @@ def render_final_review_signatures():
     else:
         financing_summary = "Financing details not completed yet."
 
-    # ---- (Optional) Contingencies from Section 14 ----
-    # These keys will depend on how you structure Section 14.
-    # For now we read them defensively and show a generic line if missing.
+    st.markdown("### 2. Financing & Deposit")
+    st.write(
+        f"- **Initial deposit (earnest money):** {initial_deposit_text}\n"
+        f"- **Financing structure:** {financing_summary}"
+    )
+    st.caption(
+        "This is a drafting summary based on your entries in Section 1 and Section 3. "
+        "Always confirm final numbers with your lender and agent."
+    )
+
+    st.markdown("---")
+
+    # ---- Contingencies (from Section 3, since you already track them there) ----
     has_loan_cont = s3.get("has_loan_contingency")
     has_appraisal_cont = s3.get("has_appraisal_contingency")
     loan_cont_days = s3.get("loan_contingency_days")
@@ -78,49 +106,28 @@ def render_final_review_signatures():
     if not contingencies_lines:
         contingencies_lines.append("• Contingency details not fully entered yet.")
 
-    # ---- Offer expiration (Section 31) – placeholder wiring ----
-    # Adjust these keys to match however Section 31 stores its state.
-    expiration_summary = s31.get("expiration_summary") or "Expiration details will appear here once wired from Section 31."
-
-    # ==========================================================
-    # DISPLAY LAYOUT
-    # ==========================================================
-    st.markdown("### 1. Buyer & Property")
-
-    st.write(
-        f"- **Buyer(s):** {buyer_names}\n"
-        f"- **Property:** {address_str or 'Not entered yet'}\n"
-        f"- **Purchase price:** {price_text}\n"
-        f"- **Target close of escrow:** {coe_text}"
-    )
-
-    st.markdown("---")
-
-    st.markdown("### 2. Financing & Deposit")
-
-    st.write(
-        f"- **Initial deposit (earnest money):** {initial_deposit_text}\n"
-        f"- **Financing structure:** {financing_summary}"
-    )
-
-    st.caption(
-        "This is a drafting summary based on your entries in Section 1 and Section 3. "
-        "Always confirm final numbers with your lender and agent."
-    )
-
-    st.markdown("---")
-
     st.markdown("### 3. Key Contingencies (Snapshot)")
-
     st.write("\n".join(contingencies_lines))
 
     st.markdown("---")
 
-    st.markdown("### 4. Offer Expiration (high-level)")
+    # ---- Offer expiration – placeholder wiring for Section 31 ----
+    s31 = st.session_state.get("pa_section31_expiration", {})
+    expiration_summary = s31.get("expiration_summary") or (
+        "Expiration details will appear here once wired from Section 31."
+    )
 
+    st.markdown("### 4. Offer Expiration (high-level)")
     st.write(expiration_summary)
 
     st.info(
-        "If any of these look off, you can click back to the relevant tab "
-        "(Core Deal Terms, Contingencies, or Expiration) to adjust, then return here."
+        "If any of these look off, you can click back to the Core Deal Terms tab "
+        "to adjust, then return here."
     )
+
+    # Optional: tiny debug expander so you can see what state exists
+    with st.expander("🔍 Debug – raw state (only for you as builder)", expanded=False):
+        st.write("**purchase_agreement['section_1']**")
+        st.json(s1)
+        st.write("**pa_section3_finance**")
+        st.json(s3)
