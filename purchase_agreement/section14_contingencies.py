@@ -16,7 +16,7 @@ def render_section14_contingencies():
 
     st.markdown("## 4. Contingencies, Removal of Contingencies, and Cancellation Rights")
 
-    # ---------------------------
+      # ---------------------------
     # 💬 GPT / AI Realtor + Human Realtor — Top Helper for Section 14
     # ---------------------------
     with st.expander("💬 Need help with contingencies?", expanded=True):
@@ -25,15 +25,6 @@ def render_section14_contingencies():
             "Use this assistant to understand contingency periods, deadlines, Notices to Perform, "
             "and cancellation rights.\n\n"
             "**Reminder:** This is not legal advice. Always confirm with your broker or attorney."
-        )
-
-        # Default prompt for Section 14 questions
-        default_prompt_14 = (
-            "You are an experienced California residential real estate agent. "
-            "Explain Section 14 of the CAR Residential Purchase Agreement in simple terms. "
-            "Cover contingency timelines, removal requirements, Notice to Buyer to Perform, "
-            "Notice to Seller to Perform, cancellation rights, and how delays in seller disclosures "
-            "affect buyer deadlines. Provide practical, plain-language advice."
         )
 
         # --- FORM for Ask AI + Connect Human ---
@@ -49,43 +40,27 @@ def render_section14_contingencies():
                 ),
             )
 
-            col_ai_top1, col_ai_top2 = st.columns([3, 2])
-
-            with col_ai_top1:
-                use_context_14 = st.checkbox(
-                    "Include default context in my question",
-                    key="pa14_ai_use_context_top",
-                    value=True,
-                )
-
-            with col_ai_top2:
-                ask_clicked_14_top = st.form_submit_button(
-                    "Ask AI Realtor",
-                    use_container_width=True,
-                )
-                connect_clicked_14_top = st.form_submit_button(
-                    "Connect with a Human Realtor",
-                    use_container_width=True,
-                )
+            ask_clicked_14_top = st.form_submit_button(
+                "Ask AI Realtor",
+                use_container_width=True,
+            )
+            connect_clicked_14_top = st.form_submit_button(
+                "Connect with a Human Realtor",
+                use_container_width=True,
+            )
 
         # --- Handle Ask AI ---
         if ask_clicked_14_top:
             if not user_prompt_14.strip():
                 st.warning("Please type something to ask the AI Realtor.")
             else:
-                full_prompt_14 = user_prompt_14.strip()
-                if use_context_14:
-                    full_prompt_14 = (
-                        default_prompt_14
-                        + "\n\nUser question:\n"
-                        + user_prompt_14.strip()
-                    )
-
                 with st.spinner("Thinking like a California Realtor..."):
                     try:
                         answer_14 = call_purchase_agreement_ai(
-                            full_prompt_14,
+                            user_prompt_14.strip(),
                             section="14",
+                            # If you have a Section 14 state dict, you can pass it here:
+                            # section_state=st.session_state[SECTION14_KEY],
                         )
                     except Exception as e:
                         answer_14 = (
@@ -124,24 +99,7 @@ def render_section14_contingencies():
             )
 
             send_clicked_14_top = st.button(
-                "Send my question to a Human Realtor",
-                key="pa14_human_send_btn_top",
-                use_container_width=True,
-            )
 
-            if send_clicked_14_top:
-                if not contact_info_14_top.strip() or not human_question_14_top.strip():
-                    st.warning("Please provide both your contact info and your question.")
-                else:
-                    st.session_state["pa14_human_realtor_request_top"] = {
-                        "contact": contact_info_14_top.strip(),
-                        "question": human_question_14_top.strip(),
-                    }
-                    st.success(
-                        "Your request has been recorded. A human realtor will reach out to you using the contact info you provided."
-                    )
-
-    st.markdown("---")
 
     # ---------------------------
     # Short plain-English summary
