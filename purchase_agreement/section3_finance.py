@@ -86,8 +86,7 @@ def render_section3_finance():
 
     # Header
     st.markdown("### Section 3 – Finance Terms")
-
-     # ---------------------------
+    # ---------------------------
     # 💬 GPT / AI Realtor – Finance Terms helper
     # ---------------------------
     with st.expander("💬 Need help with Section 3? Ask AI Realtor", expanded=True):
@@ -101,15 +100,6 @@ def render_section3_finance():
             "Always confirm numbers with your lender and your agent."
         )
 
-        default_prompt_3 = (
-            "You are an experienced California residential real estate agent. "
-            "Explain, in simple language, how Section 3 – Finance Terms works in the CAR Residential Purchase Agreement. "
-            "Cover topics like: purchase price, earnest money deposit, down payment, loan vs. all-cash, "
-            "and how loan/appraisal contingencies usually fit with the financing structure. "
-            "Do not give legal or tax advice. Always remind the user to confirm details with their own lender and agent."
-        )
-
-        # Use a form so Enter submits just like Section 8
         with st.form("pa3_ai_form"):
             user_prompt_3 = st.text_input(
                 "What do you want help with in Section 3 – Finance Terms?",
@@ -123,41 +113,26 @@ def render_section3_finance():
                 ),
             )
 
-            col_ai1, col_ai2 = st.columns([3, 2])
+            ask_clicked_3 = st.form_submit_button(
+                "Ask AI Realtor about Finance Terms",
+                use_container_width=True,
+            )
+            connect_clicked_3 = st.form_submit_button(
+                "Connect with a Human Realtor",
+                use_container_width=True,
+            )
 
-            with col_ai1:
-                use_context_3 = st.checkbox(
-                    "Include default finance context in my question",
-                    value=True,
-                    key="pa3_ai_use_context",
-                )
-
-            with col_ai2:
-                ask_clicked_3 = st.form_submit_button(
-                    "Ask AI Realtor about Finance Terms",
-                    use_container_width=True,
-                )
-                connect_clicked_3 = st.form_submit_button(
-                    "Connect with a Human Realtor",
-                    use_container_width=True,
-                )
-
-        # Handle Ask AI
+        # Handle Ask AI (simple, clean)
         if ask_clicked_3:
             if not user_prompt_3.strip():
-                st.warning("Please enter a question or description first.")
+                st.warning("Please enter a question first.")
             else:
-                # If checked, we pass your default explainer as an extra system prompt
-                system_prompt_3 = default_prompt_3 if use_context_3 else None
-                user_question_3 = user_prompt_3.strip()
-
                 with st.spinner("Thinking like a California Realtor..."):
                     try:
                         answer_3 = call_purchase_agreement_ai(
-                            user_question_3,
+                            user_prompt_3.strip(),
                             section="3",
                             section_state=st.session_state[SECTION3_KEY],
-                            system_override=system_prompt_3,
                         )
                     except Exception as e:
                         answer_3 = (
@@ -167,16 +142,15 @@ def render_section3_finance():
 
                     st.session_state["pa3_ai_answer"] = answer_3
 
-        # Show AI answer if we have one
+        # Show AI answer
         if "pa3_ai_answer" in st.session_state:
             st.markdown("#### 🧠 AI Realtor – Finance Terms Suggestion")
             st.info(st.session_state["pa3_ai_answer"])
 
-        # Handle Connect with Human Realtor
+        # Human Realtor form
         if connect_clicked_3:
             st.session_state["pa3_show_human_realtor_form"] = True
 
-        # Show the human-realtor contact form if toggled on
         if st.session_state.get("pa3_show_human_realtor_form", False):
             st.markdown("#### 🤝 Connect with a Human Realtor")
 
