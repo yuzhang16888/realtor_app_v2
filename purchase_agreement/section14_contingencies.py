@@ -16,7 +16,7 @@ def render_section14_contingencies():
 
     st.markdown("## 4. Contingencies, Removal of Contingencies, and Cancellation Rights")
 
-      # ---------------------------
+       # ---------------------------
     # 💬 GPT / AI Realtor + Human Realtor — Top Helper for Section 14
     # ---------------------------
     with st.expander("💬 Need help with contingencies?", expanded=True):
@@ -99,7 +99,24 @@ def render_section14_contingencies():
             )
 
             send_clicked_14_top = st.button(
+                "Send my question to a Human Realtor",
+                key="pa14_human_send_btn_top",
+                use_container_width=True,
+            )
 
+            if send_clicked_14_top:
+                if not contact_info_14_top.strip() or not human_question_14_top.strip():
+                    st.warning("Please provide both your contact info and your question.")
+                else:
+                    st.session_state["pa14_human_realtor_request_top"] = {
+                        "contact": contact_info_14_top.strip(),
+                        "question": human_question_14_top.strip(),
+                    }
+                    st.success(
+                        "Your request has been recorded. A human realtor will reach out to you using the contact info you provided."
+                    )
+
+    st.markdown("---")
 
     # ---------------------------
     # Short plain-English summary
