@@ -87,7 +87,7 @@ def render_section3_finance():
     # Header
     st.markdown("### Section 3 – Finance Terms")
 
-    # ---------------------------
+     # ---------------------------
     # 💬 GPT / AI Realtor – Finance Terms helper
     # ---------------------------
     with st.expander("💬 Need help with Section 3? Ask AI Realtor", expanded=True):
@@ -142,24 +142,22 @@ def render_section3_finance():
                     use_container_width=True,
                 )
 
-        # Handle Ask AI (this is the same pattern as Section 8)
+        # Handle Ask AI
         if ask_clicked_3:
             if not user_prompt_3.strip():
                 st.warning("Please enter a question or description first.")
             else:
-                full_prompt_3 = user_prompt_3.strip()
-                if use_context_3:
-                    full_prompt_3 = (
-                        default_prompt_3
-                        + "\n\nUser question:\n"
-                        + user_prompt_3.strip()
-                    )
+                # If checked, we pass your default explainer as an extra system prompt
+                system_prompt_3 = default_prompt_3 if use_context_3 else None
+                user_question_3 = user_prompt_3.strip()
 
                 with st.spinner("Thinking like a California Realtor..."):
                     try:
                         answer_3 = call_purchase_agreement_ai(
-                            full_prompt_3,
+                            user_question_3,
                             section="3",
+                            section_state=st.session_state[SECTION3_KEY],
+                            system_override=system_prompt_3,
                         )
                     except Exception as e:
                         answer_3 = (
