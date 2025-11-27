@@ -24,7 +24,7 @@ def render_section_1_offer():
     )
 
     _render_section_1_form(s1)
-    # 🔹 Live Summary removed on purpose
+    # (We removed the old Live Summary on purpose)
 
 
 def _render_section_1_form(s1: dict):
@@ -171,101 +171,24 @@ def _render_section_1_form(s1: dict):
         s1["close_date"] = close_date
         s1["close_days_after"] = None
 
-
-def _render_section_1_summary(s1: dict):
-    """Bottom summary + plain-English explanation + navigation."""
-    if not s1.get("buyer_names") and not s1.get("property_address"):
-        st.write("Fill in a few fields above and I’ll summarize Section 1 for you here.")
-        return
-
-    st.markdown("**Draft – Section 1: Offer**")
-
-    st.write(
-        f"- **Buyer(s):** {s1.get('buyer_names') or '—'}\n"
-        f"- **Property:** {s1.get('property_address') or '—'}, "
-        f"{s1.get('city') or ''} {s1.get('county') or ''} {s1.get('zip_code') or ''}\n"
-        f"- **APN:** {s1.get('apn') or 'Not provided'}"
-    )
-
-    price_text = f"${s1['purchase_price']:,}" if s1.get("purchase_price") else "—"
-    st.write(f"- **Purchase price:** {price_text}")
-
-    if s1.get("close_type") == "days_after_acceptance":
-        days = s1.get("close_days_after")
-        st.write(
-            f"- **Close of escrow:** {days} days after acceptance"
-            if days
-            else "- **Close of escrow:** —"
-        )
-    else:
-        close_date = s1.get("close_date")
-        st.write(
-            f"- **Close of escrow:** {close_date.strftime('%b %d, %Y')}"
-            if close_date
-            else "- **Close of escrow:** —"
-        )
-
-    # Plain-English summary
-    st.markdown("---")
-    if st.button("✨ Generate plain-English summary of Section 1"):
-        s1["human_summary"] = _generate_section_1_human_summary(s1)
-
-    if s1.get("human_summary"):
-        st.markdown("##### Plain-English Summary")
-        st.write(s1["human_summary"])
-
-    # Navigation: back to inputs / move to Section 2
-    st.markdown("---")
-    colA, colB = st.columns(2)
-
-    with colA:
-        # Markdown link that jumps to the top anchor
-        st.markdown("**↺ Review Section 1 Inputs**  \n[Back to top](#section1_top)")
-
-    with colB:
-        st.markdown(
-            "**Move to Section 2 →**  \n"
-            "Next, click the **'Section 2 – Agency / Brokerage'** tab at the top."
-        )
-
-    st.caption(
-        "This is a drafting summary only. It does not create a binding contract. "
-        "A licensed real estate professional must transfer these terms into the official CAR RPA form."
-    )
+    # 👉 NEW: sync a clean snapshot into st.session_state["pa_section1_offer"]
+    _sync_section1_snapshot(s1)
 
 
-def _generate_section_1_human_summary(s1: dict) -> str:
-    """Create a friendly, human-readable paragraph using the user's inputs."""
-    buyer = s1.get("buyer_names") or "The buyer"
-    address_parts = [
-        s1.get("property_address") or "",
-        s1.get("city") or "",
-        s1.get("county") or "",
-        s1.get("zip_code") or "",
-    ]
-    address = ", ".join([p for p in address_parts if p])
-
-    price = s1.get("purchase_price")
-    if price:
-        price_text = f"${price:,.0f}"
-    else:
-        price_text = "a price to be determined"
-
-    if s1.get("close_type") == "days_after_acceptance" and s1.get("close_days_after"):
-        coe_text = f"{s1['close_days_after']} days after the seller accepts the offer"
-    elif s1.get("close_type") == "specific_date" and s1.get("close_date"):
-        coe_text = s1["close_date"].strftime("%B %d, %Y")
-    else:
-        coe_text = "on a date to be agreed between buyer and seller"
-
-    apn_text = ""
-    if s1.get("apn"):
-        apn_text = f" (APN: {s1['apn']})"
-
-    summary = (
-        f"{buyer} are offering to purchase the property at {address}{apn_text}. "
-        f"The proposed purchase price is {price_text}, "
-        f"with a target close of escrow {coe_text}."
-    )
-
-    return summary
+def _sync_section1_snapshot(s1: dict):
+    """
+    Store a clean snapshot of Section 1 in a dedicated key so other sections
+    (Section 3, Final Review, etc.) can read it reliably.
+    """
+    st.session_state["pa_section1_offer"] = {
+        "buyer_names": s1.get("buyer_names"),
+        "property_address": s1.get("property_address"),
+        "city": s1.get("city"),
+        "county": s1.get("county"),
+        "zip_code": s1.get("zip_code"),
+        "apn": s1.get("apn"),
+        "purchase_price": s1.get("purchase_price"),
+        "close_type": s1.get("close_type"),
+        "close_days_after": s1.get("close_days_after"),
+        "close_date": s1.get("close_date"),
+    }
