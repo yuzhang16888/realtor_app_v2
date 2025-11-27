@@ -16,23 +16,15 @@ def render_section15_time_dates():
 
     st.markdown("## 5. Time Periods; Dates; Time of Essence")
 
-    # ---------------------------
+      # ---------------------------
     # 💬 GPT / AI Realtor + Human Realtor — Top Helper for Section 15
     # ---------------------------
-    with st.expander("💬 Need help with Section 5 – Time & Dates?", expanded=True):
+    with st.expander("💬 Need help with Section 15 – Time Periods & Dates?", expanded=True):
 
         st.markdown(
             "Use this assistant to understand how time periods and dates work in the contract, "
             "and what it means that **time is of the essence**.\n\n"
             "**Reminder:** This is not legal advice. Always confirm with your broker or attorney."
-        )
-
-        default_prompt_15 = (
-            "You are an experienced California residential real estate agent. "
-            "Explain Section 15 of the CAR Residential Purchase Agreement in simple terms. "
-            "Cover how time periods are counted (calendar vs business days), how deadlines "
-            "relate to acceptance, when they can be extended, and what it means that "
-            "'time is of the essence' in the contract. Provide practical, plain-language advice."
         )
 
         # --- FORM: Ask AI + Connect Human ---
@@ -48,50 +40,34 @@ def render_section15_time_dates():
                 ),
             )
 
-            col_ai_top1, col_ai_top2 = st.columns([3, 2])
-
-            with col_ai_top1:
-                use_context_15 = st.checkbox(
-                    "Include default context in my question",
-                    key="pa15_ai_use_context_top",
-                    value=True,
-                )
-
-            with col_ai_top2:
-                ask_clicked_15_top = st.form_submit_button(
-                    "Ask AI Realtor",
-                    use_container_width=True,
-                )
-                connect_clicked_15_top = st.form_submit_button(
-                    "Connect with a Human Realtor",
-                    use_container_width=True,
-                )
+            ask_clicked_15_top = st.form_submit_button(
+                "Ask AI Realtor",
+                use_container_width=True,
+            )
+            connect_clicked_15_top = st.form_submit_button(
+                "Connect with a Human Realtor",
+                use_container_width=True,
+            )
 
         # --- Handle Ask AI ---
         if ask_clicked_15_top:
             if not user_prompt_15.strip():
                 st.warning("Please type something to ask the AI Realtor.")
             else:
-                full_prompt_15 = user_prompt_15.strip()
-                if use_context_15:
-                    full_prompt_15 = (
-                        default_prompt_15
-                        + "\n\nUser question:\n"
-                        + user_prompt_15.strip()
-                    )
-
                 with st.spinner("Thinking like a California Realtor..."):
                     try:
                         answer_15 = call_purchase_agreement_ai(
-                            full_prompt_15,
+                            user_prompt_15.strip(),
                             section="15",
+                            # If you later add Section 15 state, pass it here:
+                            # section_state=st.session_state[SECTION15_KEY],
                         )
                     except Exception as e:
                         answer_15 = (
                             "There was an error calling the AI backend for Section 15.\n\n"
                             f"Details: {e}"
                         )
-                    st.session_state["pa15_ai_answer_top"] = answer_15
+                st.session_state["pa15_ai_answer_top"] = answer_15
 
         # --- Show AI Answer ---
         if "pa15_ai_answer_top" in st.session_state:
@@ -116,8 +92,7 @@ def render_section15_time_dates():
                 key="pa15_human_question_top",
                 height=100,
                 placeholder=(
-                    "Example: I’m worried about hitting my loan and appraisal deadlines; "
-                    "can you help me set realistic dates?\n"
+                    "Example: I'm worried about hitting my loan and appraisal deadlines.\n"
                     "Example: How flexible is the closing date in my market?"
                 ),
             )
@@ -137,10 +112,12 @@ def render_section15_time_dates():
                         "question": human_question_15_top.strip(),
                     }
                     st.success(
-                        "Your request has been recorded. A human realtor will reach out to you using the contact info you provided."
+                        "Your request has been recorded. A human realtor will reach out to you "
+                        "using the contact info you provided."
                     )
 
     st.markdown("---")
+
 
     # ---------------------------
     # Plain-English summary of Section 15
